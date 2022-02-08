@@ -187,7 +187,7 @@ public class Controller {
         gc.fillOval(points[x].getX(), points[x].getY(), d, d);
         return x;
     }
-
+    
     public void showLines(Line[] lines) {
 
         // set color of strokes in canvas
