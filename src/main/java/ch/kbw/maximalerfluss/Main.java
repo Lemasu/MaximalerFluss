@@ -6,7 +6,11 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
-
+/**
+ * Diese Klasse kuemmert sich um die Initalisierung der Applikation.
+ * 
+ * Das Projekt basiert auf eine Vorlage vom Herr Rutschmann.
+ */
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
