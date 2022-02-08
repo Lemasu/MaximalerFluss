@@ -22,19 +22,6 @@
       <TextField fx:id="lAmount" />
    </HBox>
    <HBox alignment="CENTER_RIGHT">
-      <Label fx:id="outSave" />
       <Button mnemonicParsing="false" onAction="#generate" text="generate" textAlignment="CENTER" />
-      <Button mnemonicParsing="false" onAction="#save" text="save" />
-   </HBox>
-   <HBox alignment="CENTER_RIGHT">
-      <children>
-         <Label text="Load file: " />
-         <TextField fx:id="fileName" />
-      </children>
-   </HBox>
-   <HBox alignment="CENTER_RIGHT">
-      <children>
-         <Button mnemonicParsing="false" onAction="#generateByFile" text="generateByFile" />
-      </children>
    </HBox>
 </VBox>

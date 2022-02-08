@@ -3,48 +3,39 @@ package ch.kbw.maximalerfluss;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 /**
+ * Das ist der Controller der Applikation.
+ * 
  * Diese Klasse basiert auf das Projekt der Gruppe "Zyklensuche".
+ * 
+ * @author Alex Schaub
  */
 public class Controller {
     private int r;
     private final Random rand = new Random();
     private GraphicsContext gc;
-    private ArrayList<Line> stack;
-    private byte[][] currentAdjazenmatrix = null;
-    private Point[] currentPoints = null;
+    private ArrayList<Line> stack;    
     @FXML
     private Canvas canvas;
     @FXML
-    private TextField pAmount, lAmount, fileName;
-    @FXML
-    private Label outSave;
+    private TextField pAmount, lAmount;
+
+    //Bigger = smaller angle
+    int curveAngle = 8;
 
     @FXML
     public void initialize() {
         // convert canvas from fxml file to GraphicsContext
         gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.BLACK);
-    }
-
-    //Setter for currentAdjazenmtrix
-    public void setCurrentAdjazenmatrix(byte[][] currentAdjazenmatrix) {
-        this.currentAdjazenmatrix = currentAdjazenmatrix;
-    }
-
-    //Setter for currentPoints
-    public void setCurrentPoints(Point[] currentPoints) {
-        this.currentPoints = currentPoints;
     }
 
     @FXML
@@ -65,7 +56,6 @@ public class Controller {
         byte[][] adjazenmatrixPossible = new byte[numPoints][numPoints];
         int maxLines = numPoints * (numPoints - 1);
         List<Integer[]> pointsInMatrix = new ArrayList<>();
-        ImpExp impExp = new ImpExp();
         boolean e;
         Point[] points = new Point[numPoints];
 
@@ -156,15 +146,6 @@ public class Controller {
 
         // Show everything
         showLines(lines);
-        findCycles(lines);
-        showAdjzenmatrix(adjazenmatrix);
-        setCurrentAdjazenmatrix(adjazenmatrix);
-        setCurrentPoints(points);
-        /*try {
-            impExp.createJSONFile(adjazenmatrix, points);
-        } catch (IOException ex) {
-            e30
-        }*/
     }
 
     //function to create adjazenmatrix from Array of lines and aarray of points
@@ -207,92 +188,6 @@ public class Controller {
         return x;
     }
 
-    //Bigger = smaller angle
-    int curveAngle = 8;
-
-    @FXML
-    public void generateByFile() {
-
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-        //standard Variables (see generate() method for more information)
-        // create new stack every time we generate a new graph
-        stack = new ArrayList<>();
-        this.r = 5;
-        int d = r << 1;
-        ImpExp impExp = new ImpExp();
-        byte[][] adjazenmatrix = impExp.getAdjazenmatrix(fileName.getText());
-        int numPoints = adjazenmatrix.length;
-
-        int maxLines = linesByAdjazenmatrix(adjazenmatrix);
-
-
-        Point[] points;
-        //Iterate through amount of points we are going to create (see generate() method for more information)
-        if (impExp.pointsAreSet(fileName.getText())) {
-            points = impExp.getPoints(fileName.getText());
-            for (int i = 0; i < numPoints; i++) {
-                gc.fillOval(points[i].getX(), points[i].getY(), d, d);
-            }
-        } else {
-            boolean e;
-            points = new Point[numPoints];
-
-            for (int x = 0; x < numPoints; x++) {
-                e = false;
-                points[x] = new Point(rand.nextInt(490), rand.nextInt(490));
-
-                x = pointOffset(d, e, points, x);
-            }
-        }
-
-
-        Line[] lines = new Line[maxLines];
-        //go through all elements in line array
-        // ctemp INteger is an temporaray counter for lines Array
-        int ctemp = 0;
-        //for loops are to go through whole adjazenmatrix
-        for (int i = 0; i < numPoints; i++) {
-            for (int j = 0; j < numPoints; j++) {
-                //if vale of adjazenmatrix[i][j] is 1 then create line
-                if (adjazenmatrix[i][j] == 1) {
-                    lines[ctemp] = new Line(points[i], points[j], rand.nextInt(11) - 5);
-                } else {
-                    ctemp--;
-                }
-                ctemp++;
-            }
-        }
-        // for showing lines
-        showLines(lines);
-        // for finding Cycles in console
-        findCycles(lines);
-        //for output Adjazenmatrix in console
-        showAdjzenmatrix(adjazenmatrix);
-        setCurrentAdjazenmatrix(adjazenmatrix);
-        setCurrentPoints(points);
-
-    }
-
-    @FXML
-    public void save() {
-        //ImportExport class
-        ImpExp impExp = new ImpExp();
-        //if adjazenmatrix is not created then print message
-        if (currentAdjazenmatrix == null) {
-            System.out.println("There is no Adjazenmatrix available");
-            outSave.setText("There is no Adjazenmatrix available   ");
-        } else {
-            //create file
-            try {
-                impExp.createJSONFile(currentAdjazenmatrix, currentPoints);
-                outSave.setText(impExp.getFilename() + " was created!   ");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void showLines(Line[] lines) {
 
         // set color of strokes in canvas
@@ -318,11 +213,7 @@ public class Controller {
                     stack.add(lines[i]);
                     stack.add(lines[j]);
                     // Set stroke color to red
-                    //if (lines[i].getWeight() + lines[j].getWeight() < 0) {
                     gc.setStroke(Color.RED);
-                    //} else {
-                    //gc.setStroke(Color.GREEN);
-                    //}
 
                     // Get positions and lengths
                     int line1X = lines[i].getP1().getX() + r;
@@ -418,140 +309,5 @@ public class Controller {
             }
         }
         System.out.println("Stack" + stack.toString());
-    }
-
-    //------------------------------------------------------------------------------------
-
-    //lines that were checked for cycles
-    ArrayList<Line> checkedLines = new ArrayList<>();
-    ArrayList<Point> visitedPoints = new ArrayList<>();
-    //reset with every cycle, lines in cycle
-    ArrayList<Line> checkedLineInCycle = new ArrayList<>();
-
-    public void findCycles(Line[] lines) {
-        //lines should only be checked once, so they get removed once they did
-        ArrayList<Line> linesLeftToCheck = new ArrayList<>(Arrays.asList(lines));
-        for (Line line : lines) {
-            //The ArrayList needs to be cleared. The sophisticated programmer probably knows why it has to be like that but I, at the time of writing this comment,
-            //do not remember why it was necessary
-            visitedPoints.clear();
-            if (checkedLineInCycle.contains(line)) {
-                //if this line was already checked, skip to the next iteration
-                continue;
-            }
-            //Every recursion has its own ArrayList
-            ArrayList<Point> pointsInThisBranch = new ArrayList<>();
-            //starting at depth 1
-            checkLine(linesLeftToCheck, line, 1, pointsInThisBranch);
-        }
-    }
-
-    public void checkLine(ArrayList<Line> linesLeftToCheck, Line l, int depth, ArrayList<Point> pointsInThisBranch) {
-        //Points get added to the ArrayList in the branch
-        pointsInThisBranch.add(l.getP1());
-        //If the destination point of the current line is included in the ArrayList we have gone full circle :) and found a cycle!
-        if (visitedPoints.contains(l.getP2())) {
-            int cycleSize = depth;
-            for (int i = 0; i < pointsInThisBranch.size(); i++) {
-                despacito:
-                if (pointsInThisBranch.get(i) == l.getP2()) {
-                    //the actual length of the cycle is the depth of the branch minus the index of the occurrence of the starting point
-                    cycleSize = cycleSize - i;
-                    //Starting at the starting point of the cycling and looping through the lines of the cycle
-                    for (int j = i; j < cycleSize - 1 + i; j++) {
-                        boolean noOverlap = false;
-                        for (Line line : stack) {
-                            // if lines aren't overlapping
-                            if (!(line.getP1() == pointsInThisBranch.get(j) && line.getP2() == pointsInThisBranch.get(j + 1) || line.getP1() == pointsInThisBranch.get(j + 1) && line.getP2() == pointsInThisBranch.get(j))) {
-                                noOverlap = true;
-                            }
-                            else {
-                                break despacito;
-                            }
-                        }
-                        if (stack.size() == 0) noOverlap = true;
-                        if (noOverlap) {
-                            //length of pointing lines
-                            int length = 20;
-                            gc.setStroke(Color.RED);
-                            //LINEEEEEEEEES!!!!!!
-                            gc.strokeLine(
-                                    pointsInThisBranch.get(j).getX() + r,
-                                    pointsInThisBranch.get(j).getY() + r,
-                                    //ZT
-                                    pointsInThisBranch.get(j + 1).getX() + r,
-                                    pointsInThisBranch.get(j + 1).getY() + r
-                            );
-
-                            //get angles between the two Points
-                            double a = Math.atan2(
-                                    pointsInThisBranch.get(j).getY() - pointsInThisBranch.get(j + 1).getY(),
-                                    pointsInThisBranch.get(j).getX() - pointsInThisBranch.get(j + 1).getX()
-                            );
-                            //We want arrow heads
-                            //they have a length, and they start from the destination point of the line
-                            //The difference between the two should, for example, be 90 degrees, 45 degrees in each direction, which is
-                            double a1 = a + Math.PI / curveAngle;
-                            double a2 = a - Math.PI / curveAngle;
-
-                            //draw some lines
-                            gc.strokeLine(
-                                    pointsInThisBranch.get(j + 1).getX() + r,
-                                    pointsInThisBranch.get(j + 1).getY() + r,
-                                    Math.cos(a1) * length + pointsInThisBranch.get(j + 1).getX() + r,
-                                    Math.sin(a1) * length + pointsInThisBranch.get(j + 1).getY() + r
-                            );
-                            //draw more lines
-                            gc.strokeLine(
-                                    pointsInThisBranch.get(j + 1).getX() + r,
-                                    pointsInThisBranch.get(j + 1).getY() + r,
-                                    Math.cos(a2) * length + pointsInThisBranch.get(j + 1).getX() + r,
-                                    Math.sin(a2) * length + pointsInThisBranch.get(j + 1).getY() + r
-                            );
-                        }
-                    }
-                    //if the correct point was found and the line drawn, the function gets broken out off
-                    break;
-                }
-            }
-            //It's not part of the debugging - It's a feature!
-            System.out.println("Found Cycle of length " + cycleSize);
-            System.out.println("P1: " + l.getP1().toString() + " P2: " + l.getP2().toString());
-            return;
-        }
-        //if no cycle was found get to the next step of recursion
-        visitedPoints.add(l.getP1());
-        for (Line nextLine : linesLeftToCheck) {
-            if (nextLine.getP1() == l.getP2()) {
-                //depth + 1 = new depth of the recursion
-                checkLine(linesLeftToCheck, nextLine, depth + 1, (ArrayList<Point>) pointsInThisBranch.clone());
-            }
-        }
-    }
-
-
-    //-----------------------------------------------------------------------------------------
-    //method to output adjazenmtrix in console
-    void showAdjzenmatrix(byte[][] matrix) {
-        //for loops to go through whole elements of adjazenmatrix
-        for (byte[] bytes : matrix) {
-            for (int j = 0; j < matrix.length; j++) {
-                System.out.print(bytes[j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    //method for counting lines
-    private Integer linesByAdjazenmatrix(byte[][] adjzenmatrix) {
-        int count = 0;
-        for (byte[] bytes : adjzenmatrix) {
-            for (int j = 0; j < adjzenmatrix.length; j++) {
-                if (bytes[j] == 1) {
-                    count++;
-                }
-            }
-        }
-        return count;
     }
 }
