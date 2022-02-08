@@ -12,6 +12,8 @@ import javafx.scene.layout.Pane;
  * Das Projekt basiert auf eine Vorlage vom Herr Rutschmann.
  * 
  * Die FXML-Datei View.fxml basiert auf das Projekt der Gruppe "Zyklensuche".
+ * 
+ * @author Alex Schaub
  */
 public class Main extends Application {
 	private Controller controller;
