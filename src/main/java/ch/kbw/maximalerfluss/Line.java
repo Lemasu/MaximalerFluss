@@ -1,6 +1,8 @@
 package ch.kbw.maximalerfluss;
 
 /**
+ * Dies ist die Klasse fuer die Kanten in einem Graphen.
+ * 
  * Diese Klasse basiert auf das Projekt der Gruppe "Zyklensuche".
  */
 public class Line {
