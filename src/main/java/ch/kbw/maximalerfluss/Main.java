@@ -16,14 +16,24 @@ import javafx.scene.layout.Pane;
  * @author Alex Schaub
  */
 public class Main extends Application {
+	/**
+	 * Das ist der Model der Applikation.
+	 */
+	private Model model;
+	
+	/**
+	 * Das ist der Controller der Applikation.
+	 */
 	private Controller controller;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			model = new Model(8);
 			FXMLLoader myLoader = new FXMLLoader(getClass().getResource("View.fxml"));
 			Pane root = myLoader.load();
 			controller = (Controller) myLoader.getController();
+			controller.setModel(model);
 			Scene scene = new Scene(root, 400, 400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setTitle("Maximaler Fluss");
