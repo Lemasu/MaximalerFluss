@@ -72,10 +72,7 @@ public class Graph {
 	 *                          wird verwendet, um auf dem Canvas zeichnen zu
 	 *                          koennen.
 	 */
-	public void graphGenerieren(TextField ebenen_waagerecht, TextField ebenen_senkrecht, GraphicsContext gc) throws NumberFormatException {
-		// Zufallszahl fuer die Generierung
-		final Random rand = new Random();
-		
+	public void graphGenerieren(TextField ebenen_waagerecht, TextField ebenen_senkrecht, GraphicsContext gc) throws NumberFormatException {		
 		// Initialize variables
 		this.r = 5;
 		int d = r << 1;
@@ -83,14 +80,56 @@ public class Graph {
 		knoten = new ArrayList<ArrayList<Knoten>>();
 		kanten = new ArrayList<Kante>();
 		
+		knotenGenerieren(Integer.parseInt(ebenen_waagerecht.getText()), Integer.parseInt(ebenen_senkrecht.getText()));
+	}
+
+	/**
+	 * Diese Methode zeichnet den Graphen auf den Canvas.
+	 * 
+	 * @param gc Das ist der GraphicsContext fuer den Canvas. Dieser wird verwendet,
+	 *           um auf dem Canvas zeichnen zu koennen.
+	 */
+	public void showGraph(GraphicsContext gc) {
+//
+//		// set color of strokes in canvas
+//		gc.setStroke(Color.BLACK);
+//		for (int i = 0; i < kanten.length; i++) {
+//			double a = Math.atan2(kanten[i].getP1().getY() - kanten[i].getP2().getY(),
+//					kanten[i].getP1().getX() - kanten[i].getP2().getX());
+//			double a1 = a + Math.PI / curveAngle;
+//			double a2 = a - Math.PI / curveAngle;
+//			// length of pointing kanten
+//			int l = 20;
+//
+//			// draw normal arrows from knoten to knoten
+//			gc.strokeLine(kanten[i].getP1().getX() + r, kanten[i].getP1().getY() + r, kanten[i].getP2().getX() + r,
+//					kanten[i].getP2().getY() + r);
+//			gc.strokeLine(kanten[i].getP2().getX() + r, kanten[i].getP2().getY() + r,
+//					Math.cos(a1) * l + kanten[i].getP2().getX() + r, Math.sin(a1) * l + kanten[i].getP2().getY() + r);
+//			gc.strokeLine(kanten[i].getP2().getX() + r, kanten[i].getP2().getY() + r,
+//					Math.cos(a2) * l + kanten[i].getP2().getX() + r, Math.sin(a2) * l + kanten[i].getP2().getY() + r);
+//		}
+	}
+
+	
+	/**
+	 * Diese Methode generiert die einzelnen Knoten des Graphen.
+	 * 
+	 * @param ebenen_waagerecht Dieser Integer beschreibt, wie viele waagerechte Ebenen generiert werden sollen.
+	 * @param ebenen_senkrecht Dieser Integer beschreibt, wie viele senkrechte Ebenen maximal generiert werden sollen.
+	 */
+	private void knotenGenerieren(int ebenen_waagerecht, int ebenen_senkrecht) {
+		// Zufallszahl fuer die Generierung
+		final Random rand = new Random();
+		
 		// fuege den Start dem Graphen hinzu
 		knoten.add(new ArrayList<Knoten>());
 		knoten.get(0).add(new Knoten(0));
 		
 		// generiert die einzelnen normalen Knoten
-		for (int i = 0; i < Integer.parseInt(ebenen_waagerecht.getText()); i++) {
+		for (int i = 0; i < ebenen_waagerecht; i++) {
 			knoten.add(new ArrayList<Knoten>());
-			for (int j = 0; j < Integer.parseInt(ebenen_senkrecht.getText()); j++) {
+			for (int j = 0; j < ebenen_senkrecht; j++) {
 				knoten.get(i + 1).add(new Knoten(1));
 				if (rand.nextInt(3) == 0) {
 					j += rand.nextInt(3);
@@ -123,33 +162,5 @@ public class Graph {
 		System.out.println();
 		
 		// -----------------------------------------------------------------------------------------------------
-	}
-
-	/**
-	 * Diese Methode zeichnet den Graphen auf den Canvas.
-	 * 
-	 * @param gc Das ist der GraphicsContext fuer den Canvas. Dieser wird verwendet,
-	 *           um auf dem Canvas zeichnen zu koennen.
-	 */
-	public void showGraph(GraphicsContext gc) {
-//
-//		// set color of strokes in canvas
-//		gc.setStroke(Color.BLACK);
-//		for (int i = 0; i < kanten.length; i++) {
-//			double a = Math.atan2(kanten[i].getP1().getY() - kanten[i].getP2().getY(),
-//					kanten[i].getP1().getX() - kanten[i].getP2().getX());
-//			double a1 = a + Math.PI / curveAngle;
-//			double a2 = a - Math.PI / curveAngle;
-//			// length of pointing kanten
-//			int l = 20;
-//
-//			// draw normal arrows from knoten to knoten
-//			gc.strokeLine(kanten[i].getP1().getX() + r, kanten[i].getP1().getY() + r, kanten[i].getP2().getX() + r,
-//					kanten[i].getP2().getY() + r);
-//			gc.strokeLine(kanten[i].getP2().getX() + r, kanten[i].getP2().getY() + r,
-//					Math.cos(a1) * l + kanten[i].getP2().getX() + r, Math.sin(a1) * l + kanten[i].getP2().getY() + r);
-//			gc.strokeLine(kanten[i].getP2().getX() + r, kanten[i].getP2().getY() + r,
-//					Math.cos(a2) * l + kanten[i].getP2().getX() + r, Math.sin(a2) * l + kanten[i].getP2().getY() + r);
-//		}
 	}
 }
