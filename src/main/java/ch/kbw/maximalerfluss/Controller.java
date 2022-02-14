@@ -3,6 +3,7 @@ package ch.kbw.maximalerfluss;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
@@ -41,6 +42,12 @@ public class Controller {
      */
     @FXML
     private TextField ebenen_senkrecht;
+    
+    /**
+     * Dieses Label dient dazu, dem Nutzer Informationen zu uebermitteln.
+     */
+    @FXML
+    private Label info;
 
     /**
      * Diese Methode wird bei der Initalisierung dieses Controllers aufgerufen.
@@ -66,13 +73,17 @@ public class Controller {
      */
     @FXML
     public void generate() {
-        // Clears canvas
+    	// Clears canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-    	
-        // generiert den Graphen
-        model.getGraph().graphGenerieren(ebenen_waagerecht, ebenen_senkrecht, gc);
         
-        // Show everything
-        model.getGraph().showGraph(gc);
+        try {           
+        	// generiert den Graphen
+        	model.getGraph().graphGenerieren(ebenen_waagerecht, ebenen_senkrecht, gc);
+        	
+            // Show everything
+            model.getGraph().showGraph(gc);
+        } catch(NumberFormatException e) {
+        	info.setText("Bitte geben Sie nur Zahlen ein.");
+        }
     }
 }

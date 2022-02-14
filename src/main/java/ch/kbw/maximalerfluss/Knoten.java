@@ -9,49 +9,29 @@ package ch.kbw.maximalerfluss;
  */
 public class Knoten {
 	/**
-	 * Das ist die X-Koordinate des Knotens.
+	 * Das ist die Kategorie eines Knotens.
+	 * 
+	 * 0 = Start
+	 * 1 = normaler Knoten
+	 * 2 = Ziel
 	 */
-    private final int x;
-    
-    /**
-     * Das ist die Y-Koordinate des Knotens.
-     */
-    private final int y;
+	private final int kategorie;
+
+	/**
+	 * Das ist der Standardkonstruktor.
+	 * 
+	 * @param kategorie
+	 */
+	public Knoten(int kategorie) {
+		this.kategorie = kategorie;
+	}
 
     /**
-     * Das ist der Standardkonstruktor.
+     * Das ist der Getter fuer die Kategorie dieses Knotens.
      * 
-     * @param x Das ist die X-Koordinate des Knotens.
-     * @param y Das ist die Y-Koordinate des Knotens.
+     * @return Das ist die Kategorie dieses Knotens.
      */
-    public Knoten(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    /**
-     * Das ist der Getter fuer die X-Koordinate des Knotens.
-     * 
-     * @return Das ist die X-Koordinate des Knotens.
-     */
-    public int getX() {
-        return x;
-    }
-
-    /**
-     * Das ist der Getter fuer die Y-Koordinate des Knotens.
-     * 
-     * @return Das ist die Y-Koordinate des Knotens.
-     */
-    public int getY() {
-        return y;
-    }
-
-    @Override
-    public String toString() {
-        return "Point{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
-    }
+	public int getKategorie() {
+		return kategorie;
+	}
 }
