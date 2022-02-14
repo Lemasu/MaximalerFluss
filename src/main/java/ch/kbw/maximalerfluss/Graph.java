@@ -64,19 +64,19 @@ public class Graph {
 	/**
 	 * Diese Funktion ist fuer die Generierung des Graphen gedacht.
 	 * 
-	 * @param pAmount Das ist der Textfeld fuer die Anzahl der Knoten im Graphen, welcher generiert werden soll.
-	 * @param lAmount Das ist der Textfeld fuer die Anzahl der Kanten im Graphen, welcher generiert werden soll.
+	 * @param ebenen_waagerecht Das ist der Textfeld fuer die Anzahl der waagerechten Ebenen im Graphen, welcher generiert werden soll.
+	 * @param ebenen_senkrecht Das ist der Textfeld fuer die Anzahl der senkrechten Ebenen im Graphen, welcher generiert werden soll.
 	 * @param gc Das ist der GraphicsContext fuer den Canvas. Dieser wird verwendet, um auf dem Canvas zeichnen zu koennen.
 	 */
-	public void graphGenerieren(TextField pAmount, TextField lAmount, GraphicsContext gc) {
+	public void graphGenerieren(TextField ebenen_waagerecht, TextField ebenen_senkrecht, GraphicsContext gc) {
 		// Zufallszahl fuer die Generierung
     	final Random rand = new Random();
 
         // Initialize variables
         this.r = 5;
         int d = r << 1;
-        int num_knoten = Integer.parseInt(pAmount.getText());
-        int num_kanten = Integer.parseInt(lAmount.getText());
+        int num_knoten = Integer.parseInt(ebenen_waagerecht.getText());
+        int num_kanten = Integer.parseInt(ebenen_senkrecht.getText());
         adjazenmatrix = new byte[num_knoten][num_knoten];
         byte[][] adjazenmatrixPossible = new byte[num_knoten][num_knoten];
         int max_kanten = num_knoten * (num_knoten - 1);
@@ -103,7 +103,7 @@ public class Graph {
 
         // If the amount of kanten exceeds the maximum possible kanten set the max as value
         if (max_kanten < num_kanten) {
-            lAmount.setText(Integer.toString(max_kanten));
+            ebenen_senkrecht.setText(Integer.toString(max_kanten));
             num_kanten = max_kanten;
         }
 

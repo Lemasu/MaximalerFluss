@@ -31,16 +31,16 @@ public class Controller {
     private GraphicsContext gc;
         
     /**
-     * Das ist der Textfeld fuer die Anzahl der Knoten im Graphen, welcher generiert werden soll.
+     * Das ist der Textfeld fuer die Anzahl der waagerechten Ebenen im Graphen, welcher generiert werden soll.
      */
     @FXML
-    private TextField pAmount;
+    private TextField ebenen_waagerecht;
     
     /**
-     * Das ist der Textfeld fuer die Anzahl der Kanten im Graphen, welcher generiert werden soll.
+     * Das ist der Textfeld fuer die Anzahl der senkrechten Ebenen im Graphen, welcher generiert werden soll.
      */
     @FXML
-    private TextField lAmount;
+    private TextField ebenen_senkrecht;
 
     /**
      * Diese Methode wird bei der Initalisierung dieses Controllers aufgerufen.
@@ -70,7 +70,7 @@ public class Controller {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     	
         // generiert den Graphen
-        model.getGraph().graphGenerieren(pAmount, lAmount, gc);
+        model.getGraph().graphGenerieren(ebenen_waagerecht, ebenen_senkrecht, gc);
         
         // Show everything
         model.getGraph().showGraph(gc);

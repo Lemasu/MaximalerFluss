@@ -14,12 +14,12 @@
    </padding>
    <Canvas fx:id="canvas" height="500.0" width="500.0" />
    <HBox alignment="CENTER_RIGHT">
-      <Label text="Amount of points: " />
-      <TextField fx:id="pAmount" />
+      <Label text="maximaler Anzahl Ebenen waagerecht: " />
+      <TextField fx:id="ebenen_waagerecht" />
    </HBox>
    <HBox alignment="CENTER_RIGHT">
-      <Label text="Amount of lines: " />
-      <TextField fx:id="lAmount" />
+      <Label text="maximaler Anzahl Ebenen senkrecht: " />
+      <TextField fx:id="ebenen_senkrecht" />
    </HBox>
    <HBox alignment="CENTER_RIGHT">
       <Button mnemonicParsing="false" onAction="#generate" text="generate" textAlignment="CENTER" />
