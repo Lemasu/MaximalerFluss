@@ -7,7 +7,7 @@ package ch.kbw.maximalerfluss;
  * 
  * @author Alex Schaub
  */
-public class Point {
+public class Knoten {
 	/**
 	 * Das ist die X-Koordinate des Knotens.
 	 */
@@ -24,7 +24,7 @@ public class Point {
      * @param x Das ist die X-Koordinate des Knotens.
      * @param y Das ist die Y-Koordinate des Knotens.
      */
-    public Point(int x, int y) {
+    public Knoten(int x, int y) {
         this.x = x;
         this.y = y;
     }

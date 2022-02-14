@@ -73,6 +73,6 @@ public class Controller {
         model.getGraph().graphGenerieren(pAmount, lAmount, gc);
         
         // Show everything
-        model.getGraph().showLines(gc);
+        model.getGraph().showGraph(gc);
     }
 }

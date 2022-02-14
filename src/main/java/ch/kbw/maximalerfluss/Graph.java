@@ -33,12 +33,12 @@ public class Graph {
     /**
      * Das sind die Knoten im Graphen.
      */
-    private Point[] points;
+    private Knoten[] knoten;
     
     /**
      * Das sind die Kanten im Graphen.
      */
-    private Line[] lines;
+    private Kante[] kanten;
     
     /**
      * Das ist der Adjazenzmatrix vom Graphen.
@@ -75,119 +75,119 @@ public class Graph {
         // Initialize variables
         this.r = 5;
         int d = r << 1;
-        int numPoints = Integer.parseInt(pAmount.getText());
-        int numLines = Integer.parseInt(lAmount.getText());
-        adjazenmatrix = new byte[numPoints][numPoints];
-        byte[][] adjazenmatrixPossible = new byte[numPoints][numPoints];
-        int maxLines = numPoints * (numPoints - 1);
-        List<Integer[]> pointsInMatrix = new ArrayList<>();
+        int num_knoten = Integer.parseInt(pAmount.getText());
+        int num_kanten = Integer.parseInt(lAmount.getText());
+        adjazenmatrix = new byte[num_knoten][num_knoten];
+        byte[][] adjazenmatrixPossible = new byte[num_knoten][num_knoten];
+        int max_kanten = num_knoten * (num_knoten - 1);
+        List<Integer[]> knoten_in_matrix = new ArrayList<>();
         boolean e;
-        points = new Point[numPoints];
+        knoten = new Knoten[num_knoten];
 
-        // Iterate through amount of points we are going to create
-        for (int x = 0; x < numPoints; x++) {
+        // Iterate through amount of knoten we are going to create
+        for (int x = 0; x < num_knoten; x++) {
             e = false;
 
-            // Generate a random point
-            points[x] = new Point(rand.nextInt(490), rand.nextInt(490));
+            // Generate a random knoten
+            knoten[x] = new Knoten(rand.nextInt(490), rand.nextInt(490));
 
             //Adjazenmatrix aufstellen und auf 0 setzten
-            for (int i = 0; i < numPoints; i++) {
+            for (int i = 0; i < num_knoten; i++) {
                 adjazenmatrixPossible[x][i] = 0;
                 adjazenmatrix[x][i] = 0;
             }
 
-            // draw points with an offset so not to stack them
-            x = pointOffset(gc, d, e, points, x);
+            // draw knoten with an offset so not to stack them
+            x = knotenOffset(gc, d, e, knoten, x);
         }
 
-        // If the amount of lines exceeds the maximum possible lines set the max as value
-        if (maxLines < numLines) {
-            lAmount.setText(Integer.toString(maxLines));
-            numLines = maxLines;
+        // If the amount of kanten exceeds the maximum possible kanten set the max as value
+        if (max_kanten < num_kanten) {
+            lAmount.setText(Integer.toString(max_kanten));
+            num_kanten = max_kanten;
         }
 
-        // Iterate through every point 2 times and create an array with all possible lines
-        Line[] possibleLines = new Line[maxLines];
+        // Iterate through every knoten 2 times and create an array with all possible kanten
+        Kante[] possible_kanten = new Kante[max_kanten];
         int countL = 0;
-        for (int x = 0; x < numPoints; x++) {
-            for (int y = x + 1; y < numPoints; y++) {
-                possibleLines[countL++] = new Line(points[x], points[y], rand.nextInt(11) - 5);
-                //Linegenaration in Adjezenmatrix auffüllen
+        for (int x = 0; x < num_knoten; x++) {
+            for (int y = x + 1; y < num_knoten; y++) {
+                possible_kanten[countL++] = new Kante(knoten[x], knoten[y], rand.nextInt(11) - 5);
+                //kantegeneration in Adjezenmatrix auffüllen
                 adjazenmatrixPossible[x][y] += 1;
-                Integer[] matrixPoints = new Integer[]{x, y};
-                pointsInMatrix.add(matrixPoints);
+                Integer[] matrix_knoten = new Integer[]{x, y};
+                knoten_in_matrix.add(matrix_knoten);
 
-                possibleLines[countL++] = new Line(points[y], points[x], rand.nextInt(11) - 5);
+                possible_kanten[countL++] = new Kante(knoten[y], knoten[x], rand.nextInt(11) - 5);
                 adjazenmatrixPossible[y][x] += 1;
-                matrixPoints = new Integer[]{y, x};
-                pointsInMatrix.add(matrixPoints);
+                matrix_knoten = new Integer[]{y, x};
+                knoten_in_matrix.add(matrix_knoten);
             }
         }
 
-        // If the amount of lines matches the max amount of lines just copy the array
-        if (numLines == maxLines) {
-            lines = possibleLines;
+        // If the amount of kanten matches the max amount of kanten just copy the array
+        if (num_kanten == max_kanten) {
+            kanten = possible_kanten;
             adjazenmatrix = adjazenmatrixPossible;
         } else {
-            // Set the first line random
-            lines = new Line[numLines];
-            int randL = rand.nextInt(numLines);
-            lines[0] = possibleLines[randL];
-            possibleLines[randL] = null;
-            ArrayList<Line> tmp = new ArrayList<>();
-            // Iterate through every line
-            for (int i = 1; i < numLines; i++) {
-                // Iterate through every possible line
-                for (int j = 0; j < maxLines; j++) {
-                    // Iterate through the already Iterated possible lines again
+            // Set the first kante random
+            kanten = new Kante[num_kanten];
+            int randL = rand.nextInt(num_kanten);
+            kanten[0] = possible_kanten[randL];
+            possible_kanten[randL] = null;
+            ArrayList<Kante> tmp = new ArrayList<>();
+            // Iterate through every kante
+            for (int i = 1; i < num_kanten; i++) {
+                // Iterate through every possible kante
+                for (int j = 0; j < max_kanten; j++) {
+                    // Iterate through the already Iterated possible kanten again
                     for (int r = 0; r < i; r++) {
-                        // If the possible line wasn't used already
-                        if (possibleLines[j] != null) {
-                            // If the line connects with any other line generated so far
-                            if (possibleLines[j].getP1() == lines[r].getP1() || possibleLines[j].getP2() == lines[r].getP1() || possibleLines[j].getP1() == lines[r].getP2() || possibleLines[j].getP2() == lines[r].getP2()) {
-                                // Add line to next possible lines
-                                tmp.add(possibleLines[j]);
+                        // If the possible kante wasn't used already
+                        if (possible_kanten[j] != null) {
+                            // If the kante connects with any other kante generated so far
+                            if (possible_kanten[j].getP1() == kanten[r].getP1() || possible_kanten[j].getP2() == kanten[r].getP1() || possible_kanten[j].getP1() == kanten[r].getP2() || possible_kanten[j].getP2() == kanten[r].getP2()) {
+                                // Add kante to next possible kanten
+                                tmp.add(possible_kanten[j]);
                             }
                         }
                     }
                 }
-                // Get a random line from the next possible lines
+                // Get a random kante from the next possible kanten
                 int tmprand = rand.nextInt(tmp.size());
-                lines[i] = tmp.get(tmprand);
-                // Iterate through all possible lines
-                for (int j = 0; j < maxLines; j++) {
-                    // If possible line equals the random chosen one
-                    if (possibleLines[j] == tmp.get(tmprand)) {
-                        // Set chosen line in possible lines to null (as in used)
-                        possibleLines[j] = null;
+                kanten[i] = tmp.get(tmprand);
+                // Iterate through all possible kanten
+                for (int j = 0; j < max_kanten; j++) {
+                    // If possible kante equals the random chosen one
+                    if (possible_kanten[j] == tmp.get(tmprand)) {
+                        // Set chosen kante in possible kanten to null (as in used)
+                        possible_kanten[j] = null;
                     }
                 }
             }
         }
 
-        adjazenmatrix = linesToAdjazenmatrix(lines, numPoints, points);
+        adjazenmatrix = kantenToAdjazenmatrix(kanten, num_knoten, knoten);
 	}
 	
     /**
-     * function to create adjazenmatrix from Array of lines and aarray of points
+     * function to create adjazenmatrix from Array of kanten and aarray of knoten
      * 
-     * @param lines Das sind die Kanten im Graphen.
-     * @param amountPoints Das ist die Anzahl der Punkte im Graphen.
-     * @param points Das sind die Knoten im Graphen.
+     * @param kanten Das sind die Kanten im Graphen.
+     * @param amount_knoten Das ist die Anzahl der Punkte im Graphen.
+     * @param knoten Das sind die Knoten im Graphen.
      * @return Es wird die Adjazenzmatrix zurueckgegeben.
      */
-    private byte[][] linesToAdjazenmatrix(Line[] lines, int amountPoints, Point[] points) {
-        //ADD if lines = null
-        byte[][] aMatrix = new byte[amountPoints][amountPoints];
+    private byte[][] kantenToAdjazenmatrix(Kante[] kanten, int amount_knoten, Knoten[] knoten) {
+        //ADD if kanten = null
+        byte[][] aMatrix = new byte[amount_knoten][amount_knoten];
         //for loops (i and j) are to go through the whole adjazenmatrix
-        for (int i = 0; i < amountPoints; i++) {
-            for (int j = 0; j < amountPoints; j++) {
-                // for loop to go through lines array
-                for (Line l : lines) {
+        for (int i = 0; i < amount_knoten; i++) {
+            for (int j = 0; j < amount_knoten; j++) {
+                // for loop to go through kanten array
+                for (Kante l : kanten) {
                     //Stringcomparation to get the value of adjzenmatrix
-                    if (l.getP1().toString().equals(points[i].toString()) &&
-                            l.getP2().toString().equals(points[j].toString())) {
+                    if (l.getP1().toString().equals(knoten[i].toString()) &&
+                            l.getP2().toString().equals(knoten[j].toString())) {
                         aMatrix[i][j] = 1;
                     }
                 }
@@ -202,15 +202,15 @@ public class Graph {
      * @param gc Das ist der GraphicsContext fuer den Canvas. Dieser wird verwendet, um auf dem Canvas zeichnen zu koennen.
      * @param d Das ist ein Integer.
      * @param e Das ist ein Boolean.
-     * @param points Das sind die Knoten im Graphen.
+     * @param knoten Das sind die Knoten im Graphen.
      * @param x Das ist ein Integer.
      * @return Es wird ein Integer zurueckgegeben.
      */
-    private int pointOffset(GraphicsContext gc, int d, boolean e, Point[] points, int x) {
-        // Iterate though points
+    private int knotenOffset(GraphicsContext gc, int d, boolean e, Knoten[] knoten, int x) {
+        // Iterate though knoten
         for (int y = 0; y < x; y++) {
-            // If points are stacked
-            if (points[y].getX() - d < points[x].getX() && points[x].getX() < points[y].getX() + d && points[y].getY() - d < points[x].getY() && points[x].getY() < points[y].getY() + d) {
+            // If knoten are stacked
+            if (knoten[y].getX() - d < knoten[x].getX() && knoten[x].getX() < knoten[y].getX() + d && knoten[y].getY() - d < knoten[x].getY() && knoten[x].getY() < knoten[y].getY() + d) {
                 // repeat iteration
                 x--;
                 // e for exists
@@ -219,10 +219,10 @@ public class Graph {
                 break;
             }
         }
-        // If point exists return
+        // If knoten exists return
         if (e) return x;
-        // draw point
-        gc.fillOval(points[x].getX(), points[x].getY(), d, d);
+        // draw knoten
+        gc.fillOval(knoten[x].getX(), knoten[x].getY(), d, d);
         return x;
     }
     
@@ -231,38 +231,38 @@ public class Graph {
      * 
      * @param gc Das ist der GraphicsContext fuer den Canvas. Dieser wird verwendet, um auf dem Canvas zeichnen zu koennen.
      */
-    public void showLines(GraphicsContext gc) {
+    public void showGraph(GraphicsContext gc) {
 
         // set color of strokes in canvas
         gc.setStroke(Color.BLACK);
-        for (int i = 0; i < lines.length; i++) {
+        for (int i = 0; i < kanten.length; i++) {
             double a = Math.atan2(
-                    lines[i].getP1().getY() - lines[i].getP2().getY(),
-                    lines[i].getP1().getX() - lines[i].getP2().getX()
+                    kanten[i].getP1().getY() - kanten[i].getP2().getY(),
+                    kanten[i].getP1().getX() - kanten[i].getP2().getX()
             );
             double a1 = a + Math.PI / curveAngle;
             double a2 = a - Math.PI / curveAngle;
-            //length of pointing lines
+            //length of pointing kanten
             int l = 20;
             
-            // draw normal arrows from point to point
+            // draw normal arrows from knoten to knoten
             gc.strokeLine(
-                    lines[i].getP1().getX() + r,
-                    lines[i].getP1().getY() + r,
-                    lines[i].getP2().getX() + r,
-                    lines[i].getP2().getY() + r
+                    kanten[i].getP1().getX() + r,
+                    kanten[i].getP1().getY() + r,
+                    kanten[i].getP2().getX() + r,
+                    kanten[i].getP2().getY() + r
             );
             gc.strokeLine(
-                    lines[i].getP2().getX() + r,
-                    lines[i].getP2().getY() + r,
-                    Math.cos(a1) * l + lines[i].getP2().getX() + r,
-                    Math.sin(a1) * l + lines[i].getP2().getY() + r
+                    kanten[i].getP2().getX() + r,
+                    kanten[i].getP2().getY() + r,
+                    Math.cos(a1) * l + kanten[i].getP2().getX() + r,
+                    Math.sin(a1) * l + kanten[i].getP2().getY() + r
             );
             gc.strokeLine(
-                    lines[i].getP2().getX() + r,
-                    lines[i].getP2().getY() + r,
-                    Math.cos(a2) * l + lines[i].getP2().getX() + r,
-                    Math.sin(a2) * l + lines[i].getP2().getY() + r
+                    kanten[i].getP2().getX() + r,
+                    kanten[i].getP2().getY() + r,
+                    Math.cos(a2) * l + kanten[i].getP2().getX() + r,
+                    Math.sin(a2) * l + kanten[i].getP2().getY() + r
             );
         }
     }

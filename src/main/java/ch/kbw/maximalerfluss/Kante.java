@@ -7,16 +7,16 @@ package ch.kbw.maximalerfluss;
  * 
  * @author Alex Schaub
  */
-public class Line {
+public class Kante {
 	/**
 	 * Das ist der erste Knoten dieser Kante.
 	 */
-    private Point p1;
+    private Knoten p1;
     
     /**
      * Das ist der zweite Knoten dieser Kante.
      */
-    private Point p2;
+    private Knoten p2;
     
     /**
      * Das ist das Gewicht dieser Kante.
@@ -30,7 +30,7 @@ public class Line {
      * @param p2 Das ist der zweite Knote dieser Kante.
      * @param weight Das ist das Gewicht dieser Kante.
      */
-    public Line(Point p1, Point p2, int weight) {
+    public Kante(Knoten p1, Knoten p2, int weight) {
         this.p1 = p1;
         this.p2 = p2;
         this.weight = weight;
@@ -39,7 +39,7 @@ public class Line {
     /**
      * Das ist der Standardkonstruktor.
      */
-    public Line() {
+    public Kante() {
     }
 
     /**
@@ -47,7 +47,7 @@ public class Line {
      * 
      * @return Das ist der erste Knote dieser Kante.
      */
-    public Point getP1() {
+    public Knoten getP1() {
         return p1;
     }
 
@@ -56,7 +56,7 @@ public class Line {
      * 
      * @return Das ist der zweite Knote dieser Kante.
      */
-    public Point getP2() {
+    public Knoten getP2() {
         return p2;
     }
 
