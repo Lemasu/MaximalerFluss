@@ -78,7 +78,7 @@ public class Controller {
         
         try {           
         	// generiert den Graphen
-        	model.getGraph().graphGenerieren(ebenen_waagerecht, ebenen_senkrecht, gc);
+        	model.getGraph().graphGenerieren(Integer.parseInt(ebenen_waagerecht.getText()), Integer.parseInt(ebenen_senkrecht.getText()), gc);
         	
             // Show everything
             model.getGraph().showGraph(gc);

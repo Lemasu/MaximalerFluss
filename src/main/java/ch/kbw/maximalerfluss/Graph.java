@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
 /**
@@ -63,16 +62,13 @@ public class Graph {
 	/**
 	 * Diese Funktion ist fuer die Generierung des Graphen gedacht.
 	 * 
-	 * @param ebenen_waagerecht Das ist der Textfeld fuer die Anzahl der
-	 *                          waagerechten Ebenen im Graphen, welcher generiert
-	 *                          werden soll.
-	 * @param ebenen_senkrecht  Das ist der Textfeld fuer die Anzahl der senkrechten
-	 *                          Ebenen im Graphen, welcher generiert werden soll.
+	 * @param ebenen_waagerecht Dieser Integer beschreibt, wie viele waagerechte Ebenen generiert werden sollen.
+	 * @param ebenen_senkrecht  Dieser Integer beschreibt, wie viele senkrechte Ebenen generiert werden sollen.
 	 * @param gc                Das ist der GraphicsContext fuer den Canvas. Dieser
 	 *                          wird verwendet, um auf dem Canvas zeichnen zu
 	 *                          koennen.
 	 */
-	public void graphGenerieren(TextField ebenen_waagerecht, TextField ebenen_senkrecht, GraphicsContext gc) throws NumberFormatException {		
+	public void graphGenerieren(int ebenen_waagerecht, int ebenen_senkrecht, GraphicsContext gc) {		
 		// Initialize variables
 		this.r = 5;
 		int d = r << 1;
@@ -80,7 +76,8 @@ public class Graph {
 		knoten = new ArrayList<ArrayList<Knoten>>();
 		kanten = new ArrayList<Kante>();
 		
-		knotenGenerieren(Integer.parseInt(ebenen_waagerecht.getText()), Integer.parseInt(ebenen_senkrecht.getText()));
+		knotenGenerieren(ebenen_waagerecht, ebenen_senkrecht);
+		kantenGenerieren();
 	}
 
 	/**
@@ -124,13 +121,17 @@ public class Graph {
 		
 		// fuege den Start dem Graphen hinzu
 		knoten.add(new ArrayList<Knoten>());
-		knoten.get(0).add(new Knoten(0));
+		knoten.get(0).add(new Knoten(1, 1, 0));
 		
 		// generiert die einzelnen normalen Knoten
 		for (int i = 0; i < ebenen_waagerecht; i++) {
 			knoten.add(new ArrayList<Knoten>());
+			int waagerechte_position = i + 2;
+			int senkrechte_position = 0;
+			
 			for (int j = 0; j < ebenen_senkrecht; j++) {
-				knoten.get(i + 1).add(new Knoten(1));
+				senkrechte_position++;
+				knoten.get(i + 1).add(new Knoten(waagerechte_position, senkrechte_position, 1));
 				if (rand.nextInt(3) == 0) {
 					j += rand.nextInt(3);
 				}
@@ -139,7 +140,7 @@ public class Graph {
 		
 		// generiert den Zielknoten
 		knoten.add(new ArrayList<Knoten>());
-		knoten.get(knoten.size() - 1).add(new Knoten(2));
+		knoten.get(knoten.size() - 1).add(new Knoten(knoten.size(), 1, 2));
 		
 		// -----------------------------------------------------------------------------------------------------
 		// Dieser Abschnitt dient nur zum Testen.
@@ -147,14 +148,59 @@ public class Graph {
 		
 		System.out.println();
 		System.out.println("--------------------------------------------------------");
+		System.out.println("Knoten");
+		System.out.println("--------------------------------------------------------");
 		System.out.println();
 		
 		for (int i = 0; i < knoten.size(); i++) {
 			System.out.print((i + 1) + ". ArrayList: | ");
 			for (int j = 0; j < knoten.get(i).size(); j++) {
-				System.out.print("[Knoten " + (i + 1) + "." + (j + 1) + " gehoert zum Kategorie " + knoten.get(i).get(j).getKategorie() + "] | ");
+				System.out.print("[Knoten " + knoten.get(i).get(j).getId() + " gehoert zum Kategorie " + knoten.get(i).get(j).getKategorie() + "] | ");
 			}
 			System.out.println();
+		}
+		
+		System.out.println();
+		System.out.println("--------------------------------------------------------");
+		System.out.println();
+		
+		// -----------------------------------------------------------------------------------------------------
+	}
+	
+	/**
+	 * Mit dieser Methode werden die Kanten eines Graphen generiert.
+	 */
+	private void kantenGenerieren() {
+		// Zufallszahl fuer die Generierung
+		final Random rand = new Random();
+		
+		for (int i = 0; i < (knoten.size() - 1); i++) {
+			ArrayList<Knoten> ebene_1 = knoten.get(i);
+			ArrayList<Knoten> ebene_2 = knoten.get(i + 1);
+			
+			for (int j = 0; j < ebene_1.size(); j++) {
+				Knoten knoten_1 = ebene_1.get(j);
+				
+				for (int l = 0; l < ebene_2.size(); l++) {
+					Knoten knoten_2 = ebene_2.get(l);
+					
+					kanten.add(new Kante(knoten_1, knoten_2, (rand.nextInt(20) + 1)));
+				}
+			}
+		}
+		
+		// -----------------------------------------------------------------------------------------------------
+		// Dieser Abschnitt dient nur zum Testen.
+		// -----------------------------------------------------------------------------------------------------
+		
+		System.out.println();
+		System.out.println("--------------------------------------------------------");
+		System.out.println("Kanten");
+		System.out.println("--------------------------------------------------------");
+		System.out.println();
+		
+		for (Kante kante : kanten) {
+			System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = " + kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / Kapazitaet: " + kante.getKapazitaet() + "]");
 		}
 		
 		System.out.println();

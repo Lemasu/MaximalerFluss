@@ -11,70 +11,79 @@ public class Kante {
 	/**
 	 * Das ist der erste Knoten dieser Kante.
 	 */
-    private Knoten p1;
+    private final Knoten knoten_1;
     
     /**
      * Das ist der zweite Knoten dieser Kante.
      */
-    private Knoten p2;
+    private final Knoten knoten_2;
     
     /**
-     * Das ist das Gewicht dieser Kante.
+     * Das ist die Auslastung einer Kante.
      */
-    private int weight;
-
+    private int auslastung;
+    
     /**
-     * Das ist ein Konstruktor.
-     * 
-     * @param p1 Das ist der erste Knote dieser Kante.
-     * @param p2 Das ist der zweite Knote dieser Kante.
-     * @param weight Das ist das Gewicht dieser Kante.
+     * Das ist die Kapazitaet einer Kante.
      */
-    public Kante(Knoten p1, Knoten p2, int weight) {
-        this.p1 = p1;
-        this.p2 = p2;
-        this.weight = weight;
-    }
-
+    private final int kapazitaet;
+    
     /**
      * Das ist der Standardkonstruktor.
+     * 
+     * @param knoten_1 Das ist der erste Knote dieser Kante.
+     * @param knoten_2 Das ist der zweite Knote dieser Kante.
+     * @param kapazitaet Das ist die Kapazitaet dieser Kante.
      */
-    public Kante() {
+    public Kante(Knoten knoten_1, Knoten knoten_2, int kapazitaet) {
+        this.knoten_1 = knoten_1;
+        this.knoten_2 = knoten_2;
+        this.auslastung = 0;
+        this.kapazitaet = kapazitaet;
     }
 
     /**
-     * Das ist der Getter fuer den ersten Knoten dieser Kante.
+     * Das ist der Getter fuer die Auslastung einer Kante.
      * 
-     * @return Das ist der erste Knote dieser Kante.
+     * @return Das ist die Auslastung einer Kante.
      */
-    public Knoten getP1() {
-        return p1;
-    }
+	public int getAuslastung() {
+		return auslastung;
+	}
+
+	/**
+	 * Das ist der Setter fuer die Auslastung einer Kante.
+	 * 
+	 * @param auslastung Das ist die Auslastung einer Kante.
+	 */
+	public void setAuslastung(int auslastung) {
+		this.auslastung = auslastung;
+	}
 
     /**
-     * Das ist der Getter fuer den zweiten Knoten dieser Kante.
+     * Das ist der Getter fuer den ersten Knoten einer Kante.
      * 
-     * @return Das ist der zweite Knote dieser Kante.
+     * @return Das ist der erster Knoten einer Kante.
      */
-    public Knoten getP2() {
-        return p2;
-    }
+	public Knoten getKnoten_1() {
+		return knoten_1;
+	}
 
     /**
-     * Das ist der Getter fuer den Gewicht dieser Kante.
+     * Das ist der Getter fuer den zweiten Knoten einer Kante.
      * 
-     * @return Das ist das Gewicht dieser Kante.
+     * @return Das ist der zweiter Knoten einer Kante.
      */
-    public int getWeight() {
-        return weight;
-    }
+	public Knoten getKnoten_2() {
+		return knoten_2;
+	}
 
-    @Override
-    public String toString() {
-        return "Line{" +
-                "p1=" + p1 +
-                ", p2=" + p2 +
-                ", weight=" + weight +
-                '}';
-    }
+    /**
+     * Das ist der Getter fuer die Kapazitaet einer Kante.
+     * 
+     * @return Das ist die Kapazitaet einer Kante.
+     */
+	public int getKapazitaet() {
+		return kapazitaet;
+	}
 }
