@@ -8,11 +8,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.kbw.maximalerfluss.Controller">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.kbw.maximalerfluss.Controller">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
-   <Canvas fx:id="canvas" height="500.0" width="500.0" />
+   <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-border-color: blue;" VBox.vgrow="ALWAYS">
+      <children>
+         <Canvas fx:id="canvas" height="500.0" width="500.0" />
+      </children>
+   </HBox>
    <HBox alignment="CENTER_RIGHT">
       <Label text="Anzahl Ebenen waagerecht: " />
       <TextField fx:id="ebenen_waagerecht" />

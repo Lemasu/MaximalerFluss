@@ -67,11 +67,8 @@ public class Graph {
 	 *                          Ebenen generiert werden sollen.
 	 * @param ebenen_senkrecht  Dieser Integer beschreibt, wie viele senkrechte
 	 *                          Ebenen generiert werden sollen.
-	 * @param gc                Das ist der GraphicsContext fuer den Canvas. Dieser
-	 *                          wird verwendet, um auf dem Canvas zeichnen zu
-	 *                          koennen.
 	 */
-	public void graphGenerieren(int ebenen_waagerecht, int ebenen_senkrecht, GraphicsContext gc) {
+	public void graphGenerieren(int ebenen_waagerecht, int ebenen_senkrecht) {
 		// Initialize variables
 		this.r = 5;
 		int d = r << 1;
@@ -81,34 +78,6 @@ public class Graph {
 
 		knotenGenerieren(ebenen_waagerecht, ebenen_senkrecht);
 		kantenGenerieren();
-	}
-
-	/**
-	 * Diese Methode zeichnet den Graphen auf den Canvas.
-	 * 
-	 * @param gc Das ist der GraphicsContext fuer den Canvas. Dieser wird verwendet,
-	 *           um auf dem Canvas zeichnen zu koennen.
-	 */
-	public void showGraph(GraphicsContext gc) {
-//
-//		// set color of strokes in canvas
-//		gc.setStroke(Color.BLACK);
-//		for (int i = 0; i < kanten.length; i++) {
-//			double a = Math.atan2(kanten[i].getP1().getY() - kanten[i].getP2().getY(),
-//					kanten[i].getP1().getX() - kanten[i].getP2().getX());
-//			double a1 = a + Math.PI / curveAngle;
-//			double a2 = a - Math.PI / curveAngle;
-//			// length of pointing kanten
-//			int l = 20;
-//
-//			// draw normal arrows from knoten to knoten
-//			gc.strokeLine(kanten[i].getP1().getX() + r, kanten[i].getP1().getY() + r, kanten[i].getP2().getX() + r,
-//					kanten[i].getP2().getY() + r);
-//			gc.strokeLine(kanten[i].getP2().getX() + r, kanten[i].getP2().getY() + r,
-//					Math.cos(a1) * l + kanten[i].getP2().getX() + r, Math.sin(a1) * l + kanten[i].getP2().getY() + r);
-//			gc.strokeLine(kanten[i].getP2().getX() + r, kanten[i].getP2().getY() + r,
-//					Math.cos(a2) * l + kanten[i].getP2().getX() + r, Math.sin(a2) * l + kanten[i].getP2().getY() + r);
-//		}
 	}
 
 	/**
@@ -235,5 +204,23 @@ public class Graph {
 		System.out.println();
 
 		// -----------------------------------------------------------------------------------------------------
+	}
+
+	/**
+	 * Das ist der Getter fuer die Knoten des Graphen.
+	 * 
+	 * @return Das sind die Knoten des Graphen.
+	 */
+	public ArrayList<ArrayList<Knoten>> getKnoten() {
+		return knoten;
+	}
+
+	/**
+	 * Das ist der Getter fuer die Kanten des Graphen.
+	 * 
+	 * @return Das sind die Kanten des Graphen.
+	 */
+	public ArrayList<Kante> getKanten() {
+		return kanten;
 	}
 }
