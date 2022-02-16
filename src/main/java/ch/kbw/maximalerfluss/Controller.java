@@ -202,6 +202,6 @@ public class Controller {
 		// ueberschreibe den Kreis fuer den Start mit einem roten Kreis, in dessen Mitte ein grosses Z steht
 		gc.setFill(Color.RED);
 		gc.fillOval(x_positionen.get(x_positionen.size() - 1).get(0), y_positionen.get(y_positionen.size() - 1).get(0), kreisgroesse, kreisgroesse);
-		gc.strokeText("S", x_positionen.get(x_positionen.size() - 1).get(0) + 7, y_positionen.get(y_positionen.size() - 1).get(0) + 14);
+		gc.strokeText("Z", x_positionen.get(x_positionen.size() - 1).get(0) + 7, y_positionen.get(y_positionen.size() - 1).get(0) + 14);
 	}
 }
