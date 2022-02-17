@@ -229,10 +229,10 @@ public class Controller {
 			/*
 			 * Das ist die X-Position eines Knotens.
 			 * 
-			 * Das Minimum fuer die X-Position ist fuenf. Danach wird immer jeweils 50 zu
+			 * Das Minimum fuer die X-Position ist fuenf. Danach wird immer jeweils 150 zu
 			 * der letzten X-Position hinzuaddiert.
 			 */
-			int x_position = 5 + (50 * i);
+			int x_position = 5 + (150 * i);
 			/*
 			 * Das ist die Y-Position eines Knotens.
 			 * 
@@ -313,6 +313,9 @@ public class Controller {
 
 			// zeichne die Kante
 			gc.strokeLine(x_position_1, y_position_1, x_position_2, y_position_2);
+			
+			// gebe die Informationen der Kante auf dem Canvas aus
+			informationenZurKanteAusgeben(x_position_1, y_position_1, x_position_2, y_position_2, kante);
 		}
 	}
 
@@ -343,5 +346,42 @@ public class Controller {
 				kreisgroesse, kreisgroesse);
 		gc.strokeText("Z", x_positionen.get(x_positionen.size() - 1).get(0) + 7,
 				y_positionen.get(y_positionen.size() - 1).get(0) + 14);
+	}
+	
+	/**
+	 * Diese Methode gibt die Informationen zu einer Kante aus.
+	 * 
+	 * Diese Informationen sind: die Kapazität einer Kante und die Auslastung einer Kante.
+	 * 
+	 * @param x_position_1 Das ist die X-Position des ersten Knotens.
+	 * @param y_position_1 Das ist die Y-Position des ersten Knotens.
+	 * @param x_position_2 Das ist die X-Position des zweiten Knotens.
+	 * @param y_position_2 Das ist die Y-Position des zweiten Knotens.
+	 * @param kante Das ist die Kante, welche mit deren Informationen beschriftet werden soll.
+	 */
+	private void informationenZurKanteAusgeben(int x_position_1, int y_position_1, int x_position_2, int y_position_2, Kante kante) {
+		// Zuerst wird die Farbe fuer den Stroke, falls diese noch nicht auf Schwarz gesetzt wurde, auf Schwarz gesetzt, damit die Schrift nicht auf einmal in einer anderen Farbe erscheint.
+		if (gc.getStroke() != Color.BLACK) {
+			gc.setStroke(Color.BLACK);
+		}
+		
+		// Anschliessend werden die benoetigten Variablen initialisiert.
+		/*
+		 * Das ist die X-Position fuer die Informationen.
+		 * 
+		 * Es wird darauf geachtet, dass diese ungefaehr in der Mitte der Kante platziert ist.
+		 */
+		int x_position_informationen = x_position_1 + ((x_position_2 - x_position_1) / 2) - 16;
+		/*
+		 * Das ist die Y-Position fuer die Informationen.
+		 * 
+		 * Es wird darauf geachtet, dass diese ungefaehr in der Mitte der Kante platziert ist.
+		 */
+		int y_position_informationen = y_position_1 + ((y_position_2 - y_position_1) / 2) - 10;
+		// Das ist der String mit den Informationen.
+		String informationen = kante.getAuslastung() + " | " + kante.getKapazitaet();
+		
+		// Abschliessend werden die Informationen der Kante auf den Canvas geschrieben.
+		gc.strokeText(informationen, x_position_informationen, y_position_informationen);
 	}
 }
