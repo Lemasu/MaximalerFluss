@@ -1,11 +1,7 @@
 package ch.kbw.maximalerfluss;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 /**
  * Diese Klasse kuemmert sich um den Graphen.
@@ -18,19 +14,6 @@ import javafx.scene.paint.Color;
  */
 public class Graph {
 	/**
-	 * Dieser Variable wird fuer die Generierung und Darstellung des Graphen
-	 * verwendet.
-	 */
-	private int r;
-
-	/**
-	 * Dieser Variable bestimmt, wie Spitz die Pfeilspitzen sein werden.
-	 * 
-	 * Bigger = smaller angle
-	 */
-	private int curveAngle;
-
-	/**
 	 * Das sind die Knoten im Graphen.
 	 * 
 	 * Die einzelnen ArrayLists in dieser ArrayList bilden den Graphen ab und wird
@@ -42,22 +25,19 @@ public class Graph {
 	 * Das sind die Kanten im Graphen.
 	 */
 	private ArrayList<Kante> kanten;
+	
+	/**
+	 * Das sind die Kanten, welche den maximalen Fluss ermoeglichen.
+	 * 
+	 * Aktuell ist noch nicht klar, ob diese ArrayList wirklich in die Klasse Graph gehoert.
+	 */
+	private ArrayList<Kante> kanten_maximaler_fluss;
 
 	/**
 	 * Das ist der Standardkonstruktor.
 	 */
 	public Graph() {
 
-	}
-
-	/**
-	 * Das ist der Konstruktor mit dem Parameter fuer das curveAngle.
-	 * 
-	 * @param curveAngle Dieser Variable bestimmt, wie Spitz die Pfeilspitzen sein
-	 *                   werden.
-	 */
-	public Graph(int curveAngle) {
-		this.curveAngle = curveAngle;
 	}
 
 	/**
@@ -70,14 +50,41 @@ public class Graph {
 	 */
 	public void graphGenerieren(int ebenen_waagerecht, int ebenen_senkrecht) {
 		// Initialize variables
-		this.r = 5;
-		int d = r << 1;
-		boolean e;
 		knoten = new ArrayList<ArrayList<Knoten>>();
 		kanten = new ArrayList<Kante>();
 
 		knotenGenerieren(ebenen_waagerecht, ebenen_senkrecht);
 		kantenGenerieren();
+		
+		// -----------------------------------------------------------------------------------------------------
+		// Dieser Abschnitt dient nur zum Testen.
+		// -----------------------------------------------------------------------------------------------------
+
+		/*
+		 * Ich habe diesen Abschnitt nicht gross auf Bugs getestet.
+		 * Es scheint zu funktionieren.
+		 * Da dieser Abschnitt nur fuer Testzwecke erstellt wurde, habe ich
+		 * auf weitere Tests verzichtet.
+		 */
+		
+		kanten_maximaler_fluss = new ArrayList<Kante>();
+		
+		// Zufallszahl fuer die Generierung des "maximalen Flusses"
+		final Random rand = new Random();
+		
+		ArrayList<Kante> nicht_benutzte_kanten = new ArrayList<Kante>();
+		nicht_benutzte_kanten = (ArrayList) kanten.clone();
+		
+		int zahl = nicht_benutzte_kanten.size();
+		
+		for (int i = 0; i < zahl; i++) {
+			int zufallszahl = rand.nextInt(nicht_benutzte_kanten.size());
+			kanten_maximaler_fluss.add(nicht_benutzte_kanten.get(zufallszahl));
+			nicht_benutzte_kanten.remove(zufallszahl);
+			i += rand.nextInt(5);
+		}
+
+		// -----------------------------------------------------------------------------------------------------
 	}
 
 	/**
@@ -222,5 +229,14 @@ public class Graph {
 	 */
 	public ArrayList<Kante> getKanten() {
 		return kanten;
+	}
+
+	/**
+	 * Das ist der Getter fuer die Kanten des maximalen Flusses.
+	 * 
+	 * @return Das sind die Kanten des maximalen Flusses.
+	 */
+	public ArrayList<Kante> getKanten_maximaler_fluss() {
+		return kanten_maximaler_fluss;
 	}
 }
