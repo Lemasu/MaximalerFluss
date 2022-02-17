@@ -53,7 +53,10 @@ public class Graph {
 		knoten = new ArrayList<ArrayList<Knoten>>();
 		kanten = new ArrayList<Kante>();
 
+		// generiere die Knoten des Graphen
 		knotenGenerieren(ebenen_waagerecht, ebenen_senkrecht);
+		
+		// generiere die Kanten des Graphen
 		kantenGenerieren();
 		
 		// -----------------------------------------------------------------------------------------------------
@@ -104,14 +107,28 @@ public class Graph {
 		knoten.get(0).add(new Knoten(1, 1, 0));
 
 		// generiert die einzelnen normalen Knoten
+		// generiere zuerst die waagerechte Ebene
 		for (int i = 0; i < ebenen_waagerecht; i++) {
+			// fuege die waagerechte Ebene der ArrayList hinzu
 			knoten.add(new ArrayList<Knoten>());
+			
+			// initializiere die Variablen fuer die Generierung der ID des Knotens.
 			int waagerechte_position = i + 2;
 			int senkrechte_position = 0;
 
+			// fuege die einzelnen Knoten der ArrayList hinzu
 			for (int j = 0; j < ebenen_senkrecht; j++) {
+				// erhoehe die senkrechte Position, um damit spaeter die ID des Knotens zu generieren
 				senkrechte_position++;
+				
+				// erstelle den neuen Knoten
 				knoten.get(i + 1).add(new Knoten(waagerechte_position, senkrechte_position, 1));
+				
+				/*
+				 * entscheide zufaellig, wie stark j erhoeht wird
+				 * 
+				 * Der Grund, warum die Erhoehung zufaellig erfolgt, ist der, dass der Nutzer nur die maximale Menge der Knoten in eine waagerechte Ebene festlegen kann. Wie viele Knoten effektiv in einer waagerechte Ebene dann vorhanden sind, wird zufaellig festgelegt.
+				 */
 				if (rand.nextInt(3) == 0) {
 					j += rand.nextInt(3);
 				}
@@ -155,34 +172,66 @@ public class Graph {
 		// Zufallszahl fuer die Generierung
 		final Random rand = new Random();
 
+		// generiere zuerst die Kanten, welche direkt verbunden sind
 		for (int i = 0; i < (knoten.size() - 1); i++) {
+			// hole die waagerechte Ebene des ersten Knotens
 			ArrayList<Knoten> ebene_1 = knoten.get(i);
+			// hole die waagerechte Ebene des zweiten Knotens
 			ArrayList<Knoten> ebene_2 = knoten.get(i + 1);
 
+			// iteriere durch die Knoten der ersten waagerechten Ebene
 			for (int j = 0; j < ebene_1.size(); j++) {
+				// hole den aktuellen Knoten der ersten waagerechten Ebene
 				Knoten knoten_1 = ebene_1.get(j);
 
+				// iteriere durch die Knoten der zweiten waagerechten Ebene
 				for (int l = 0; l < ebene_2.size(); l++) {
+					// hole den aktuellen Knoten der zweiten waagerechten Ebene
 					Knoten knoten_2 = ebene_2.get(l);
 
+					// erstelle die Kante mit dem ersten Knoten und dem zweiten Knoten
 					kanten.add(new Kante(knoten_1, knoten_2, (rand.nextInt(20) + 1)));
 				}
 			}
 		}
+		
+		// generiere anschliessend die Knoten, welche nicht direkt verbunden sind
+		/*
+		 * iteriere durch alle waagerechte Ebenen
+		 * 
+		 * Nur die letzten beiden Ebenen werden nicht angeschaut.
+		 * Die vorletzte wird nicht angeschaut, da dieser auch so bereits direkt mit dem Ziel verbunden ist.
+		 * Die letzte wird nicht angeschaut, da nach diesem keine Knoten mehr kommen, mit dem dieser verbunden werden kann.
+		 */
 		for (int i = 0; i < (knoten.size() - 2); i++) {
+			// // hole die waagerechte Ebene des ersten Knotens
 			ArrayList<Knoten> ebene_1 = knoten.get(i);
 			
+			/*
+			 * hole anschliessend alle folgenden Ebenen
+			 * 
+			 * starte bei "i + 2", damit dieser die naechste direkte, waagerechte Ebene ueberspringt, da dieser bereits verbunden sind 
+			 */
 			for (int j = (i + 2); j < knoten.size(); j++) {
+				// hole die waagerechte Ebene des zweiten Knotens
 				ArrayList<Knoten> ebene_2 = knoten.get(j);
 				
+				// iteriere durch die Knoten der ersten waagerechten Ebene
 				for (int l = 0; l < ebene_1.size(); l++) {
+					// hole den aktuellen Knoten der ersten waagerechten Ebene
 					Knoten knoten_1 = ebene_1.get(l);
 
+					// iteriere durch die Knoten der zweiten waagerechten Ebene
 					for (int t = 0; t < ebene_2.size(); t++) {
+						// hole den aktuellen Knoten der zweiten waagerechten Ebene
 						Knoten knoten_2 = ebene_2.get(t);
+						
+						// erstelle die neue Kante
 						Kante kante = new Kante(knoten_1, knoten_2, (rand.nextInt(20) + 1));
 
+						// entscheide zufaellig, ob diese Kante in die ArrayList aufgenommen werden soll
 						if (rand.nextInt(25) == 1) {
+							// fuege die Kante der ArrayList hinzu
 							kanten.add(kante);
 						}
 					}
