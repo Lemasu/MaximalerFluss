@@ -195,49 +195,59 @@ public class Graph {
 			}
 		}
 		
-		// generiere anschliessend die Knoten, welche nicht direkt verbunden sind
+		// -----------------------------------------------------------------------------------------------------
 		/*
-		 * iteriere durch alle waagerechte Ebenen
+		 * Diesen Abschnitt habe ich auskommentiert, da dieser noch nicht ganz fehlerfrei funktioniert.
 		 * 
-		 * Nur die letzten beiden Ebenen werden nicht angeschaut.
-		 * Die vorletzte wird nicht angeschaut, da dieser auch so bereits direkt mit dem Ziel verbunden ist.
-		 * Die letzte wird nicht angeschaut, da nach diesem keine Knoten mehr kommen, mit dem dieser verbunden werden kann.
+		 * Dieser Abschnitt ist fuer die Grundfunktionalitaeten des Graphen nicht von Bedeutung.
 		 */
-		for (int i = 0; i < (knoten.size() - 2); i++) {
-			// // hole die waagerechte Ebene des ersten Knotens
-			ArrayList<Knoten> ebene_1 = knoten.get(i);
-			
-			/*
-			 * hole anschliessend alle folgenden Ebenen
-			 * 
-			 * starte bei "i + 2", damit dieser die naechste direkte, waagerechte Ebene ueberspringt, da dieser bereits verbunden sind 
-			 */
-			for (int j = (i + 2); j < knoten.size(); j++) {
-				// hole die waagerechte Ebene des zweiten Knotens
-				ArrayList<Knoten> ebene_2 = knoten.get(j);
-				
-				// iteriere durch die Knoten der ersten waagerechten Ebene
-				for (int l = 0; l < ebene_1.size(); l++) {
-					// hole den aktuellen Knoten der ersten waagerechten Ebene
-					Knoten knoten_1 = ebene_1.get(l);
-
-					// iteriere durch die Knoten der zweiten waagerechten Ebene
-					for (int t = 0; t < ebene_2.size(); t++) {
-						// hole den aktuellen Knoten der zweiten waagerechten Ebene
-						Knoten knoten_2 = ebene_2.get(t);
-						
-						// erstelle die neue Kante
-						Kante kante = new Kante(knoten_1, knoten_2, (rand.nextInt(20) + 1));
-
-						// entscheide zufaellig, ob diese Kante in die ArrayList aufgenommen werden soll
-						if (rand.nextInt(25) == 1) {
-							// fuege die Kante der ArrayList hinzu
-							kanten.add(kante);
-						}
-					}
-				}
-			}
-		}
+		// -----------------------------------------------------------------------------------------------------
+		
+//		// generiere anschliessend die Knoten, welche nicht direkt verbunden sind
+//		/*
+//		 * iteriere durch alle waagerechte Ebenen
+//		 * 
+//		 * Nur die letzten beiden Ebenen werden nicht angeschaut.
+//		 * Die vorletzte wird nicht angeschaut, da dieser auch so bereits direkt mit dem Ziel verbunden ist.
+//		 * Die letzte wird nicht angeschaut, da nach diesem keine Knoten mehr kommen, mit dem dieser verbunden werden kann.
+//		 */
+//		for (int i = 0; i < (knoten.size() - 2); i++) {
+//			// // hole die waagerechte Ebene des ersten Knotens
+//			ArrayList<Knoten> ebene_1 = knoten.get(i);
+//			
+//			/*
+//			 * hole anschliessend alle folgenden Ebenen
+//			 * 
+//			 * starte bei "i + 2", damit dieser die naechste direkte, waagerechte Ebene ueberspringt, da dieser bereits verbunden sind 
+//			 */
+//			for (int j = (i + 2); j < knoten.size(); j++) {
+//				// hole die waagerechte Ebene des zweiten Knotens
+//				ArrayList<Knoten> ebene_2 = knoten.get(j);
+//				
+//				// iteriere durch die Knoten der ersten waagerechten Ebene
+//				for (int l = 0; l < ebene_1.size(); l++) {
+//					// hole den aktuellen Knoten der ersten waagerechten Ebene
+//					Knoten knoten_1 = ebene_1.get(l);
+//
+//					// iteriere durch die Knoten der zweiten waagerechten Ebene
+//					for (int t = 0; t < ebene_2.size(); t++) {
+//						// hole den aktuellen Knoten der zweiten waagerechten Ebene
+//						Knoten knoten_2 = ebene_2.get(t);
+//						
+//						// erstelle die neue Kante
+//						Kante kante = new Kante(knoten_1, knoten_2, (rand.nextInt(20) + 1));
+//
+//						// entscheide zufaellig, ob diese Kante in die ArrayList aufgenommen werden soll
+//						if (rand.nextInt(25) == 1) {
+//							// fuege die Kante der ArrayList hinzu
+//							kanten.add(kante);
+//						}
+//					}
+//				}
+//			}
+//		}
+		
+		// -----------------------------------------------------------------------------------------------------
 
 		// -----------------------------------------------------------------------------------------------------
 		// Dieser Abschnitt dient nur zum Testen.
