@@ -29,7 +29,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			model = new Model(8);
+			model = new Model();
 			FXMLLoader myLoader = new FXMLLoader(getClass().getResource("View.fxml"));
 			Pane root = myLoader.load();
 			controller = (Controller) myLoader.getController();

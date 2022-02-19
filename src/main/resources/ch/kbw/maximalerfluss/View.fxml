@@ -4,22 +4,89 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.kbw.maximalerfluss.Controller">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.kbw.maximalerfluss.Controller">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
-   <Canvas fx:id="canvas" height="500.0" width="500.0" />
+   <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+      <children>
+         <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-border-color: blue;">
+            <children>
+               <Canvas fx:id="canvas" height="500.0" width="500.0" />
+            </children>
+         </HBox>
+         <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+            <children>
+               <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                  <children>
+                     <Button mnemonicParsing="false" onAction="#zoomIn" text="Zoom in">
+                        <HBox.margin>
+                           <Insets left="10.0" right="10.0" />
+                        </HBox.margin>
+                     </Button>
+                     <Button mnemonicParsing="false" onAction="#zoomOut" text="Zoom out">
+                        <HBox.margin>
+                           <Insets left="10.0" right="10.0" />
+                        </HBox.margin>
+                     </Button>
+                  </children>
+                  <VBox.margin>
+                     <Insets bottom="20.0" top="10.0" />
+                  </VBox.margin>
+               </HBox>
+               <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                  <VBox.margin>
+                     <Insets bottom="10.0" top="20.0" />
+                  </VBox.margin>
+                  <children>
+                     <Button mnemonicParsing="false" onAction="#graphNachLinksVerschieben" text="←">
+                        <HBox.margin>
+                           <Insets left="10.0" right="10.0" />
+                        </HBox.margin>
+                     </Button>
+                     <Button mnemonicParsing="false" onAction="#graphNachObenVerschieben" text="↑">
+                        <HBox.margin>
+                           <Insets left="10.0" right="10.0" />
+                        </HBox.margin>
+                     </Button>
+                     <Button mnemonicParsing="false" onAction="#graphNachUntenVerschieben" text="↓">
+                        <HBox.margin>
+                           <Insets left="10.0" right="10.0" />
+                        </HBox.margin>
+                     </Button>
+                     <Button mnemonicParsing="false" onAction="#graphNachRechtsVerschieben" text="→">
+                        <HBox.margin>
+                           <Insets left="10.0" right="10.0" />
+                        </HBox.margin>
+                     </Button>
+                  </children>
+               </HBox>
+            </children>
+         </VBox>
+         <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+            <children>
+               <ListView fx:id="informationen_kanten_liste" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+            </children>
+         </VBox>
+      </children>
+   </VBox>
    <HBox alignment="CENTER_RIGHT">
-      <Label text="Amount of points: " />
-      <TextField fx:id="pAmount" />
+      <Label text="Anzahl Ebenen waagerecht: " />
+      <TextField fx:id="ebenen_waagerecht" />
    </HBox>
    <HBox alignment="CENTER_RIGHT">
-      <Label text="Amount of lines: " />
-      <TextField fx:id="lAmount" />
+      <Label text="maximaler Anzahl Ebenen senkrecht: " />
+      <TextField fx:id="ebenen_senkrecht" />
+   </HBox>
+   <HBox alignment="CENTER_RIGHT" layoutX="30.0" layoutY="595.0">
+      <children>
+         <Label fx:id="info" textFill="RED" />
+      </children>
    </HBox>
    <HBox alignment="CENTER_RIGHT">
       <Button mnemonicParsing="false" onAction="#generate" text="generate" textAlignment="CENTER" />
