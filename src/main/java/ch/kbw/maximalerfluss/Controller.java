@@ -2,10 +2,13 @@ package ch.kbw.maximalerfluss;
 
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -37,12 +40,18 @@ public class Controller {
 	 * Das sind die Positionen der einzelnen Knoten in Y-Richtung des Graphen.
 	 */
 	private ArrayList<ArrayList<Integer>> y_positionen;
-	
-	
+
 	/**
 	 * Das sind die Kanten des Graphen.
 	 */
 	private ArrayList<Kante> kanten;
+	
+	/**
+	 * Das ist die Liste mit den Informationen von den Kanten.
+	 * 
+	 * Dieser Liste wird von der ListView benoetigt.
+	 */
+	private ObservableList<String> informationen_kanten;
 
 	/**
 	 * Das ist die Groesse der Kreise fuer die Knoten des Graphen.
@@ -70,7 +79,7 @@ public class Controller {
 	 * Das ist die X-Position des ganzen Graphen.
 	 */
 	private int graph_x_position;
-	
+
 	/**
 	 * Das ist die Y-Position des ganzen Graphen.
 	 */
@@ -107,6 +116,14 @@ public class Controller {
 	 */
 	@FXML
 	private Label info;
+	
+	/**
+	 * Das sind die Informationen zu den Kanten.
+	 * 
+	 * Wie eine ListView funktioniert, habe ich einem alten Projekt von Herr Rutschmann entnommen.
+	 */
+	@FXML
+	private ListView<String> informationen_kanten_liste;
 
 	/**
 	 * Diese Methode wird bei der Initalisierung dieses Controllers aufgerufen.
@@ -126,12 +143,18 @@ public class Controller {
 
 		// Der Zoom wird festgelegt.
 		zoom = 150;
-		
+
 		// Die X-Position des Graphen wird festgelegt.
 		graph_x_position = 5;
-		
+
 		// Die Y-Position des Graphen wird festgelegt.
 		graph_y_position = 0;
+		
+		// initialisiert die Liste mit den Informationen
+		informationen_kanten = FXCollections.observableArrayList();
+		
+		// setzte die Items in der Liste auf dem GUI auf die ObservableList, damit die Informationen der Kanten auf dem GUI ausgegeben werden
+		informationen_kanten_liste.setItems(informationen_kanten);
 	}
 
 	/**
@@ -194,7 +217,7 @@ public class Controller {
 		// verschiebe den Graphen nach links
 		graphVerschieben(-10, 0);
 	}
-	
+
 	/**
 	 * Mit dieser Methode kann der Graph nach oben verschoben werden.
 	 */
@@ -203,7 +226,7 @@ public class Controller {
 		// verschiebe den Graphen nach oben
 		graphVerschieben(0, -10);
 	}
-	
+
 	/**
 	 * Mit dieser Methode kann der Graph nach unten verschoben werden.
 	 */
@@ -212,7 +235,7 @@ public class Controller {
 		// verschiebe den Graphen nach unten
 		graphVerschieben(0, 10);
 	}
-	
+
 	/**
 	 * Mit dieser Methode kann der Graph nach rechts verschoben werden.
 	 */
@@ -221,7 +244,7 @@ public class Controller {
 		// verschiebe den Graphen nach rechts
 		graphVerschieben(10, 0);
 	}
-	
+
 	/**
 	 * Diese Methode zeichnet den Graphen auf den Canvas.
 	 * 
@@ -230,7 +253,10 @@ public class Controller {
 	private void graphZeichnen() {
 		// Clears canvas
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-	
+		
+		// leere die Liste mit den Informationen ueber die Kanten
+		informationen_kanten.clear();
+
 		// Erstelle die benoetigten ArrayLists.
 		// Das sind die Knoten des Graphen.
 		knoten = model.getGraph().getKnoten();
@@ -240,16 +266,16 @@ public class Controller {
 		y_positionen = new ArrayList<ArrayList<Integer>>();
 		// Das sind die Kanten des Graphen.
 		kanten = model.getGraph().getKanten();
-	
+
 		// zeichne die Knoten
 		knotenzeichnen(knoten, kreisgroesse);
-	
+
 		// zeichne die Kanten
-		kantenZeichnen(kanten, Color.BLACK);
-	
+		kantenZeichnen(kanten, Color.BLACK, true);
+
 		// zeichne den Startknoten und den Endknoten
 		startknotenZielknotenZeichnen(kreisgroesse);
-	
+
 		// ueberpruefe, ob der Boolean "graph_zeichnen_aufgerufen" schon auf true
 		// gesetzt wurde, wenn nicht, setzte auf true
 		if (!graph_zeichnen_aufgerufen) {
@@ -266,6 +292,9 @@ public class Controller {
 	private void graphMitMaximalerFlussZeichnen() {
 		// Clears canvas
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+		// leere die Liste mit den Informationen ueber die Kanten
+		informationen_kanten.clear();
 		
 		/*
 		 * Zuerst muss ueberprueft werden, ob die benoetigten ArrayLists bereits
@@ -297,16 +326,16 @@ public class Controller {
 		}
 
 		// zeichne alle Kanten zuerst
-		kantenZeichnen(kanten, Color.BLACK);
+		kantenZeichnen(kanten, Color.BLACK, true);
 
 		// zeichne anschliessend die Kanten des maximalen Flusses
-		kantenZeichnen(kanten_maximaler_fluss, Color.BLUE);
+		kantenZeichnen(kanten_maximaler_fluss, Color.BLUE, false);
 
 		// Das sind die Positionen der einzelnen Knoten in X-Richtung des Graphen.
 		x_positionen = new ArrayList<ArrayList<Integer>>();
 		// Das sind die Positionen der einzelnen Knoten in Y-Richtung des Graphen.
 		y_positionen = new ArrayList<ArrayList<Integer>>();
-		
+
 		/*
 		 * zeichne dann die Knoten, damit diese ueber den Kanten liegt
 		 * 
@@ -325,13 +354,13 @@ public class Controller {
 			graph_mit_maximaler_fluss_zeichnen_aufgerufen = true;
 		}
 	}
-	
+
 	/**
 	 * Diese Methode zeichnet alle Knoten des Graphen.
 	 * 
-	 * @param knoten             Das sind alle Knoten des Graphen.
-	 * @param kreisgroesse       Das ist die Groesse der Kreise fuer die Knoten des
-	 *                           Graphen.
+	 * @param knoten       Das sind alle Knoten des Graphen.
+	 * @param kreisgroesse Das ist die Groesse der Kreise fuer die Knoten des
+	 *                     Graphen.
 	 */
 	private void knotenzeichnen(ArrayList<ArrayList<Knoten>> knoten, int kreisgroesse) {
 		// setzt die Farbe fuer Fill auf Schwarz
@@ -345,20 +374,23 @@ public class Controller {
 			int x_position = graph_x_position + (zoom * i);
 			// Das ist die Y-Position eines Knotens.
 			int y_position = 400;
-						
+
 			/*
 			 * Das die Groesse eines Zaehlschrittes fuer die Y-Position.
 			 * 
 			 * Die Groesse eines Schrittes haengt von der Laenge einer waagerechte Ebene ab.
 			 */
 			int y_position_zaehlschritte = y_position / (knoten.get(i).size() + 1);
-			
+
 			/*
 			 * Passe die Y-Position der Position des Graphen an.
 			 * 
-			 * Die Anpassung muss ausserhalb der for-Schleife erfolgen, damit die Anpassung nicht permanent erfolgt.
+			 * Die Anpassung muss ausserhalb der for-Schleife erfolgen, damit die Anpassung
+			 * nicht permanent erfolgt.
 			 * 
-			 * Die Anpassung muss aber nach der Berechnung von der Groesse der Zaehlschritte erfolgen, damit die Groesse der Zaehlschritte nicht von der Verschiebung des Graphen beeintraechtigt wird.
+			 * Die Anpassung muss aber nach der Berechnung von der Groesse der Zaehlschritte
+			 * erfolgen, damit die Groesse der Zaehlschritte nicht von der Verschiebung des
+			 * Graphen beeintraechtigt wird.
 			 */
 			y_position += graph_y_position;
 
@@ -373,10 +405,10 @@ public class Controller {
 				 * richtige Groesse hat.
 				 */
 				y_position -= y_position_zaehlschritte;
-				
+
 				// zeichne den Knoten
 				gc.fillOval(x_position, y_position, kreisgroesse, kreisgroesse);
-				
+
 				// speichere die Position des Knotens ab
 				x_positionen.get(x_positionen.size() - 1).add(x_position);
 				y_positionen.get(y_positionen.size() - 1).add(y_position);
@@ -390,11 +422,12 @@ public class Controller {
 	 * 
 	 * @param kanten Das sind die Kanten, welche gezeichnet werden sollen.
 	 * @param farbe  Das ist die Farbe, welche die Kanten besitzen sollen.
+	 * @param informationen_speichern Dieser Boolean sagt, ob die Informationen zu der gezeichnete Kante gespeichert werden soll.
 	 */
-	private void kantenZeichnen(ArrayList<Kante> kanten, Paint farbe) {
+	private void kantenZeichnen(ArrayList<Kante> kanten, Paint farbe, boolean informationen_speichern) {
 		// setzt die Farbe vom Stroke auf die gewuenschte Farbe
 		gc.setStroke(farbe);
-
+		
 		// Schleife, um die einzelnen Kanten zu zeichnen
 		for (Kante kante : kanten) {
 			/*
@@ -429,9 +462,15 @@ public class Controller {
 
 			// zeichne die Kante
 			gc.strokeLine(x_position_1, y_position_1, x_position_2, y_position_2);
-
-			// gebe die Informationen der Kante auf dem Canvas aus
-			informationenZurKanteAusgeben(x_position_1, y_position_1, x_position_2, y_position_2, kante);
+			
+			/*
+			 * Zuerst wird ueberprueft, ob die Informationen zu dieser Kante gespeichert werden soll.
+			 * 
+			 * Wenn die Informationen zu dieser Kante gespeichert werden soll, werden die Informationen in der ObservableList gespeichert.
+			 */
+			if (informationen_speichern) {
+				informationen_kanten.add("Kante von " + kante.getKnoten_1().getId() + " nach " + kante.getKnoten_2().getId() + ": " + kante.getAuslastung() + " | " + kante.getKapazitaet());
+			}
 		}
 	}
 
@@ -463,51 +502,7 @@ public class Controller {
 		gc.strokeText("Z", x_positionen.get(x_positionen.size() - 1).get(0) + 7,
 				y_positionen.get(y_positionen.size() - 1).get(0) + 14);
 	}
-
-	/**
-	 * Diese Methode gibt die Informationen zu einer Kante aus.
-	 * 
-	 * Diese Informationen sind: die Kapazität einer Kante und die Auslastung einer
-	 * Kante.
-	 * 
-	 * @param x_position_1 Das ist die X-Position des ersten Knotens.
-	 * @param y_position_1 Das ist die Y-Position des ersten Knotens.
-	 * @param x_position_2 Das ist die X-Position des zweiten Knotens.
-	 * @param y_position_2 Das ist die Y-Position des zweiten Knotens.
-	 * @param kante        Das ist die Kante, welche mit deren Informationen
-	 *                     beschriftet werden soll.
-	 */
-	private void informationenZurKanteAusgeben(int x_position_1, int y_position_1, int x_position_2, int y_position_2,
-			Kante kante) {
-		// Zuerst wird die Farbe fuer den Stroke, falls diese noch nicht auf Schwarz
-		// gesetzt wurde, auf Schwarz gesetzt, damit die Schrift nicht auf einmal in
-		// einer anderen Farbe erscheint.
-		if (gc.getStroke() != Color.BLACK) {
-			gc.setStroke(Color.BLACK);
-		}
-
-		// Anschliessend werden die benoetigten Variablen initialisiert.
-		/*
-		 * Das ist die X-Position fuer die Informationen.
-		 * 
-		 * Es wird darauf geachtet, dass diese ungefaehr in der Mitte der Kante
-		 * platziert ist.
-		 */
-		int x_position_informationen = x_position_1 + ((x_position_2 - x_position_1) / 2) - 16;
-		/*
-		 * Das ist die Y-Position fuer die Informationen.
-		 * 
-		 * Es wird darauf geachtet, dass diese ungefaehr in der Mitte der Kante
-		 * platziert ist.
-		 */
-		int y_position_informationen = y_position_1 + ((y_position_2 - y_position_1) / 2) - 10;
-		// Das ist der String mit den Informationen.
-		String informationen = kante.getAuslastung() + " | " + kante.getKapazitaet();
-
-		// Abschliessend werden die Informationen der Kante auf den Canvas geschrieben.
-		gc.strokeText(informationen, x_position_informationen, y_position_informationen);
-	}
-
+	
 	/**
 	 * Mit diese Methode kann im Canvas gezoomt werden.
 	 * 
@@ -516,43 +511,48 @@ public class Controller {
 	 */
 	private void zoom(int zoomstaerke) {
 		/*
-		 * Zuerst wird ueberprueft, ob die Zoomstraeke auf einen Wert kleiner als 100 verkleinert werden soll.
+		 * Zuerst wird ueberprueft, ob die Zoomstraeke auf einen Wert kleiner als 100
+		 * verkleinert werden soll.
 		 * 
 		 * Die Zoomstaerke darf nicht auf einen Wert kleiner als 100 verkleinert werden.
 		 * 
-		 * Wenn die Zoomstaerke auf einen Wert kleiner als 100 verkleinert werden soll, wird diese Methode abgebrochen.
+		 * Wenn die Zoomstaerke auf einen Wert kleiner als 100 verkleinert werden soll,
+		 * wird diese Methode abgebrochen.
 		 */
 		if ((zoom + zoomstaerke) <= 100) {
 			System.err.println("Die Zoomstraeke kann nicht kleiner als 100 sein.");
 			return;
 		}
-		
+
 		// setzte die Zoomgroesse auf die aktuelle Zoomgroesse
 		zoom += zoomstaerke;
 
 		// zeichne den Graphen neu auf
 		graphNeuZeichnen();
 	}
-	
+
 	/**
 	 * Mit dieser Methode kann der Graph verschoben werden.
 	 * 
-	 * @param veraenderung_x_position Das ist die Veraenderung der X-Position des Graphen.
-	 * @param veraenderung_y_position Das ist die Veraenderung der Y-Position des Graphen.
+	 * @param veraenderung_x_position Das ist die Veraenderung der X-Position des
+	 *                                Graphen.
+	 * @param veraenderung_y_position Das ist die Veraenderung der Y-Position des
+	 *                                Graphen.
 	 */
 	private void graphVerschieben(int veraenderung_x_position, int veraenderung_y_position) {
 		// passe die Position des Graphen an
 		graph_x_position += veraenderung_x_position;
 		graph_y_position += veraenderung_y_position;
-		
+
 		// zeichne den Graphen neu auf
 		graphNeuZeichnen();
 	}
-	
+
 	/**
 	 * Mit dieser Methode kann der Graph neu aufgezeichnet werden.
 	 * 
-	 * Diese Methode achtet darauf, ob der maximaler Fluss bereits einmal aufgezeichnet wurde und zeichnet den maximalen Fluss in dem Fall erneut auf.
+	 * Diese Methode achtet darauf, ob der maximaler Fluss bereits einmal
+	 * aufgezeichnet wurde und zeichnet den maximalen Fluss in dem Fall erneut auf.
 	 */
 	private void graphNeuZeichnen() {
 		// zeichne zuerst den Graphen ganz normal auf
