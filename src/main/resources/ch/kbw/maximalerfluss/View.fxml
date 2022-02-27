@@ -76,12 +76,12 @@
       </children>
    </VBox>
    <HBox alignment="CENTER_RIGHT">
-      <Label text="Anzahl Ebenen waagerecht: " />
-      <TextField fx:id="ebenen_waagerecht" />
+      <Label text="Anzahl Zeilen: " />
+      <TextField fx:id="anzahl_zeilen" />
    </HBox>
    <HBox alignment="CENTER_RIGHT">
-      <Label text="maximaler Anzahl Ebenen senkrecht: " />
-      <TextField fx:id="ebenen_senkrecht" />
+      <Label text="Anzahl Spalten: " />
+      <TextField fx:id="anzahl_spalten" />
    </HBox>
    <HBox alignment="CENTER_RIGHT" layoutX="30.0" layoutY="595.0">
       <children>

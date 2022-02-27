@@ -98,18 +98,16 @@ public class Controller {
 	private GraphicsContext gc;
 
 	/**
-	 * Das ist der Textfeld fuer die Anzahl der waagerechten Ebenen im Graphen,
-	 * welcher generiert werden soll.
+	 * Das ist der Textfeld fuer die Anzahl der Zeilen im Graphen, welcher generiert werden soll.
 	 */
 	@FXML
-	private TextField ebenen_waagerecht;
+	private TextField anzahl_zeilen;
 
 	/**
-	 * Das ist der Textfeld fuer die Anzahl der senkrechten Ebenen im Graphen,
-	 * welcher generiert werden soll.
+	 * Das ist der Textfeld fuer die Anzahl der Spalten im Graphen, welcher generiert werden soll.
 	 */
 	@FXML
-	private TextField ebenen_senkrecht;
+	private TextField anzahl_spalten;
 
 	/**
 	 * Dieses Label dient dazu, dem Nutzer Informationen zu uebermitteln.
@@ -173,8 +171,8 @@ public class Controller {
 	public void generate() {
 		try {
 			// generiert den Graphen
-			model.getGraph().graphGenerieren(Integer.parseInt(ebenen_waagerecht.getText()),
-					Integer.parseInt(ebenen_senkrecht.getText()));
+			model.getGraph().graphGenerieren(Integer.parseInt(anzahl_zeilen.getText()),
+					Integer.parseInt(anzahl_spalten.getText()));
 		} catch (NumberFormatException e) {
 			info.setText("Bitte geben Sie nur Zahlen ein.");
 			return;
