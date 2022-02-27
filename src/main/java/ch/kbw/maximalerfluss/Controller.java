@@ -169,15 +169,44 @@ public class Controller {
 	 */
 	@FXML
 	public void generate() {
+		// initialisiere die Zeilen und Spalten des Graphen
+		int zeilen = 0;
+		int spalten = 0;
+		
+		// ueberpruefe, ob nur Zahlen eingegeben wurde und setzte die Zeilen und Spalten auf die Inhalte der Textfelder
 		try {
-			// generiert den Graphen
-			model.getGraph().graphGenerieren(Integer.parseInt(anzahl_zeilen.getText()),
-					Integer.parseInt(anzahl_spalten.getText()));
+			zeilen = Integer.parseInt(anzahl_zeilen.getText());
+			spalten = Integer.parseInt(anzahl_spalten.getText());
 		} catch (NumberFormatException e) {
+			// falls nicht nur Zahlen eingegeben wurde, gebe eine entsprechende Meldung aus
 			info.setText("Bitte geben Sie nur Zahlen ein.");
+			
+			// breche diese Methode ab, da nicht nur Zahlen fuer die Generierung uebergeben wurde
 			return;
 		}
-
+		
+		/*
+		 * ueberpruefe, ob einer der folgenden Bedingungen erfuellt sind:
+		 * - Zeilen > 8
+		 * - Spalten > 8
+		 * - Zeilen = 1 und spalten = 1
+		 * - Zeilen < 1
+		 * - Spalten < 1
+		 * 
+		 * Falls einer der obigen Bedingungen erfuellt sind, dann wird eine Meldung ausgegeben und diese Methode abgebrochen.
+		 * Die Methode wird in diesem Fall abgebrochen, da die Matrix dann entweder zu gross wird oder gar keinen Sinn machen wird.
+		 */
+		if (zeilen > 8 || spalten > 8 || (zeilen == 1 && spalten == 1) || zeilen < 1 || spalten < 1) {
+			// falls eine der obigen Bedingungen zutrifft, wird dem Benutzer diese Meldung gezeigt.
+			info.setText("Bitte achten Sie darauf, dass die Anzahl Zeilen und Spalten nicht grösser als 8 ist, dass entweder die Anzahl Zeilen oder die Anzahl Spalten grösser als 1 ist und, dass die Anzahl Zeilen und Spalten nicht kleiner als 1 ist.");
+			
+			// breche die Methode ab, da keine sinnvolle Matrix mit den gegebenen Zahlen generiert werden kann
+			return;
+		}
+		
+		// generiert den Graphen
+		model.getGraph().graphGenerieren(zeilen, spalten);
+		
 		// Graph zeichnen
 		graphZeichnen();
 
