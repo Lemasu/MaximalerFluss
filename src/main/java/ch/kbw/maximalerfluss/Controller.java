@@ -278,6 +278,9 @@ public class Controller {
 	 * @param graph_neu_zeichnen
 	 */
 	private void graphZeichnen() {
+		// Die Infos werden geleert, da jetzt wieder ein neuer Graph generiert wird.
+		info.setText("");
+		
 		// Clears canvas
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
