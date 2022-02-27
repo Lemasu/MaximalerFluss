@@ -29,12 +29,12 @@ public class Knoten {
 	/**
 	 * Das ist der Standardkonstruktor.
 	 * 
-	 * @param waagerechte_position Das ist die waagerechte Position dieses Knotens.
-	 * @param senkrechte_position Das ist die senkrechte Position dieses Knotens.
+	 * @param waagerechte_position Das ist die Zeile dieses Knotens.
+	 * @param senkrechte_position Das ist die Spalte dieses Knotens.
 	 * @param kategorie Das ist die Kategorie dieses Knotens.
 	 */
-	public Knoten(int waagerechte_position, int senkrechte_position, int kategorie) {
-		this.id = waagerechte_position + "." + senkrechte_position;
+	public Knoten(int zeile, int spalte, int kategorie) {
+		this.id = zeile + "." + spalte;
 		this.kategorie = kategorie;
 	}
 	

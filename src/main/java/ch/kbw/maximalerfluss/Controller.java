@@ -29,7 +29,7 @@ public class Controller {
 	/**
 	 * Das sind die Knoten des Graphen.
 	 */
-	private ArrayList<ArrayList<Knoten>> knoten;
+	private Knoten[][] knoten;
 
 	/**
 	 * Das sind die Positionen der einzelnen Knoten in X-Richtung des Graphen.
@@ -268,7 +268,7 @@ public class Controller {
 		kanten = model.getGraph().getKanten();
 
 		// zeichne die Knoten
-		knotenzeichnen(knoten, kreisgroesse);
+		knotenZeichnen(knoten, kreisgroesse);
 
 		// zeichne die Kanten
 		kantenZeichnen(kanten, Color.BLACK, true);
@@ -342,7 +342,7 @@ public class Controller {
 		 * Beim normalen Graphen macht es nichts die Knoten zuerst zu zeichnen, da alle
 		 * Kanten schwarz sind.
 		 */
-		knotenzeichnen(knoten, kreisgroesse);
+		knotenZeichnen(knoten, kreisgroesse);
 
 		// zeichne zum Schluss den Startknoten und den Endknoten ueber deren normalen
 		// Knoten
@@ -362,12 +362,12 @@ public class Controller {
 	 * @param kreisgroesse Das ist die Groesse der Kreise fuer die Knoten des
 	 *                     Graphen.
 	 */
-	private void knotenzeichnen(ArrayList<ArrayList<Knoten>> knoten, int kreisgroesse) {
+	private void knotenZeichnen(Knoten[][] knoten, int kreisgroesse) {
 		// setzt die Farbe fuer Fill auf Schwarz
 		gc.setFill(Color.BLACK);
 
 		// Diese Schleife zeichnet die Knoten.
-		for (int i = 0; i < knoten.size(); i++) {
+		for (int i = 0; i < knoten.length; i++) {
 			// initialisiere die benoetigten Variablen
 
 			// Das ist die X-Position eines Knotens.
@@ -380,7 +380,7 @@ public class Controller {
 			 * 
 			 * Die Groesse eines Schrittes haengt von der Laenge einer waagerechte Ebene ab.
 			 */
-			int y_position_zaehlschritte = y_position / (knoten.get(i).size() + 1);
+			int y_position_zaehlschritte = y_position / (knoten[i].length + 1);
 
 			/*
 			 * Passe die Y-Position der Position des Graphen an.
@@ -399,7 +399,7 @@ public class Controller {
 			y_positionen.add(new ArrayList<Integer>());
 
 			// Schleife, um die einzelnen Knoten einer waagerechte Ebene zu zeichnen
-			for (int j = 0; j < knoten.get(i).size(); j++) {
+			for (int j = 0; j < knoten[i].length; j++) {
 				/*
 				 * Ziehe einen Zaehlschritt von der Y-Position ab, damit die Y-Position die
 				 * richtige Groesse hat.

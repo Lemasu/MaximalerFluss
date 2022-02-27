@@ -19,7 +19,7 @@ public class Graph {
 	 * Die einzelnen ArrayLists in dieser ArrayList bilden den Graphen ab und wird
 	 * von links nach rechts gelesen.
 	 */
-	private ArrayList<ArrayList<Knoten>> knoten;
+	private Knoten[][] knoten;
 
 	/**
 	 * Das sind die Kanten im Graphen.
@@ -43,18 +43,18 @@ public class Graph {
 	/**
 	 * Diese Funktion ist fuer die Generierung des Graphen gedacht.
 	 * 
-	 * @param ebenen_waagerecht Dieser Integer beschreibt, wie viele waagerechte
-	 *                          Ebenen generiert werden sollen.
-	 * @param ebenen_senkrecht  Dieser Integer beschreibt, wie viele senkrechte
-	 *                          Ebenen generiert werden sollen.
+	 * Die Knoten des Graphen werden im Form einer Matrix generiert.
+	 * 
+	 * @param zeilen Das ist die Anzahl der Zeilen des Graphen.
+	 * @param spalten Das ist die Anzahl der Spalten des Graphen.
 	 */
-	public void graphGenerieren(int ebenen_waagerecht, int ebenen_senkrecht) {
+	public void graphGenerieren(int zeilen, int spalten) {
 		// Initialize variables
-		knoten = new ArrayList<ArrayList<Knoten>>();
+		knoten = new Knoten[zeilen][spalten];
 		kanten = new ArrayList<Kante>();
 
 		// generiere die Knoten des Graphen
-		knotenGenerieren(ebenen_waagerecht, ebenen_senkrecht);
+		knotenGenerieren(zeilen, spalten);
 		
 		// generiere die Kanten des Graphen
 		kantenGenerieren();
@@ -93,51 +93,28 @@ public class Graph {
 	/**
 	 * Diese Methode generiert die einzelnen Knoten des Graphen.
 	 * 
-	 * @param ebenen_waagerecht Dieser Integer beschreibt, wie viele waagerechte
-	 *                          Ebenen generiert werden sollen.
-	 * @param ebenen_senkrecht  Dieser Integer beschreibt, wie viele senkrechte
-	 *                          Ebenen maximal generiert werden sollen.
+	 * @param zeilen Das ist die Anzahl der Zeilen des Graphen.
+	 * @param spalten Das ist die Anzahl der Spalten des Graphen.
 	 */
-	private void knotenGenerieren(int ebenen_waagerecht, int ebenen_senkrecht) {
+	private void knotenGenerieren(int zeilen, int spalten) {
 		// Zufallszahl fuer die Generierung
 		final Random rand = new Random();
 
-		// fuege den Start dem Graphen hinzu
-		knoten.add(new ArrayList<Knoten>());
-		knoten.get(0).add(new Knoten(1, 1, 0));
-
 		// generiert die einzelnen normalen Knoten
-		// generiere zuerst die waagerechte Ebene
-		for (int i = 0; i < ebenen_waagerecht; i++) {
-			// fuege die waagerechte Ebene der ArrayList hinzu
-			knoten.add(new ArrayList<Knoten>());
-			
+		for (int i = 0; i < zeilen; i++) {
 			// initializiere die Variablen fuer die Generierung der ID des Knotens.
-			int waagerechte_position = i + 2;
-			int senkrechte_position = 0;
+			int zeile_fuer_id = i + 1;
+			int spalte_fuer_id = 0;
 
 			// fuege die einzelnen Knoten der ArrayList hinzu
-			for (int j = 0; j < ebenen_senkrecht; j++) {
-				// erhoehe die senkrechte Position, um damit spaeter die ID des Knotens zu generieren
-				senkrechte_position++;
+			for (int j = 0; j < spalten; j++) {
+				// erhoehe den Teil fuer die Spalte fuer die ID, um damit spaeter die ID des Knotens zu generieren
+				spalte_fuer_id++;
 				
 				// erstelle den neuen Knoten
-				knoten.get(i + 1).add(new Knoten(waagerechte_position, senkrechte_position, 1));
-				
-				/*
-				 * entscheide zufaellig, wie stark j erhoeht wird
-				 * 
-				 * Der Grund, warum die Erhoehung zufaellig erfolgt, ist der, dass der Nutzer nur die maximale Menge der Knoten in eine waagerechte Ebene festlegen kann. Wie viele Knoten effektiv in einer waagerechte Ebene dann vorhanden sind, wird zufaellig festgelegt.
-				 */
-				if (rand.nextInt(3) == 0) {
-					j += rand.nextInt(3);
-				}
+				knoten[i][j] = new Knoten(zeile_fuer_id, spalte_fuer_id, 1);
 			}
 		}
-
-		// generiert den Zielknoten
-		knoten.add(new ArrayList<Knoten>());
-		knoten.get(knoten.size() - 1).add(new Knoten(knoten.size(), 1, 2));
 
 		// -----------------------------------------------------------------------------------------------------
 		// Dieser Abschnitt dient nur zum Testen.
@@ -149,11 +126,11 @@ public class Graph {
 		System.out.println("--------------------------------------------------------");
 		System.out.println();
 
-		for (int i = 0; i < knoten.size(); i++) {
+		for (int i = 0; i < knoten.length; i++) {
 			System.out.print((i + 1) + ". ArrayList: | ");
-			for (int j = 0; j < knoten.get(i).size(); j++) {
-				System.out.print("[Knoten " + knoten.get(i).get(j).getId() + " gehoert zum Kategorie "
-						+ knoten.get(i).get(j).getKategorie() + "] | ");
+			for (int j = 0; j < knoten[i].length; j++) {
+				System.out.print("[Knoten " + knoten[i][j].getId() + " gehoert zum Kategorie "
+						+ knoten[i][j].getKategorie() + "] | ");
 			}
 			System.out.println();
 		}
@@ -173,21 +150,16 @@ public class Graph {
 		final Random rand = new Random();
 
 		// generiere zuerst die Kanten, welche direkt verbunden sind
-		for (int i = 0; i < (knoten.size() - 1); i++) {
-			// hole die waagerechte Ebene des ersten Knotens
-			ArrayList<Knoten> ebene_1 = knoten.get(i);
-			// hole die waagerechte Ebene des zweiten Knotens
-			ArrayList<Knoten> ebene_2 = knoten.get(i + 1);
+		for (int i = 0; i < (knoten.length - 1); i++) {
+			// iteriere durch die Knoten der ersten Zeile
+			for (int j = 0; j < knoten[i].length; j++) {
+				// hole den aktuellen Knoten der ersten Spalte
+				Knoten knoten_1 = knoten[i][j];
 
-			// iteriere durch die Knoten der ersten waagerechten Ebene
-			for (int j = 0; j < ebene_1.size(); j++) {
-				// hole den aktuellen Knoten der ersten waagerechten Ebene
-				Knoten knoten_1 = ebene_1.get(j);
-
-				// iteriere durch die Knoten der zweiten waagerechten Ebene
-				for (int l = 0; l < ebene_2.size(); l++) {
-					// hole den aktuellen Knoten der zweiten waagerechten Ebene
-					Knoten knoten_2 = ebene_2.get(l);
+				// iteriere durch die Knoten der zweiten Spalte
+				for (int l = 0; l < knoten[i + 1].length; l++) {
+					// hole den aktuellen Knoten der zweiten Spalte
+					Knoten knoten_2 = knoten[i + 1][l];
 
 					// erstelle die Kante mit dem ersten Knoten und dem zweiten Knoten
 					kanten.add(new Kante(knoten_1, knoten_2, (rand.nextInt(20) + 1)));
@@ -271,16 +243,7 @@ public class Graph {
 
 		// -----------------------------------------------------------------------------------------------------
 	}
-
-	/**
-	 * Das ist der Getter fuer die Knoten des Graphen.
-	 * 
-	 * @return Das sind die Knoten des Graphen.
-	 */
-	public ArrayList<ArrayList<Knoten>> getKnoten() {
-		return knoten;
-	}
-
+	
 	/**
 	 * Das ist der Getter fuer die Kanten des Graphen.
 	 * 
@@ -288,6 +251,15 @@ public class Graph {
 	 */
 	public ArrayList<Kante> getKanten() {
 		return kanten;
+	}
+
+	/**
+	 * Das ist der Getter fuer die Knoten des Graphen.
+	 * 
+	 * @return Das sind die Knoten des Graphen.
+	 */
+	public Knoten[][] getKnoten() {
+		return knoten;
 	}
 
 	/**
