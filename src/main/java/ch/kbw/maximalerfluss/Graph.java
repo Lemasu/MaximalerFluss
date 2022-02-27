@@ -25,11 +25,12 @@ public class Graph {
 	 * Das sind die Kanten im Graphen.
 	 */
 	private ArrayList<Kante> kanten;
-	
+
 	/**
 	 * Das sind die Kanten, welche den maximalen Fluss ermoeglichen.
 	 * 
-	 * Aktuell ist noch nicht klar, ob diese ArrayList wirklich in die Klasse Graph gehoert.
+	 * Aktuell ist noch nicht klar, ob diese ArrayList wirklich in die Klasse Graph
+	 * gehoert.
 	 */
 	private ArrayList<Kante> kanten_maximaler_fluss;
 
@@ -45,7 +46,7 @@ public class Graph {
 	 * 
 	 * Die Knoten des Graphen werden im Form einer Matrix generiert.
 	 * 
-	 * @param zeilen Das ist die Anzahl der Zeilen des Graphen.
+	 * @param zeilen  Das ist die Anzahl der Zeilen des Graphen.
 	 * @param spalten Das ist die Anzahl der Spalten des Graphen.
 	 */
 	public void graphGenerieren(int zeilen, int spalten) {
@@ -55,31 +56,30 @@ public class Graph {
 
 		// generiere die Knoten des Graphen
 		knotenGenerieren(zeilen, spalten);
-		
+
 		// generiere die Kanten des Graphen
 		kantenGenerieren();
-		
+
 		// -----------------------------------------------------------------------------------------------------
 		// Dieser Abschnitt dient nur zum Testen.
 		// -----------------------------------------------------------------------------------------------------
 
 		/*
-		 * Ich habe diesen Abschnitt nicht gross auf Bugs getestet.
-		 * Es scheint zu funktionieren.
-		 * Da dieser Abschnitt nur fuer Testzwecke erstellt wurde, habe ich
-		 * auf weitere Tests verzichtet.
+		 * Ich habe diesen Abschnitt nicht gross auf Bugs getestet. Es scheint zu
+		 * funktionieren. Da dieser Abschnitt nur fuer Testzwecke erstellt wurde, habe
+		 * ich auf weitere Tests verzichtet.
 		 */
-		
+
 		kanten_maximaler_fluss = new ArrayList<Kante>();
-		
+
 		// Zufallszahl fuer die Generierung des "maximalen Flusses"
 		final Random rand = new Random();
-		
+
 		ArrayList<Kante> nicht_benutzte_kanten = new ArrayList<Kante>();
 		nicht_benutzte_kanten = (ArrayList) kanten.clone();
-		
+
 		int zahl = nicht_benutzte_kanten.size();
-		
+
 		for (int i = 0; i < zahl; i++) {
 			int zufallszahl = rand.nextInt(nicht_benutzte_kanten.size());
 			kanten_maximaler_fluss.add(nicht_benutzte_kanten.get(zufallszahl));
@@ -93,7 +93,7 @@ public class Graph {
 	/**
 	 * Diese Methode generiert die einzelnen Knoten des Graphen.
 	 * 
-	 * @param zeilen Das ist die Anzahl der Zeilen des Graphen.
+	 * @param zeilen  Das ist die Anzahl der Zeilen des Graphen.
 	 * @param spalten Das ist die Anzahl der Spalten des Graphen.
 	 */
 	private void knotenGenerieren(int zeilen, int spalten) {
@@ -108,9 +108,10 @@ public class Graph {
 
 			// fuege die einzelnen Knoten der ArrayList hinzu
 			for (int j = 0; j < spalten; j++) {
-				// erhoehe den Teil fuer die Spalte fuer die ID, um damit spaeter die ID des Knotens zu generieren
+				// erhoehe den Teil fuer die Spalte fuer die ID, um damit spaeter die ID des
+				// Knotens zu generieren
 				spalte_fuer_id++;
-				
+
 				// erstelle den neuen Knoten
 				knoten[i][j] = new Knoten(zeile_fuer_id, spalte_fuer_id, 1);
 			}
@@ -150,31 +151,47 @@ public class Graph {
 		final Random rand = new Random();
 
 		// generiere zuerst die Kanten, welche direkt verbunden sind
-		for (int i = 0; i < (knoten.length - 1); i++) {
-			// iteriere durch die Knoten der ersten Zeile
-			for (int j = 0; j < knoten[i].length; j++) {
-				// hole den aktuellen Knoten der ersten Spalte
-				Knoten knoten_1 = knoten[i][j];
+		// falls es nur eine Zeile gibt, wird der Code im "else" ausgefuehrt
+		if (knoten.length > 1) {
+			for (int i = 0; i < (knoten.length - 1); i++) {
+				// iteriere durch die Knoten der ersten Zeile
+				for (int j = 0; j < knoten[i].length; j++) {
+					// hole den aktuellen Knoten der ersten Spalte
+					Knoten knoten_1 = knoten[i][j];
 
-				// iteriere durch die Knoten der zweiten Spalte
-				for (int l = 0; l < knoten[i + 1].length; l++) {
-					// hole den aktuellen Knoten der zweiten Spalte
-					Knoten knoten_2 = knoten[i + 1][l];
+					// iteriere durch die Knoten der zweiten Spalte
+					for (int l = 0; l < knoten[i + 1].length; l++) {
+						// hole den aktuellen Knoten der zweiten Spalte
+						Knoten knoten_2 = knoten[i + 1][l];
 
-					// erstelle die Kante mit dem ersten Knoten und dem zweiten Knoten
-					kanten.add(new Kante(knoten_1, knoten_2, (rand.nextInt(20) + 1)));
+						// erstelle die Kante mit dem ersten Knoten und dem zweiten Knoten
+						kanten.add(new Kante(knoten_1, knoten_2, (rand.nextInt(20) + 1)));
+					}
 				}
 			}
+		} else {
+			for (int i = 0; i < (knoten[0].length - 1); i++) {
+				// hole den aktuellen Knoten der ersten Spalte
+				Knoten knoten_1 = knoten[0][i];
+
+				// hole den aktuellen Knoten der zweiten Spalte
+				Knoten knoten_2 = knoten[0][i + 1];
+
+				// erstelle die Kante mit dem ersten Knoten und dem zweiten Knoten
+				kanten.add(new Kante(knoten_1, knoten_2, (rand.nextInt(20) + 1)));
+			}
 		}
-		
+
 		// -----------------------------------------------------------------------------------------------------
 		/*
-		 * Diesen Abschnitt habe ich auskommentiert, da dieser noch nicht ganz fehlerfrei funktioniert.
+		 * Diesen Abschnitt habe ich auskommentiert, da dieser noch nicht ganz
+		 * fehlerfrei funktioniert.
 		 * 
-		 * Dieser Abschnitt ist fuer die Grundfunktionalitaeten des Graphen nicht von Bedeutung.
+		 * Dieser Abschnitt ist fuer die Grundfunktionalitaeten des Graphen nicht von
+		 * Bedeutung.
 		 */
 		// -----------------------------------------------------------------------------------------------------
-		
+
 //		// generiere anschliessend die Knoten, welche nicht direkt verbunden sind
 //		/*
 //		 * iteriere durch alle waagerechte Ebenen
@@ -218,7 +235,7 @@ public class Graph {
 //				}
 //			}
 //		}
-		
+
 		// -----------------------------------------------------------------------------------------------------
 
 		// -----------------------------------------------------------------------------------------------------
@@ -243,7 +260,7 @@ public class Graph {
 
 		// -----------------------------------------------------------------------------------------------------
 	}
-	
+
 	/**
 	 * Das ist der Getter fuer die Kanten des Graphen.
 	 * 

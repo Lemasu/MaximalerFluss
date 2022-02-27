@@ -143,10 +143,10 @@ public class Controller {
 		zoom = 150;
 
 		// Die X-Position des Graphen wird festgelegt.
-		graph_x_position = 5;
+		graph_x_position = 0;
 
 		// Die Y-Position des Graphen wird festgelegt.
-		graph_y_position = 0;
+		graph_y_position = 5;
 		
 		// initialisiert die Liste mit den Informationen
 		informationen_kanten = FXCollections.observableArrayList();
@@ -401,16 +401,16 @@ public class Controller {
 			// initialisiere die benoetigten Variablen
 
 			// Das ist die X-Position eines Knotens.
-			int x_position = graph_x_position + (zoom * i);
+			int x_position = 400;
 			// Das ist die Y-Position eines Knotens.
-			int y_position = 400;
+			int y_position = graph_y_position + (zoom * i);
 
 			/*
 			 * Das die Groesse eines Zaehlschrittes fuer die Y-Position.
 			 * 
 			 * Die Groesse eines Schrittes haengt von der Laenge einer waagerechte Ebene ab.
 			 */
-			int y_position_zaehlschritte = y_position / (knoten[i].length + 1);
+			int x_position_zaehlschritte = x_position / (knoten[i].length + 1);
 
 			/*
 			 * Passe die Y-Position der Position des Graphen an.
@@ -422,7 +422,7 @@ public class Controller {
 			 * erfolgen, damit die Groesse der Zaehlschritte nicht von der Verschiebung des
 			 * Graphen beeintraechtigt wird.
 			 */
-			y_position += graph_y_position;
+			x_position += graph_x_position;
 
 			// erstelle neue ArrayLists fuer die aktuelle waagerechte Ebene
 			x_positionen.add(new ArrayList<Integer>());
@@ -434,7 +434,7 @@ public class Controller {
 				 * Ziehe einen Zaehlschritt von der Y-Position ab, damit die Y-Position die
 				 * richtige Groesse hat.
 				 */
-				y_position -= y_position_zaehlschritte;
+				x_position -= x_position_zaehlschritte;
 
 				// zeichne den Knoten
 				gc.fillOval(x_position, y_position, kreisgroesse, kreisgroesse);
