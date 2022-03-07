@@ -263,7 +263,10 @@ public class Controller {
 	 */
 	@FXML
 	public void startknotenSetzen() {
+		// setze den gewuenschten Knoten auf den Wert fuer einen Startknoten
 		knoten_setzen = 0;
+		
+		// aktiviere den Knopf (Zielknoten), welches nicht angeklickt wurde, und deaktiviere den Knopf (Startknoten), welches angeklickt wurde
 		startknoten_setzen.setDisable(true);
 		zielknoten_setzen.setDisable(false);
 	}
@@ -273,7 +276,10 @@ public class Controller {
 	 */
 	@FXML
 	public void zielknotenSetzen() {
+		// setze den gewuenschten Knoten auf den Wert fuer einen Zielknoten
 		knoten_setzen = 2;
+		
+		// aktiviere den Knopf (Startknoten), welches nicht angeklickt wurde, und deaktiviere den Knopf (Zielknoten), welches angeklickt wurde
 		startknoten_setzen.setDisable(false);
 		zielknoten_setzen.setDisable(true);
 	}
