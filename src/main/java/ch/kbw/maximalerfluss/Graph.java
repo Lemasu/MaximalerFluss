@@ -97,9 +97,6 @@ public class Graph {
 	 * @param spalten Das ist die Anzahl der Spalten des Graphen.
 	 */
 	private void knotenGenerieren(int zeilen, int spalten) {
-		// Zufallszahl fuer die Generierung
-		final Random rand = new Random();
-
 		// generiert die einzelnen normalen Knoten
 		for (int i = 0; i < zeilen; i++) {
 			// initializiere die Variablen fuer die Generierung der ID des Knotens.
@@ -116,7 +113,7 @@ public class Graph {
 				knoten[i][j] = new Knoten(zeile_fuer_id, spalte_fuer_id, 1);
 			}
 		}
-
+		
 		// -----------------------------------------------------------------------------------------------------
 		// Dieser Abschnitt dient nur zum Testen.
 		// -----------------------------------------------------------------------------------------------------

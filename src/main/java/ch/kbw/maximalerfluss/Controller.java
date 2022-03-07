@@ -518,19 +518,44 @@ public class Controller {
 		 * ueberschreibe den Kreis fuer den Start mit einem gruenen Kreis, in dessen
 		 * Mitte ein grosses S steht
 		 */
-		gc.setFill(Color.LIGHTGREEN);
-		gc.fillOval(x_positionen.get(0).get(0), y_positionen.get(0).get(0), kreisgroesse, kreisgroesse);
-		gc.strokeText("S", x_positionen.get(0).get(0) + 7, y_positionen.get(0).get(0) + 14);
+		knotenFaerben(0, "S", Color.LIGHTGREEN);
 
 		/*
-		 * ueberschreibe den Kreis fuer den Start mit einem gruenen Kreis, in dessen
-		 * Mitte ein grosses S steht
+		 * ueberschreibe den Kreis fuer das Ziel mit einem roten Kreis, in dessen
+		 * Mitte ein grosses Z steht
 		 */
-		gc.setFill(Color.RED);
-		gc.fillOval(x_positionen.get(x_positionen.size() - 1).get(0), y_positionen.get(y_positionen.size() - 1).get(0),
-				kreisgroesse, kreisgroesse);
-		gc.strokeText("Z", x_positionen.get(x_positionen.size() - 1).get(0) + 7,
-				y_positionen.get(y_positionen.size() - 1).get(0) + 14);
+		knotenFaerben(2, "Z", Color.RED);
+	}
+	
+	/**
+	 * Diese Methode faerbt einen einzelnen Knoten und beschriftet diesen mit dem gewuenschten Text.
+	 * 
+	 * Sobald der Knoten gefunden wurde, wird nicht mehr nach einem weiteren Knoten gesucht.
+	 * Der Grund dafuer ist, dass es immer nur einen Startknoten und einen Zielknoten geben kann.
+	 * 
+	 * @param kategorie Das ist die Kategorie des gesuchten Knotens.
+	 * @param text Das ist der Text, der auf der Knoten angezeigt werden soll.
+	 * @param farbe Das ist die Farbe, auf die der Knoten geaendert werden soll.
+	 */
+	private void knotenFaerben(int kategorie, String text, Paint farbe) {
+		for (int i = 0; i < knoten.length; i++) {
+			boolean gefunden = false;
+			
+			for (int j = 0; j < knoten[i].length; j++) {
+				if (knoten[i][j].getKategorie() == kategorie) {
+					gc.setFill(farbe);
+					gc.fillOval(x_positionen.get(i).get(j), y_positionen.get(i).get(j), kreisgroesse, kreisgroesse);
+					gc.strokeText(text, x_positionen.get(i).get(j) + 7, y_positionen.get(i).get(j) + 14);
+					
+					gefunden = true;
+					j = knoten[i].length;
+				}
+			}
+			
+			if (gefunden) {
+				i = knoten.length;
+			}
+		}
 	}
 	
 	/**
