@@ -114,6 +114,12 @@ public class Controller {
 	 */
 	@FXML
 	private Button startknoten_setzten;
+	
+	/**
+	 * Das ist der Knopf, um den Zielknoten zu setzen.
+	 */
+	@FXML
+	private Button zielknoten_setzten;
 
 	/**
 	 * Das ist der Textfeld fuer die Anzahl der Zeilen im Graphen, welcher generiert werden soll.
@@ -259,6 +265,17 @@ public class Controller {
 	public void startknotenSetzen() {
 		knoten_setzen = 0;
 		startknoten_setzten.setDisable(true);
+		zielknoten_setzten.setDisable(false);
+	}
+	
+	/**
+	 * Mit dieser Methode kann der Nutzer sagen, dass er einen Zielknoten setzen moechte.
+	 */
+	@FXML
+	public void zielknotenSetzen() {
+		knoten_setzen = 2;
+		startknoten_setzten.setDisable(false);
+		zielknoten_setzten.setDisable(true);
 	}
 
 	/**
