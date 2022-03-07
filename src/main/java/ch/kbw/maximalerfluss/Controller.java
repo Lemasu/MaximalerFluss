@@ -4,12 +4,15 @@ import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -84,6 +87,15 @@ public class Controller {
 	 * Das ist die Y-Position des ganzen Graphen.
 	 */
 	private int graph_y_position;
+	
+	/**
+	 * Diese Variable sagt, welcher Knoten gesetzt werden soll.
+	 * 
+	 * 0 = Start
+	 * 1 = normaler Knoten
+	 * 2 = Ziel
+	 */
+	private int knoten_setzen;
 
 	/**
 	 * Das ist der Canvas, auf dem der Graph dargestellt werden soll.
@@ -96,6 +108,18 @@ public class Controller {
 	 * dem Canvas zeichnen zu koennen.
 	 */
 	private GraphicsContext gc;
+	
+	/**
+	 * Das ist der Knopf, um den Startknoten zu setzen.
+	 */
+	@FXML
+	private Button startknoten_setzen;
+	
+	/**
+	 * Das ist der Knopf, um den Zielknoten zu setzen.
+	 */
+	@FXML
+	private Button zielknoten_setzen;
 
 	/**
 	 * Das ist der Textfeld fuer die Anzahl der Zeilen im Graphen, welcher generiert werden soll.
@@ -153,6 +177,20 @@ public class Controller {
 		
 		// setzte die Items in der Liste auf dem GUI auf die ObservableList, damit die Informationen der Kanten auf dem GUI ausgegeben werden
 		informationen_kanten_liste.setItems(informationen_kanten);
+		
+		/*
+		 * "knoten_setzen" wird am Anfang auf 1 gesetzt.
+		 * 
+		 * Der Grund dafuer ist, dass am Anfang weder der Knopf fuer die Setzung der Startknoten, noch der Knopf fuer die Setzung der Zielknoten ausgewaehlt sind.
+		 */
+		knoten_setzen = 1;
+		
+		// setzte die Methode, damit der Nutzer auf dem Canvas die Knoten anklicken kann
+		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    public void handle(MouseEvent event) {
+		    	knotenAnklicken(event);
+		    }
+		});
 	}
 
 	/**
@@ -218,6 +256,32 @@ public class Controller {
 		graphMitMaximalerFlussZeichnen();
 
 		// -----------------------------------------------------------------------------------------------------
+	}
+	
+	/**
+	 * Mit dieser Methode kann der Nutzer sagen, dass er einen Startknoten setzen moechte.
+	 */
+	@FXML
+	public void startknotenSetzen() {
+		// setze den gewuenschten Knoten auf den Wert fuer einen Startknoten
+		knoten_setzen = 0;
+		
+		// aktiviere den Knopf (Zielknoten), welches nicht angeklickt wurde, und deaktiviere den Knopf (Startknoten), welches angeklickt wurde
+		startknoten_setzen.setDisable(true);
+		zielknoten_setzen.setDisable(false);
+	}
+	
+	/**
+	 * Mit dieser Methode kann der Nutzer sagen, dass er einen Zielknoten setzen moechte.
+	 */
+	@FXML
+	public void zielknotenSetzen() {
+		// setze den gewuenschten Knoten auf den Wert fuer einen Zielknoten
+		knoten_setzen = 2;
+		
+		// aktiviere den Knopf (Startknoten), welches nicht angeklickt wurde, und deaktiviere den Knopf (Zielknoten), welches angeklickt wurde
+		startknoten_setzen.setDisable(false);
+		zielknoten_setzen.setDisable(true);
 	}
 
 	/**
@@ -617,6 +681,86 @@ public class Controller {
 		// worden sein, zeichne auch den maximalen Fluss auf.
 		if (graph_mit_maximaler_fluss_zeichnen_aufgerufen) {
 			graphMitMaximalerFlussZeichnen();
+		}
+	}
+		
+	/**
+	 * Diese Methode sorgt dafuer, dass der Nutzer einen Knoten anklicken kann.
+	 * 
+	 * @param event Das ist die MouseEvent vom Canvas. Die MouseEvent vom Canvas muss angegeben werden, damit diese Methode die Mausposition auf dem Canvas auslesen kann.
+	 */
+	private void knotenAnklicken(MouseEvent event) {
+		/*
+		 * Zuerst wird ueberprueft, ob eine bestimmte Knotenkategorie gesetzt werden soll.
+		 * 
+		 * 1 ist der Standardwert, dass bedeutet, dass noch keine zu setztende Knotenkategorie ausgewaehlt wurde.
+		 * Wenn der Wert also nicht 1 ist, bedeutet das, dass eine Knotenkategorie ausgewaehlt wurde.
+		 */
+		if (knoten_setzen != 1) {
+			// Zuerst wird der alte Knoten mit dieser Kategorie wieder in einen normalen Knoten umgewandelt.
+			// Zuerst wird durch die einzelnen Zeilen iteriert.
+			for (int i = 0; i < knoten.length; i++) {
+				/*
+				 * initialisiere eine Variable fuer die Laenge einer Zeile
+				 * 
+				 * Die Initialisierung erfolgt bereits hier, damit spaeter keine Exception auftaucht.
+				 * 
+				 * Urspruenglich gab es die folgende for-Schleife: "for (int j = 0; j < x_positionen.get(i).size(); j++) {".
+				 */
+				int laenge_zeile = knoten[i].length;
+				
+				// Anschliessend wird durch die einzelnen Knoten, beziehungsweise deren Positionen, der Zeile iteriert.
+				for (int j = 0; j < laenge_zeile; j++) {
+					// Es wird ueberprueft, ob dieser Knoten von gleicher Kategorie wie die gewuenschte Kategorie ist.
+					if (knoten[i][j].getKategorie() == knoten_setzen) {
+						// der Knoten wird zu einem normalen Knoten
+						knoten[i][j].setKategorie(1);
+						
+						// sorge dafuer, dass die for-Schleifen abgebrochen werden, da der angeklickte Knoten bereits gefunden wurde
+						j = knoten[i].length;
+						i = knoten.length;
+					}
+				}
+			}
+			
+			// Anschliessend wird der passende Knoten auf die gewuenschte Kategorie gesetzt.
+			// Zuerst wird durch die einzelnen Zeilen iteriert.
+			for (int i = 0; i < x_positionen.size(); i++) {
+				/*
+				 * initialisiere eine Variable fuer die Laenge einer Zeile
+				 * 
+				 * Die Initialisierung erfolgt bereits hier, damit spaeter keine Exception auftaucht.
+				 * 
+				 * Urspruenglich gab es die folgende for-Schleife: "for (int j = 0; j < x_positionen.get(i).size(); j++) {".
+				 */
+				int laenge_zeile = x_positionen.get(i).size();
+				
+				// Anschliessend wird durch die einzelnen Knoten, beziehungsweise deren Positionen, der Zeile iteriert.
+				for (int j = 0; j < laenge_zeile; j++) {
+					// Zuerst werden die Variablen fuer die if-Verzweigung initialisiert, damit die if-Verzweigung nicht zu unuebersichtlich wird.
+					// Die X-Position vom Knoten.
+					int x_position = x_positionen.get(i).get(j);
+					// Die Y-Position vom Knoten.
+					int y_position = y_positionen.get(i).get(j);
+					// Die X-Position vom Maus.
+					double x_maus = event.getX();
+					// Die Y-Position vom Maus.
+					double y_maus = event.getY();
+					
+					// ueberprueft, ob der Knoten angeklickt wurde
+					if ((x_maus >= x_position && x_maus <= (x_position + 20)) && (y_maus >= y_position && y_maus <= (y_position + 20))) {
+						// setze die Kategorie des angeklickten Knotens auf die gewuenschte Kategorie
+						knoten[i][j].setKategorie(knoten_setzen);
+						
+						// zeichne den Graphen neu auf, damit der angeklickte Knoten richtig dargestellt wird
+						graphNeuZeichnen();
+						
+						// sorge dafuer, dass die for-Schleifen abgebrochen werden, da der angeklickte Knoten bereits gefunden wurde
+						j = x_positionen.get(i).size();
+						i = x_positionen.size();
+					}
+				}
+			}
 		}
 	}
 }

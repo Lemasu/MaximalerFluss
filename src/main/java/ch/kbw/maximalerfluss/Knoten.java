@@ -24,7 +24,7 @@ public class Knoten {
 	 * 1 = normaler Knoten
 	 * 2 = Ziel
 	 */
-	private final int kategorie;
+	private int kategorie;
 
 	/**
 	 * Das ist der Standardkonstruktor.
@@ -54,5 +54,14 @@ public class Knoten {
      */
 	public int getKategorie() {
 		return kategorie;
+	}
+
+	/**
+	 * Das ist der Setter fuer die Kategorie dieses Knotens.
+	 * 
+	 * @param kategorie Das ist die gewuenschte Kategorie fuer diesen Knoten.
+	 */
+	public void setKategorie(int kategorie) {
+		this.kategorie = kategorie;
 	}
 }
