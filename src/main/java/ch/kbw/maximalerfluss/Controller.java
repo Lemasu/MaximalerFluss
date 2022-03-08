@@ -602,20 +602,27 @@ public class Controller {
 	 * @param farbe Das ist die Farbe, auf die der Knoten geaendert werden soll.
 	 */
 	private void knotenFaerben(int kategorie, String text, Paint farbe) {
+		// Zuerst wird durch die einzelnen Zeilen iteriert.
 		for (int i = 0; i < knoten.length; i++) {
+			// Es wird ein Boolean erstellt, welches dem Programm sagt, ob der zu faerbende Knoten schon gefunden wurde.
 			boolean gefunden = false;
 			
+			// Anschliessend wird durch die einzelnen Knoten, der Zeile iteriert.
 			for (int j = 0; j < knoten[i].length; j++) {
+				// ueberprueft, ob dieser Knoten zur gewuenschten Kategorie gehoert
 				if (knoten[i][j].getKategorie() == kategorie) {
+					// erstellt den Knoten
 					gc.setFill(farbe);
 					gc.fillOval(x_positionen.get(i).get(j), y_positionen.get(i).get(j), kreisgroesse, kreisgroesse);
 					gc.strokeText(text, x_positionen.get(i).get(j) + 7, y_positionen.get(i).get(j) + 14);
 					
+					// sorge dafuer, dass die for-Schleifen vorzeitig abgebrochen werden, da der gesuchte Knoten bereits gefunden wurde und jetzt nicht mehr weitergesucht werden muss
 					gefunden = true;
 					j = knoten[i].length;
 				}
 			}
 			
+			// sorge dafuer, dass die for-Schleife abgebrochen wird, wenn der gesuchte Knoten bereits gefunden wurde
 			if (gefunden) {
 				i = knoten.length;
 			}
@@ -709,7 +716,7 @@ public class Controller {
 				 */
 				int laenge_zeile = knoten[i].length;
 				
-				// Anschliessend wird durch die einzelnen Knoten, beziehungsweise deren Positionen, der Zeile iteriert.
+				// Anschliessend wird durch die einzelnen Knoten der Zeile iteriert.
 				for (int j = 0; j < laenge_zeile; j++) {
 					// Es wird ueberprueft, ob dieser Knoten von gleicher Kategorie wie die gewuenschte Kategorie ist.
 					if (knoten[i][j].getKategorie() == knoten_setzen) {
