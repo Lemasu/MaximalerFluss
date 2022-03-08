@@ -72,21 +72,6 @@ public class Controller {
 	 * bereits aufgerufen wurde.
 	 */
 	private boolean graph_mit_maximaler_fluss_zeichnen_aufgerufen;
-
-	/**
-	 * Das ist die Zoomgroesse vom Canvas.
-	 */
-	private int zoom;
-
-	/**
-	 * Das ist die X-Position des ganzen Graphen.
-	 */
-	private int graph_x_position;
-
-	/**
-	 * Das ist die Y-Position des ganzen Graphen.
-	 */
-	private int graph_y_position;
 	
 	/**
 	 * Diese Variable sagt, welcher Knoten gesetzt werden soll.
@@ -138,14 +123,6 @@ public class Controller {
 	 */
 	@FXML
 	private Label info;
-	
-	/**
-	 * Das sind die Informationen zu den Kanten.
-	 * 
-	 * Wie eine ListView funktioniert, habe ich einem alten Projekt von Herr Rutschmann entnommen.
-	 */
-	@FXML
-	private ListView<String> informationen_kanten_liste;
 
 	/**
 	 * Diese Methode wird bei der Initalisierung dieses Controllers aufgerufen.
@@ -162,21 +139,6 @@ public class Controller {
 		// noch nicht aufgerufen wurden, werden die zwei Booleans auf false gesetzt.
 		graph_zeichnen_aufgerufen = false;
 		graph_mit_maximaler_fluss_zeichnen_aufgerufen = false;
-
-		// Der Zoom wird festgelegt.
-		zoom = 150;
-
-		// Die X-Position des Graphen wird festgelegt.
-		graph_x_position = 0;
-
-		// Die Y-Position des Graphen wird festgelegt.
-		graph_y_position = 5;
-		
-		// initialisiert die Liste mit den Informationen
-		informationen_kanten = FXCollections.observableArrayList();
-		
-		// setzte die Items in der Liste auf dem GUI auf die ObservableList, damit die Informationen der Kanten auf dem GUI ausgegeben werden
-		informationen_kanten_liste.setItems(informationen_kanten);
 		
 		/*
 		 * "knoten_setzen" wird am Anfang auf 1 gesetzt.
@@ -285,61 +247,8 @@ public class Controller {
 	}
 
 	/**
-	 * Mit dieser Methode kann der Nutzer den Graphen auf dem Canvas vergroessern.
-	 */
-	@FXML
-	public void zoomIn() {
-		zoom(10);
-	}
-
-	/**
-	 * Mit dieser Methode kann der Nutzer den Graphen auf dem Canvas verkleinern.
-	 */
-	@FXML
-	public void zoomOut() {
-		zoom(-10);
-	}
-
-	/**
-	 * Mit dieser Methode kann der Graph nach links verschoben werden.
-	 */
-	@FXML
-	public void graphNachLinksVerschieben() {
-		// verschiebe den Graphen nach links
-		graphVerschieben(-10, 0);
-	}
-
-	/**
-	 * Mit dieser Methode kann der Graph nach oben verschoben werden.
-	 */
-	@FXML
-	public void graphNachObenVerschieben() {
-		// verschiebe den Graphen nach oben
-		graphVerschieben(0, -10);
-	}
-
-	/**
-	 * Mit dieser Methode kann der Graph nach unten verschoben werden.
-	 */
-	@FXML
-	public void graphNachUntenVerschieben() {
-		// verschiebe den Graphen nach unten
-		graphVerschieben(0, 10);
-	}
-
-	/**
-	 * Mit dieser Methode kann der Graph nach rechts verschoben werden.
-	 */
-	@FXML
-	public void graphNachRechtsVerschieben() {
-		// verschiebe den Graphen nach rechts
-		graphVerschieben(10, 0);
-	}
-
-	/**
 	 * Diese Methode zeichnet den Graphen auf den Canvas.
-	 * 
-	 * @param graph_neu_zeichnen
+	 *
 	 */
 	private void graphZeichnen() {
 		// Die Infos werden geleert, da jetzt wieder ein neuer Graph generiert wird.
@@ -347,9 +256,6 @@ public class Controller {
 		
 		// Clears canvas
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		
-		// leere die Liste mit den Informationen ueber die Kanten
-		informationen_kanten.clear();
 
 		// Erstelle die benoetigten ArrayLists.
 		// Das sind die Knoten des Graphen.
@@ -386,9 +292,6 @@ public class Controller {
 	private void graphMitMaximalerFlussZeichnen() {
 		// Clears canvas
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-		// leere die Liste mit den Informationen ueber die Kanten
-		informationen_kanten.clear();
 		
 		/*
 		 * Zuerst muss ueberprueft werden, ob die benoetigten ArrayLists bereits
@@ -467,7 +370,7 @@ public class Controller {
 			// Das ist die X-Position eines Knotens.
 			int x_position = 400;
 			// Das ist die Y-Position eines Knotens.
-			int y_position = graph_y_position + (zoom * i);
+			int y_position = 5 + (150 * i);
 
 			/*
 			 * Das die Groesse eines Zaehlschrittes fuer die Y-Position.
@@ -475,18 +378,6 @@ public class Controller {
 			 * Die Groesse eines Schrittes haengt von der Laenge einer waagerechte Ebene ab.
 			 */
 			int x_position_zaehlschritte = x_position / (knoten[i].length + 1);
-
-			/*
-			 * Passe die Y-Position der Position des Graphen an.
-			 * 
-			 * Die Anpassung muss ausserhalb der for-Schleife erfolgen, damit die Anpassung
-			 * nicht permanent erfolgt.
-			 * 
-			 * Die Anpassung muss aber nach der Berechnung von der Groesse der Zaehlschritte
-			 * erfolgen, damit die Groesse der Zaehlschritte nicht von der Verschiebung des
-			 * Graphen beeintraechtigt wird.
-			 */
-			x_position += graph_x_position;
 
 			// erstelle neue ArrayLists fuer die aktuelle waagerechte Ebene
 			x_positionen.add(new ArrayList<Integer>());
@@ -556,15 +447,6 @@ public class Controller {
 
 			// zeichne die Kante
 			gc.strokeLine(x_position_1, y_position_1, x_position_2, y_position_2);
-			
-			/*
-			 * Zuerst wird ueberprueft, ob die Informationen zu dieser Kante gespeichert werden soll.
-			 * 
-			 * Wenn die Informationen zu dieser Kante gespeichert werden soll, werden die Informationen in der ObservableList gespeichert.
-			 */
-			if (informationen_speichern) {
-				informationen_kanten.add("Kante von " + kante.getKnoten_1().getId() + " nach " + kante.getKnoten_2().getId() + ": " + kante.getAuslastung() + " | " + kante.getKapazitaet());
-			}
 		}
 	}
 
@@ -627,51 +509,6 @@ public class Controller {
 				i = knoten.length;
 			}
 		}
-	}
-	
-	/**
-	 * Mit diese Methode kann im Canvas gezoomt werden.
-	 * 
-	 * @param zoomstaerke Eine positive Zoomstaerke bedeutet, dass hineingezoomt
-	 *                    wird und eine negative, dass hinausgezoomt wird.
-	 */
-	private void zoom(int zoomstaerke) {
-		/*
-		 * Zuerst wird ueberprueft, ob die Zoomstraeke auf einen Wert kleiner als 100
-		 * verkleinert werden soll.
-		 * 
-		 * Die Zoomstaerke darf nicht auf einen Wert kleiner als 100 verkleinert werden.
-		 * 
-		 * Wenn die Zoomstaerke auf einen Wert kleiner als 100 verkleinert werden soll,
-		 * wird diese Methode abgebrochen.
-		 */
-		if ((zoom + zoomstaerke) <= 100) {
-			System.err.println("Die Zoomstraeke kann nicht kleiner als 100 sein.");
-			return;
-		}
-
-		// setzte die Zoomgroesse auf die aktuelle Zoomgroesse
-		zoom += zoomstaerke;
-
-		// zeichne den Graphen neu auf
-		graphNeuZeichnen();
-	}
-
-	/**
-	 * Mit dieser Methode kann der Graph verschoben werden.
-	 * 
-	 * @param veraenderung_x_position Das ist die Veraenderung der X-Position des
-	 *                                Graphen.
-	 * @param veraenderung_y_position Das ist die Veraenderung der Y-Position des
-	 *                                Graphen.
-	 */
-	private void graphVerschieben(int veraenderung_x_position, int veraenderung_y_position) {
-		// passe die Position des Graphen an
-		graph_x_position += veraenderung_x_position;
-		graph_y_position += veraenderung_y_position;
-
-		// zeichne den Graphen neu auf
-		graphNeuZeichnen();
 	}
 
 	/**
