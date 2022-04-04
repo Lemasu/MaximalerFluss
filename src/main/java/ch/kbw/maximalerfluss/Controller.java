@@ -2,6 +2,7 @@ package ch.kbw.maximalerfluss;
 
 import java.util.ArrayList;
 
+import ch.kbw.maximalerfluss.algorithmus.Algorithmus;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -607,4 +608,14 @@ public class Controller {
 			}
 		}
 	}
+
+	private Algorithmus algorithmus = new Algorithmus();
+
+	@FXML
+	public void berechnen() {
+		algorithmus.resetFlow(model.getGraph());
+		algorithmus.berechneMaxFlow(model.getGraph());
+	}
+
+
 }
