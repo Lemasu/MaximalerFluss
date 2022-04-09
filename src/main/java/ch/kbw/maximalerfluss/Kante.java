@@ -48,7 +48,7 @@ public class Kante {
         this.maxKapazitaet = maxKapazitaet;
     }
 
-    /**
+	/**
      * Das ist der Getter fuer die Auslastung einer Kante.
      * 
      * @return Das ist die Auslastung einer Kante.
@@ -86,7 +86,7 @@ public class Kante {
 
     /**
      * Das ist der Getter fuer den ersten Knoten einer Kante.
-     * 
+     *
      * @return Das ist der erster Knoten einer Kante.
      */
 	public Knoten getKnoten_1() {
@@ -95,7 +95,7 @@ public class Kante {
 
     /**
      * Das ist der Getter fuer den zweiten Knoten einer Kante.
-     * 
+     *
      * @return Das ist der zweiter Knoten einer Kante.
      */
 	public Knoten getKnoten_2() {

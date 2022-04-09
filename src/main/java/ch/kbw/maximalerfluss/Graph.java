@@ -27,6 +27,12 @@ public class Graph {
 	private ArrayList<Kante> kanten;
 
 	/**
+	 * Das sind die Rückkanten im Graphen.
+	 * Sie sind nötig, um das Problem der ungünstigen Pfadwahl zu beheben.
+	 */
+	private ArrayList<Kante> rueckKanten;
+
+	/**
 	 * Das sind die Kanten, welche den maximalen Fluss ermoeglichen.
 	 * 
 	 * Aktuell ist noch nicht klar, ob diese ArrayList wirklich in die Klasse Graph
@@ -53,12 +59,16 @@ public class Graph {
 		// Initialize variables
 		knoten = new Knoten[zeilen][spalten];
 		kanten = new ArrayList<Kante>();
+		rueckKanten = new ArrayList<Kante>();
 
 		// generiere die Knoten des Graphen
 		knotenGenerieren(zeilen, spalten);
 
 		// generiere die Kanten des Graphen
 		kantenGenerieren();
+
+		// generiere die Rückkanten des Graphen
+		rueckKantenGenerieren();
 
 		// -----------------------------------------------------------------------------------------------------
 		// Dieser Abschnitt dient nur zum Testen.
@@ -259,12 +269,54 @@ public class Graph {
 	}
 
 	/**
+	 * Mit dieser Methode werden die Rückkanten eines Graphen generiert.
+	 */
+	private void rueckKantenGenerieren() {
+
+		for (Kante kante : kanten) {
+			Kante neueKante = new Kante(kante.getKnoten_2(),kante.getKnoten_1(),0);
+			rueckKanten.add(neueKante);
+		}
+
+		// -----------------------------------------------------------------------------------------------------
+		// Dieser Abschnitt dient nur zum Testen.
+		// -----------------------------------------------------------------------------------------------------
+
+		System.out.println();
+		System.out.println("--------------------------------------------------------");
+		System.out.println("Rückkanten");
+		System.out.println("--------------------------------------------------------");
+		System.out.println();
+
+		for (Kante kante : rueckKanten) {
+			System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
+					+ kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
+					+ kante.getRestKapazitaet() + " / maximale Kapazitaet: " + kante.getMaxKapazitaet() + "]");
+		}
+
+		System.out.println();
+		System.out.println("--------------------------------------------------------");
+		System.out.println();
+
+		// -----------------------------------------------------------------------------------------------------
+	}
+
+	/**
 	 * Das ist der Getter fuer die Kanten des Graphen.
 	 * 
 	 * @return Das sind die Kanten des Graphen.
 	 */
 	public ArrayList<Kante> getKanten() {
 		return kanten;
+	}
+
+	/**
+	 * Das ist der Getter fuer die Rueckkanten des Graphen.
+	 *
+	 * @return Das sind die Rueckkanten des Graphen.
+	 */
+	public ArrayList<Kante> getRueckKanten() {
+		return rueckKanten;
 	}
 
 	/**

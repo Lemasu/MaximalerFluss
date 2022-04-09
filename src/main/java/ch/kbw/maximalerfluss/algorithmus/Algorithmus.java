@@ -46,11 +46,11 @@ public class Algorithmus {
             knotenInfosAusgeben();
             kantenInfosAusgeben();
             neuerPfadBerechnen();
-            kantenInfosAusgeben();
 
             berechneBottleneck();
             updateGraph();
             kantenInfosAusgeben();
+            rueckKantenInfosAusgeben();
             counter++;
             System.out.println(counter);
         }
@@ -107,6 +107,10 @@ public class Algorithmus {
             kante.setAuslastung(0);
             kante.setRestKapazitaet(kante.getMaxKapazitaet());
         }
+        for (Kante kante : graph.getRueckKanten()) {
+            kante.setAuslastung(0);
+            kante.setRestKapazitaet(0);
+        }
     }
 
     public void neueOptionenBerechnen() {
@@ -133,8 +137,24 @@ public class Algorithmus {
         for (Kante kanteGraph : graph.getKanten()) {
             for (Kante kantePfad : pfadKanten) {
                 if (kanteGraph==kantePfad) {
-                    kanteGraph.setAuslastung(+bottleneckValue);
+                    kanteGraph.setAuslastung(kanteGraph.getAuslastung()+bottleneckValue);
                     kanteGraph.setRestKapazitaet(kanteGraph.getRestKapazitaet()-bottleneckValue);
+                }
+            }
+        }
+        for (Kante rueckKanteGraph : graph.getRueckKanten()) {
+            for (Kante kantePfad : pfadKanten) {
+                if (rueckKanteGraph.getKnoten_1()==kantePfad.getKnoten_2()&&rueckKanteGraph.getKnoten_2()==kantePfad.getKnoten_1()) {
+                    rueckKanteGraph.setAuslastung(rueckKanteGraph.getAuslastung()-bottleneckValue);
+                    rueckKanteGraph.setRestKapazitaet(rueckKanteGraph.getRestKapazitaet()+bottleneckValue);
+                }
+            }
+        }
+        for (Kante rueckKanteGraph : graph.getRueckKanten()) {
+            for (Kante kantePfad : pfadKanten) {
+                if (rueckKanteGraph==kantePfad) {
+                    rueckKanteGraph.setAuslastung(rueckKanteGraph.getAuslastung()+bottleneckValue);
+                    rueckKanteGraph.setRestKapazitaet(rueckKanteGraph.getRestKapazitaet()-bottleneckValue);
                 }
             }
         }
@@ -184,6 +204,24 @@ public class Algorithmus {
         System.out.println();
 
         for (Kante kante : graph.getKanten()) {
+            System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
+                    + kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
+                    + kante.getRestKapazitaet() + " / maximale Kapazitaet: " + kante.getMaxKapazitaet() + "]");
+        }
+
+        System.out.println();
+        System.out.println("--------------------------------------------------------");
+        System.out.println();
+    }
+
+    public void rueckKantenInfosAusgeben() {
+        System.out.println();
+        System.out.println("--------------------------------------------------------");
+        System.out.println("Rückkanten");
+        System.out.println("--------------------------------------------------------");
+        System.out.println();
+
+        for (Kante kante : graph.getRueckKanten()) {
             System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
                     + kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
                     + kante.getRestKapazitaet() + " / maximale Kapazitaet: " + kante.getMaxKapazitaet() + "]");
