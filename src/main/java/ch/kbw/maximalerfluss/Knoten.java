@@ -15,7 +15,7 @@ public class Knoten {
 	 * 
 	 * Die Zaehlung beginnt bei 1.
 	 */
-	private final String id;
+	private String id;
 	
 	/**
 	 * Das ist die Kategorie eines Knotens.
@@ -37,7 +37,11 @@ public class Knoten {
 		this.id = zeile + "." + spalte;
 		this.kategorie = kategorie;
 	}
-	
+
+	public Knoten() {
+
+	}
+
 	/**
      * Das ist der Getter fuer die ID dieses Knotens.
      * 

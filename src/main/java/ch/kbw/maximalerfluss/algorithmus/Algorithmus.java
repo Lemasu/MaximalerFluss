@@ -19,6 +19,7 @@ public class Algorithmus {
     private ArrayList<Knoten> pfadKnoten;
     private ArrayList<Kante> pfadKanten;
     private ArrayList<Kante> optionen;
+    private Knoten startKnoten, zielKnoten;
     private int bottleneckValue;
     private int maxFlow;
     private boolean finished;
@@ -35,83 +36,105 @@ public class Algorithmus {
         pfadKnoten = new ArrayList<>();
         pfadKanten = new ArrayList<>();
         optionen = new ArrayList<>();
+        startUndZielKnotenBestimmen();
         bottleneckValue=0;
         maxFlow=0;
         finished=false;
         counter=0;
 
         while (true) {
-            System.out.println(graph.getKnoten());
+            knotenInfosAusgeben();
+            kantenInfosAusgeben();
             neuerPfadBerechnen();
-            KantenInfosAusgeben();
+            kantenInfosAusgeben();
 
             berechneBottleneck();
-            KantenInfosAusgeben();
-
             updateGraph();
-            KantenInfosAusgeben();
+            kantenInfosAusgeben();
             counter++;
             System.out.println(counter);
         }
     }
 
+    public void neuerPfadBerechnen() {
+        pfadKnoten.clear();
+        pfadKanten.clear();
 
-    public void resetFlow(Graph graph) {
-        for (Kante kante : graph.getKanten()) {
-            kante.setAuslastung(0);
+        pfadKnoten.add(startKnoten);
+
+        Random rn = new Random();
+        while (pfadKnoten.get(pfadKnoten.size()-1)!=zielKnoten) {
+            neueOptionenBerechnen();
+            System.out.println(optionen.size());
+            System.out.println(optionen);
+            if (!isFinished()) {
+                int random = rn.nextInt(optionen.size());
+                System.out.println(optionen.get(random));
+                System.out.println(optionen.get(random).getKnoten_2().getId() );
+                pfadKanten.add(optionen.get(random));
+                pfadKnoten.add(optionen.get(random).getKnoten_2());
+            } else {
+                berechneBottleneck();
+                updateGraph();
+                System.out.println("Der maximale Fluss wurde berechnet: ");
+                System.out.println("Maximaler Fluss = "+maxFlow);
+                System.exit(0);
+            }
         }
     }
 
-    public void neueOptionenBerechnen() {
-        this.optionen.clear();
-        for (Kante kante : this.graph.getKanten()) {
-            if (kante.getKnoten_1()==this.pfadKnoten.get(this.pfadKnoten.size()-1)) {
-                if ((kante.getKapazitaet())-(kante.getAuslastung())>0) {
-                    this.optionen.add(kante);
+    public void startUndZielKnotenBestimmen() {
+        for (Knoten[] knotens : graph.getKnoten()) {
+            for (Knoten knoten : knotens) {
+                if (knoten.getKategorie() == 0) {
+                    startKnoten = knoten;
+                    break;
+                }
+            }
+        }
+        for (Knoten[] knotens : graph.getKnoten()) {
+            for (Knoten knoten : knotens) {
+                if (knoten.getKategorie() == 2) {
+                    zielKnoten = knoten;
+                    break;
                 }
             }
         }
     }
 
-    public void neuerPfadBerechnen() {
-        this.pfadKnoten.clear();
-        this.pfadKanten.clear();
+    public void resetFlow(Graph graph) {
+        for (Kante kante : graph.getKanten()) {
+            kante.setAuslastung(0);
+            kante.setRestKapazitaet(kante.getMaxKapazitaet());
+        }
+    }
 
-        pfadKnoten.add(graph.getKnoten()[0][0]);
-
-        Random rn = new Random();
-        while (this.pfadKnoten.get(this.pfadKnoten.size()-1)!=this.graph.getKnoten()[1][2]) {
-            neueOptionenBerechnen();
-            System.out.println(optionen.size());
-            System.out.println(optionen);
-            if (!isFinished()) {
-                int random = rn.nextInt(this.optionen.size());
-                this.pfadKanten.add(this.optionen.get(random));
-                this.pfadKnoten.add(this.optionen.get(random).getKnoten_2());
-            } else {
-                berechneBottleneck();
-                updateGraph();
-                System.out.println("Der maximale Fluss wurde berechnet: ");
-                System.out.println("Maximaler Fluss = "+this.maxFlow);
-                System.exit(0);
+    public void neueOptionenBerechnen() {
+        this.optionen.clear();
+        for (Kante kante : graph.getKanten()) {
+            if (kante.getKnoten_1()==pfadKnoten.get(pfadKnoten.size()-1)) {
+                if (kante.getRestKapazitaet()>0) {
+                    optionen.add(kante);
+                }
             }
         }
     }
 
     public void berechneBottleneck() {
         this.bottleneckValue=0;
-        for (Kante kante : this.pfadKanten) {
-            if (kante.getKapazitaet()>this.bottleneckValue) {
-                this.bottleneckValue = kante.getKapazitaet();
+        for (Kante kante : pfadKanten) {
+            if (kante.getRestKapazitaet()>bottleneckValue) {
+                bottleneckValue = kante.getRestKapazitaet();
             }
         }
     }
 
     public void updateGraph() {
-        for (Kante kanteGraph : this.graph.getKanten()) {
-            for (Kante kantePfad : this.pfadKanten) {
+        for (Kante kanteGraph : graph.getKanten()) {
+            for (Kante kantePfad : pfadKanten) {
                 if (kanteGraph==kantePfad) {
-                    kanteGraph.setAuslastung(bottleneckValue);
+                    kanteGraph.setAuslastung(+bottleneckValue);
+                    kanteGraph.setRestKapazitaet(kanteGraph.getRestKapazitaet()-bottleneckValue);
                 }
             }
         }
@@ -119,10 +142,10 @@ public class Algorithmus {
     }
 
     public boolean isFinished() {
-        if (this.optionen.size()==0) {
-            this.finished = true;
+        if (optionen.size()==0) {
+            finished = true;
         } else {
-            this.finished = false;
+            finished = false;
         }
         return finished;
     }
@@ -132,7 +155,7 @@ public class Algorithmus {
     // -----------------------------------------------------------------------------------------------------
     // Dieser Abschnitt dient nur zum Testen.
     // -----------------------------------------------------------------------------------------------------
-    public void KnotenInfosAusgeben() {
+    public void knotenInfosAusgeben() {
         System.out.println();
         System.out.println("--------------------------------------------------------");
         System.out.println("Knoten");
@@ -153,7 +176,7 @@ public class Algorithmus {
         System.out.println();
     }
 
-    public void KantenInfosAusgeben() {
+    public void kantenInfosAusgeben() {
         System.out.println();
         System.out.println("--------------------------------------------------------");
         System.out.println("Kanten");
@@ -162,8 +185,8 @@ public class Algorithmus {
 
         for (Kante kante : graph.getKanten()) {
             System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
-                    + kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / Kapazitaet: "
-                    + kante.getKapazitaet() + "]");
+                    + kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
+                    + kante.getRestKapazitaet() + " / maximale Kapazitaet: " + kante.getMaxKapazitaet() + "]");
         }
 
         System.out.println();

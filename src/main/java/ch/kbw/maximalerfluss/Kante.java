@@ -22,24 +22,30 @@ public class Kante {
      * Das ist die Auslastung einer Kante.
      */
     private int auslastung;
+
+	/**
+	 * Das ist die restliche Kapazitaet einer Kante.
+	 */
+	private int restKapazitaet;
     
     /**
      * Das ist die Kapazitaet einer Kante.
      */
-    private final int kapazitaet;
+    private final int maxKapazitaet;
     
     /**
      * Das ist der Standardkonstruktor.
      * 
      * @param knoten_1 Das ist der erste Knote dieser Kante.
      * @param knoten_2 Das ist der zweite Knote dieser Kante.
-     * @param kapazitaet Das ist die Kapazitaet dieser Kante.
+     * @param maxKapazitaet Das ist die Kapazitaet dieser Kante.
      */
-    public Kante(Knoten knoten_1, Knoten knoten_2, int kapazitaet) {
+    public Kante(Knoten knoten_1, Knoten knoten_2, int maxKapazitaet) {
         this.knoten_1 = knoten_1;
         this.knoten_2 = knoten_2;
         this.auslastung = 0;
-        this.kapazitaet = kapazitaet;
+		this.restKapazitaet = maxKapazitaet;
+        this.maxKapazitaet = maxKapazitaet;
     }
 
     /**
@@ -58,6 +64,24 @@ public class Kante {
 	 */
 	public void setAuslastung(int auslastung) {
 		this.auslastung = auslastung;
+	}
+
+	/**
+	 * Das ist der Getter fuer die restliche Kapazitaet einer Kante.
+	 *
+	 * @return Das ist die restliche Kapazitaet einer Kante.
+	 */
+	public int getRestKapazitaet() {
+		return restKapazitaet;
+	}
+
+	/**
+	 * Das ist der Setter fuer die restliche Kapazitaet einer Kante.
+	 *
+	 * @param restKapazitaet Das ist die restliche Kapazitaet einer Kante.
+	 */
+	public void setRestKapazitaet(int restKapazitaet) {
+		this.restKapazitaet = restKapazitaet;
 	}
 
     /**
@@ -83,7 +107,7 @@ public class Kante {
      * 
      * @return Das ist die Kapazitaet einer Kante.
      */
-	public int getKapazitaet() {
-		return kapazitaet;
+	public int getMaxKapazitaet() {
+		return maxKapazitaet;
 	}
 }
