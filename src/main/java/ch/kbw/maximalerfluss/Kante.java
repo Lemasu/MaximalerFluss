@@ -32,6 +32,13 @@ public class Kante {
      * Das ist die Kapazitaet einer Kante.
      */
     private final int maxKapazitaet;
+
+	/**
+	 * Das ist der boolean einer Kante.
+	 * Er wird verwendet, dass eine Kante nicht mehrmals
+	 * in einem Pfad zufällig gewählt wird.
+	 */
+	private boolean visited;
     
     /**
      * Das ist der Standardkonstruktor.
@@ -46,6 +53,7 @@ public class Kante {
         this.auslastung = 0;
 		this.restKapazitaet = maxKapazitaet;
         this.maxKapazitaet = maxKapazitaet;
+		this.visited = false;
     }
 
 	/**
@@ -109,5 +117,23 @@ public class Kante {
      */
 	public int getMaxKapazitaet() {
 		return maxKapazitaet;
+	}
+
+	/**
+	 * Das ist der Getter fuer den boolean visited einer Kante.
+	 *
+	 * @return Das ist der boolean visited einer Kante.
+	 */
+	public boolean getVisited() {
+		return visited;
+	}
+
+	/**
+	 * Das ist der Setter fuer den boolean visited einer Kante.
+	 *
+	 * @param visited Das ist der boolean visited einer Kante.
+	 */
+	public void setVisited(boolean visited) {
+		this.visited = visited;
 	}
 }

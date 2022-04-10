@@ -45,6 +45,7 @@ public class Algorithmus {
         while (true) {
             knotenInfosAusgeben();
             kantenInfosAusgeben();
+            rueckKantenInfosAusgeben();
             neuerPfadBerechnen();
 
             berechneBottleneck();
@@ -59,10 +60,19 @@ public class Algorithmus {
     public void neuerPfadBerechnen() {
         pfadKnoten.clear();
         pfadKanten.clear();
+        for (Kante kante : graph.getKanten()) {
+            kante.setVisited(false);
+        }
+        for (Kante kante : graph.getRueckKanten()) {
+            kante.setVisited(false);
+        }
 
         pfadKnoten.add(startKnoten);
 
+        kantenInfosAusgeben();
+
         Random rn = new Random();
+
         while (pfadKnoten.get(pfadKnoten.size()-1)!=zielKnoten) {
             neueOptionenBerechnen();
             System.out.println(optionen.size());
@@ -72,6 +82,7 @@ public class Algorithmus {
                 System.out.println(optionen.get(random));
                 System.out.println(optionen.get(random).getKnoten_2().getId() );
                 pfadKanten.add(optionen.get(random));
+                optionen.get(random).setVisited(true);
                 pfadKnoten.add(optionen.get(random).getKnoten_2());
             } else {
                 berechneBottleneck();
@@ -117,7 +128,14 @@ public class Algorithmus {
         this.optionen.clear();
         for (Kante kante : graph.getKanten()) {
             if (kante.getKnoten_1()==pfadKnoten.get(pfadKnoten.size()-1)) {
-                if (kante.getRestKapazitaet()>0) {
+                if (kante.getRestKapazitaet()>0 && kante.getVisited()==false) {
+                    optionen.add(kante);
+                }
+            }
+        }
+        for (Kante kante : graph.getRueckKanten()) {
+            if (kante.getKnoten_1()==pfadKnoten.get(pfadKnoten.size()-1)) {
+                if (kante.getRestKapazitaet()>0 && kante.getVisited()==false) {
                     optionen.add(kante);
                 }
             }
@@ -206,7 +224,8 @@ public class Algorithmus {
         for (Kante kante : graph.getKanten()) {
             System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
                     + kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
-                    + kante.getRestKapazitaet() + " / maximale Kapazitaet: " + kante.getMaxKapazitaet() + "]");
+                    + kante.getRestKapazitaet() + " / maximale Kapazitaet: " +
+                    kante.getMaxKapazitaet() + " / visited: " + kante.getVisited() + "]");
         }
 
         System.out.println();
@@ -224,7 +243,8 @@ public class Algorithmus {
         for (Kante kante : graph.getRueckKanten()) {
             System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
                     + kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
-                    + kante.getRestKapazitaet() + " / maximale Kapazitaet: " + kante.getMaxKapazitaet() + "]");
+                    + kante.getRestKapazitaet() + " / maximale Kapazitaet: " +
+                    kante.getMaxKapazitaet() + " / visited: " + kante.getVisited() + "]");
         }
 
         System.out.println();

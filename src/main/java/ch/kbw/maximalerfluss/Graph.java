@@ -258,7 +258,8 @@ public class Graph {
 		for (Kante kante : kanten) {
 			System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
 					+ kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
-					+ kante.getRestKapazitaet() + " / maximale Kapazitaet: " + kante.getMaxKapazitaet() + "]");
+					+ kante.getRestKapazitaet() + " / maximale Kapazitaet: " +
+					kante.getMaxKapazitaet() + " / visited: " + kante.getVisited() + "]");
 		}
 
 		System.out.println();
@@ -291,7 +292,8 @@ public class Graph {
 		for (Kante kante : rueckKanten) {
 			System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
 					+ kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
-					+ kante.getRestKapazitaet() + " / maximale Kapazitaet: " + kante.getMaxKapazitaet() + "]");
+					+ kante.getRestKapazitaet() + " / maximale Kapazitaet: " +
+					kante.getMaxKapazitaet() + " / visited: " + kante.getVisited() + "]");
 		}
 
 		System.out.println();
