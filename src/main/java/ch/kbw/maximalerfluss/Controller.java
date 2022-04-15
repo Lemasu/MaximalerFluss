@@ -2,30 +2,21 @@ package ch.kbw.maximalerfluss;
 
 import java.util.ArrayList;
 
-import com.brunomnsilva.smartgraph.containers.ContentResizerPane;
-import com.brunomnsilva.smartgraph.containers.ContentZoomPane;
 import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.SubScene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 /**
@@ -261,12 +252,39 @@ public class Controller {
 		
 		// alle Knoten holen
 		Knoten[][] knoten = model.getGraph().getKnoten();
+				
+		// erstelle eine ArrayList, um die Knoten, welche mit Hilfe von JavaFXSmartGraph ausgegeben werden, abzuspeichern.
+		ArrayList<Vertex<Knoten>> nodes = new ArrayList<Vertex<Knoten>>();
+		
+		// erstelle Variablen, um die Knoten im Matrixform zu platzieren.
+		// ArrayList fuer die Position der Knoten
+		ArrayList<Double> x_positionen = new ArrayList<Double>();
+		ArrayList<Double> y_positionen = new ArrayList<Double>();
+		// Veraenderung von X und Y in Relation zur Anzahl der Knoten
+		double veraenderung_x = 400 / knoten[0].length;
+		double veraenderung_y = 400 / knoten[0].length;
+		// Position von einem Knoten
+		double x = 100;
+		double y = 100;
 		
 		// fuege jeden Knoten einzeln hinzu
 		for (int i = 0; i < knoten.length; i++) {
 			for (int j = 0; j < knoten[i].length; j++) {
-				graph.insertVertex(knoten[i][j]);
+				// erstelle den Knoten fuer die Ausgabe auf dem Graphen, der eigentlicher Knoten wurde aber bereits erstellt
+				nodes.add(graph.insertVertex(knoten[i][j]));
+				
+				// speichere die Koordinate des Knotens ab
+				x_positionen.add(x);
+				y_positionen.add(y);
+				
+				// passt die X-Koordinate dem naechsten Knoten an
+				x += veraenderung_x;
 			}
+			// setze die X-Koordinate wieder auf 100 fuer den ersten Knoten einer Zeile
+			x = 100;
+			
+			// passt die X-Koordinate der naechsten Zeile an
+			y += veraenderung_y;
 		}
 				
 		// lade die Properties-Datei
@@ -274,7 +292,7 @@ public class Controller {
 		
 		// erstelle die Darstellung aus dem Graphen und der Properties-Datei
 		SmartGraphPanel<Knoten, Kante> graphView = new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy());
-		
+				
 		// gebe den Graphen auf einer SubScene aus
 		SubScene subscene = new SubScene(new SmartGraphDemoContainer(graphView), 700, 600);
 			
@@ -286,6 +304,11 @@ public class Controller {
 		
 		// gebe den neuerstellten Graphen auf dem GUI aus
 		hbox.getChildren().add(subscene);
+		
+		// platziere alle Knoten an die vorhin berechneten Koordinaten
+		for (int i = 0; i < nodes.size(); i++) {
+			graphView.setVertexPosition(nodes.get(i), x_positionen.get(i), y_positionen.get(i));
+		}
 	}
 
 //	/**
