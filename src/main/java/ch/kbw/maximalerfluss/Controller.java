@@ -380,15 +380,15 @@ public class Controller {
 //		}
 //	}
 
-	/**
-	 * Diese Methode zeichnet alle Kanten eines ArrayLists, welche ihm uebergeben
-	 * wird, im Graphen.
-	 * 
-	 * @param kanten Das sind die Kanten, welche gezeichnet werden sollen.
-	 * @param farbe  Das ist die Farbe, welche die Kanten besitzen sollen.
-	 * @param informationen_speichern Dieser Boolean sagt, ob die Informationen zu der gezeichnete Kante gespeichert werden soll.
-	 */
-	private void kantenZeichnen(ArrayList<Kante> kanten, Paint farbe, boolean informationen_speichern) {
+//	/**
+//	 * Diese Methode zeichnet alle Kanten eines ArrayLists, welche ihm uebergeben
+//	 * wird, im Graphen.
+//	 * 
+//	 * @param kanten Das sind die Kanten, welche gezeichnet werden sollen.
+//	 * @param farbe  Das ist die Farbe, welche die Kanten besitzen sollen.
+//	 * @param informationen_speichern Dieser Boolean sagt, ob die Informationen zu der gezeichnete Kante gespeichert werden soll.
+//	 */
+//	private void kantenZeichnen(ArrayList<Kante> kanten, Paint farbe, boolean informationen_speichern) {
 //		// setzt die Farbe vom Stroke auf die gewuenschte Farbe
 //		gc.setStroke(farbe);
 //		
@@ -427,7 +427,7 @@ public class Controller {
 //			// zeichne die Kante
 //			gc.strokeLine(x_position_1, y_position_1, x_position_2, y_position_2);
 //		}
-	}
+//	}
 
 //	/**
 //	 * Diese Methode zeichnet den Startknoten und den Zielknoten des Graphen.
