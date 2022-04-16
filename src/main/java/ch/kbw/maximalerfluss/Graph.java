@@ -70,6 +70,9 @@ public class Graph {
 		// generiere die Rückkanten des Graphen
 		rueckKantenGenerieren();
 
+		// generiere die Adjazenzlisten der Knoten
+		adjazenzListenGenerieren();
+
 		// -----------------------------------------------------------------------------------------------------
 		// Dieser Abschnitt dient nur zum Testen.
 		// -----------------------------------------------------------------------------------------------------
@@ -301,6 +304,25 @@ public class Graph {
 		System.out.println();
 
 		// -----------------------------------------------------------------------------------------------------
+	}
+
+	private void adjazenzListenGenerieren() {
+		for (Knoten[] knotens : knoten) {
+			for (Knoten knoten : knotens) {
+				for (Kante kante : kanten) {
+					if (kante.getKnoten_1()==knoten) {
+						knoten.adjazenzListeKnoten.add(kante.getKnoten_2());
+						knoten.adjazenzListeKanten.add(kante);
+					}
+				}
+				for (Kante kante : rueckKanten) {
+					if (kante.getKnoten_1()==knoten) {
+						knoten.adjazenzListeKnoten.add(kante.getKnoten_2());
+						knoten.adjazenzListeKanten.add(kante);
+					}
+				}
+			}
+		}
 	}
 
 	/**

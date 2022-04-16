@@ -16,6 +16,7 @@ import java.util.Random;
 public class Algorithmus {
 
     private Graph graph;
+    private ArrayList<ArrayList<Kante>> pfadKantenOptionen;
     private ArrayList<Knoten> pfadKnoten;
     private ArrayList<Kante> pfadKanten;
     private ArrayList<Kante> optionen;
@@ -33,6 +34,7 @@ public class Algorithmus {
         graph = new Graph();
         graph = graphOriginal;
 
+        pfadKantenOptionen = new ArrayList<ArrayList<Kante>>();
         pfadKnoten = new ArrayList<>();
         pfadKanten = new ArrayList<>();
         optionen = new ArrayList<>();
@@ -46,7 +48,10 @@ public class Algorithmus {
             knotenInfosAusgeben();
             kantenInfosAusgeben();
             rueckKantenInfosAusgeben();
-            neuerPfadBerechnen();
+
+            pfadKnoten.clear();
+            pfadKanten.clear();
+            nextIteration();
 
             berechneBottleneck();
             updateGraph();
@@ -54,6 +59,41 @@ public class Algorithmus {
             rueckKantenInfosAusgeben();
             counter++;
             System.out.println(counter);
+        }
+    }
+
+    public void nextIteration() {
+        pfadKantenOptionen.clear();
+        depthSearch(startKnoten);
+        System.out.println(pfadKantenOptionen.size());
+        if (pfadKantenOptionen.size()==0) {
+            System.out.println("Der maximale Fluss wurde berechnet: ");
+            System.out.println("Maximaler Fluss = "+maxFlow);
+            System.exit(0);
+        }
+        Random rn = new Random();
+        int random = rn.nextInt(pfadKantenOptionen.size());
+        pfadKanten = (ArrayList<Kante>) pfadKantenOptionen.get(random).clone();
+    }
+
+    private void depthSearch(Knoten start) {
+        pfadKnoten.add(start);
+        System.out.println(pfadKnoten.size());
+        if (start == zielKnoten) {
+            pfadKantenOptionen.add((ArrayList<Kante>) pfadKanten.clone());
+            return;
+        }
+        if (start.getAdjazenzListeKanten().size()==0) {
+            return;
+        }
+        for (Kante kante : start.getAdjazenzListeKanten()) {
+            if (pfadKnoten.contains(kante.getKnoten_2())||kante.getRestKapazitaet()==0) {
+                continue;
+            }
+            pfadKanten.add(kante);
+            depthSearch(kante.getKnoten_2());
+            pfadKanten.remove(kante);
+            pfadKnoten.remove(kante.getKnoten_2());
         }
     }
 
@@ -94,6 +134,24 @@ public class Algorithmus {
         }
     }
 
+    public void neueOptionenBerechnen() {
+        this.optionen.clear();
+        for (Kante kante : graph.getKanten()) {
+            if (kante.getKnoten_1()==pfadKnoten.get(pfadKnoten.size()-1)) {
+                if (kante.getRestKapazitaet()>0 && kante.getVisited()==false) {
+                    optionen.add(kante);
+                }
+            }
+        }
+        for (Kante kante : graph.getRueckKanten()) {
+            if (kante.getKnoten_1()==pfadKnoten.get(pfadKnoten.size()-1)) {
+                if (kante.getRestKapazitaet()>0 && kante.getVisited()==false) {
+                    optionen.add(kante);
+                }
+            }
+        }
+    }
+
     public void startUndZielKnotenBestimmen() {
         for (Knoten[] knotens : graph.getKnoten()) {
             for (Knoten knoten : knotens) {
@@ -124,28 +182,10 @@ public class Algorithmus {
         }
     }
 
-    public void neueOptionenBerechnen() {
-        this.optionen.clear();
-        for (Kante kante : graph.getKanten()) {
-            if (kante.getKnoten_1()==pfadKnoten.get(pfadKnoten.size()-1)) {
-                if (kante.getRestKapazitaet()>0 && kante.getVisited()==false) {
-                    optionen.add(kante);
-                }
-            }
-        }
-        for (Kante kante : graph.getRueckKanten()) {
-            if (kante.getKnoten_1()==pfadKnoten.get(pfadKnoten.size()-1)) {
-                if (kante.getRestKapazitaet()>0 && kante.getVisited()==false) {
-                    optionen.add(kante);
-                }
-            }
-        }
-    }
-
     public void berechneBottleneck() {
-        this.bottleneckValue=0;
+        this.bottleneckValue=20;
         for (Kante kante : pfadKanten) {
-            if (kante.getRestKapazitaet()>bottleneckValue) {
+            if (kante.getRestKapazitaet()<bottleneckValue) {
                 bottleneckValue = kante.getRestKapazitaet();
             }
         }
