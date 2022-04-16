@@ -3,9 +3,8 @@ package ch.kbw.maximalerfluss;
 import java.util.ArrayList;
 
 import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
+import com.brunomnsilva.smartgraph.graph.*;
 import com.brunomnsilva.smartgraph.graph.Graph;
-import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
-import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
@@ -14,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -21,111 +21,111 @@ import javafx.scene.paint.Paint;
 
 /**
  * Das ist der Controller der Applikation.
- * 
+ * <p>
  * Diese Klasse basiert auf das Projekt der Gruppe "Zyklensuche".
- * 
+ *
  * @author Alex Schaub
  */
 public class Controller {
-	/**
-	 * Das ist das Model dieses Controllers.
-	 */
-	private Model model;
+    /**
+     * Das ist das Model dieses Controllers.
+     */
+    private Model model;
 
-	/**
-	 * Das sind die Knoten des Graphen.
-	 */
-	private Knoten[][] knoten;
+    /**
+     * Das sind die Knoten des Graphen.
+     */
+    private Knoten[][] knoten;
 
-	/**
-	 * Das sind die Positionen der einzelnen Knoten in X-Richtung des Graphen.
-	 */
-	private ArrayList<ArrayList<Integer>> x_positionen;
+    /**
+     * Das sind die Positionen der einzelnen Knoten in X-Richtung des Graphen.
+     */
+    private ArrayList<ArrayList<Integer>> x_positionen;
 
-	/**
-	 * Das sind die Positionen der einzelnen Knoten in Y-Richtung des Graphen.
-	 */
-	private ArrayList<ArrayList<Integer>> y_positionen;
+    /**
+     * Das sind die Positionen der einzelnen Knoten in Y-Richtung des Graphen.
+     */
+    private ArrayList<ArrayList<Integer>> y_positionen;
 
-	/**
-	 * Das sind die Kanten des Graphen.
-	 */
-	private ArrayList<Kante> kanten;
-	
-	/**
-	 * Das ist die Liste mit den Informationen von den Kanten.
-	 * 
-	 * Dieser Liste wird von der ListView benoetigt.
-	 */
-	private ObservableList<String> informationen_kanten;
+    /**
+     * Das sind die Kanten des Graphen.
+     */
+    private ArrayList<Kante> kanten;
 
-	/**
-	 * Das ist die Groesse der Kreise fuer die Knoten des Graphen.
-	 */
-	private int kreisgroesse;
+    /**
+     * Das ist die Liste mit den Informationen von den Kanten.
+     * <p>
+     * Dieser Liste wird von der ListView benoetigt.
+     */
+    private ObservableList<String> informationen_kanten;
 
-	/**
-	 * Dieser Boolean zeigt auf, ob die Methode "graphZeichnen()" bereits aufgerufen
-	 * wurde.
-	 */
-	private boolean graph_zeichnen_aufgerufen;
+    /**
+     * Das ist die Groesse der Kreise fuer die Knoten des Graphen.
+     */
+    private int kreisgroesse;
 
-	/**
-	 * Dieser Boolean zeigt auf, ob die Methode "graphMitMaximalerFlussZeichnen()"
-	 * bereits aufgerufen wurde.
-	 */
-	private boolean graph_mit_maximaler_fluss_zeichnen_aufgerufen;
-	
-	/**
-	 * Diese Variable sagt, welcher Knoten gesetzt werden soll.
-	 * 
-	 * 0 = Start
-	 * 1 = normaler Knoten
-	 * 2 = Ziel
-	 */
-	private int knoten_setzen;
+    /**
+     * Dieser Boolean zeigt auf, ob die Methode "graphZeichnen()" bereits aufgerufen
+     * wurde.
+     */
+    private boolean graph_zeichnen_aufgerufen;
 
-	/**
-	 * Das ist der HBox, in dem der Graph dargestellt wird.
-	 */
-	@FXML
-	private HBox hbox;
-	
-	/**
-	 * Das ist der Knopf, um den Startknoten zu setzen.
-	 */
-	@FXML
-	private Button startknoten_setzen;
-	
-	/**
-	 * Das ist der Knopf, um den Zielknoten zu setzen.
-	 */
-	@FXML
-	private Button zielknoten_setzen;
+    /**
+     * Dieser Boolean zeigt auf, ob die Methode "graphMitMaximalerFlussZeichnen()"
+     * bereits aufgerufen wurde.
+     */
+    private boolean graph_mit_maximaler_fluss_zeichnen_aufgerufen;
 
-	/**
-	 * Das ist der Textfeld fuer die Anzahl der Zeilen im Graphen, welcher generiert werden soll.
-	 */
-	@FXML
-	private TextField anzahl_zeilen;
+    /**
+     * Diese Variable sagt, welcher Knoten gesetzt werden soll.
+     * <p>
+     * 0 = Start
+     * 1 = normaler Knoten
+     * 2 = Ziel
+     */
+    private int knoten_setzen;
 
-	/**
-	 * Das ist der Textfeld fuer die Anzahl der Spalten im Graphen, welcher generiert werden soll.
-	 */
-	@FXML
-	private TextField anzahl_spalten;
+    /**
+     * Das ist der HBox, in dem der Graph dargestellt wird.
+     */
+    @FXML
+    private HBox hbox;
 
-	/**
-	 * Dieses Label dient dazu, dem Nutzer Informationen zu uebermitteln.
-	 */
-	@FXML
-	private Label info;
+    /**
+     * Das ist der Knopf, um den Startknoten zu setzen.
+     */
+    @FXML
+    private Button startknoten_setzen;
 
-	/**
-	 * Diese Methode wird bei der Initalisierung dieses Controllers aufgerufen.
-	 */
-	@FXML
-	public void initialize() {
+    /**
+     * Das ist der Knopf, um den Zielknoten zu setzen.
+     */
+    @FXML
+    private Button zielknoten_setzen;
+
+    /**
+     * Das ist der Textfeld fuer die Anzahl der Zeilen im Graphen, welcher generiert werden soll.
+     */
+    @FXML
+    private TextField anzahl_zeilen;
+
+    /**
+     * Das ist der Textfeld fuer die Anzahl der Spalten im Graphen, welcher generiert werden soll.
+     */
+    @FXML
+    private TextField anzahl_spalten;
+
+    /**
+     * Dieses Label dient dazu, dem Nutzer Informationen zu uebermitteln.
+     */
+    @FXML
+    private Label info;
+
+    /**
+     * Diese Methode wird bei der Initalisierung dieses Controllers aufgerufen.
+     */
+    @FXML
+    public void initialize() {
 //		// convert canvas from fxml file to GraphicsContext
 //		gc = canvas.getGraphicsContext2D();
 //
@@ -150,166 +150,182 @@ public class Controller {
 //		    	knotenAnklicken(event);
 //		    }
 //		});
-	}
+    }
 
-	/**
-	 * Mit dieser Methode wird das Model fuer diesem Controller gesetzt.
-	 * 
-	 * @param model Das ist das Model dieses Controllers.
-	 */
-	public void setModel(Model model) {
-		this.model = model;
-	}
+    /**
+     * Mit dieser Methode wird das Model fuer diesem Controller gesetzt.
+     *
+     * @param model Das ist das Model dieses Controllers.
+     */
+    public void setModel(Model model) {
+        this.model = model;
+    }
 
-	/**
-	 * Mit dieser Methode wird ein neuer Graph generiert und ausgegeben.
-	 */
-	@FXML
-	public void generate() {
-		// initialisiere die Zeilen und Spalten des Graphen
-		int zeilen = 0;
-		int spalten = 0;
-		
-		// ueberpruefe, ob nur Zahlen eingegeben wurde und setzte die Zeilen und Spalten auf die Inhalte der Textfelder
-		try {
-			zeilen = Integer.parseInt(anzahl_zeilen.getText());
-			spalten = Integer.parseInt(anzahl_spalten.getText());
-		} catch (NumberFormatException e) {
-			// falls nicht nur Zahlen eingegeben wurde, gebe eine entsprechende Meldung aus
-			info.setText("Bitte geben Sie nur Zahlen ein.");
-			
-			// breche diese Methode ab, da nicht nur Zahlen fuer die Generierung uebergeben wurde
-			return;
-		}
-		
-		/*
-		 * ueberpruefe, ob einer der folgenden Bedingungen erfuellt sind:
-		 * - Zeilen > 8
-		 * - Spalten > 8
-		 * - Zeilen = 1 und spalten = 1
-		 * - Zeilen < 1
-		 * - Spalten < 1
-		 * 
-		 * Falls einer der obigen Bedingungen erfuellt sind, dann wird eine Meldung ausgegeben und diese Methode abgebrochen.
-		 * Die Methode wird in diesem Fall abgebrochen, da die Matrix dann entweder zu gross wird oder gar keinen Sinn machen wird.
-		 */
-		if (zeilen > 8 || spalten > 8 || (zeilen == 1 && spalten == 1) || zeilen < 1 || spalten < 1) {
-			// falls eine der obigen Bedingungen zutrifft, wird dem Benutzer diese Meldung gezeigt.
-			info.setText("Bitte achten Sie darauf, dass die Anzahl Zeilen und Spalten nicht grösser als 8 ist, dass entweder die Anzahl Zeilen oder die Anzahl Spalten grösser als 1 ist und, dass die Anzahl Zeilen und Spalten nicht kleiner als 1 ist.");
-			
-			// breche die Methode ab, da keine sinnvolle Matrix mit den gegebenen Zahlen generiert werden kann
-			return;
-		}
-		
-		// generiert den Graphen
-		model.getGraph().graphGenerieren(zeilen, spalten);
-		
-		// Graph zeichnen
-		graphZeichnen();
+    /**
+     * Mit dieser Methode wird ein neuer Graph generiert und ausgegeben.
+     */
+    @FXML
+    public void generate() {
+        // initialisiere die Zeilen und Spalten des Graphen
+        int zeilen = 0;
+        int spalten = 0;
 
-		// -----------------------------------------------------------------------------------------------------
-		// Dieser Abschnitt dient aktuell nur zum Testen.
-		// -----------------------------------------------------------------------------------------------------
+        // ueberpruefe, ob nur Zahlen eingegeben wurde und setzte die Zeilen und Spalten auf die Inhalte der Textfelder
+        try {
+            zeilen = Integer.parseInt(anzahl_zeilen.getText());
+            spalten = Integer.parseInt(anzahl_spalten.getText());
+        } catch (NumberFormatException e) {
+            // falls nicht nur Zahlen eingegeben wurde, gebe eine entsprechende Meldung aus
+            info.setText("Bitte geben Sie nur Zahlen ein.");
 
-		// Graph zeichnen
+            // breche diese Methode ab, da nicht nur Zahlen fuer die Generierung uebergeben wurde
+            return;
+        }
+
+        /*
+         * ueberpruefe, ob einer der folgenden Bedingungen erfuellt sind:
+         * - Zeilen > 8
+         * - Spalten > 8
+         * - Zeilen = 1 und spalten = 1
+         * - Zeilen < 1
+         * - Spalten < 1
+         *
+         * Falls einer der obigen Bedingungen erfuellt sind, dann wird eine Meldung ausgegeben und diese Methode abgebrochen.
+         * Die Methode wird in diesem Fall abgebrochen, da die Matrix dann entweder zu gross wird oder gar keinen Sinn machen wird.
+         */
+        if (zeilen > 8 || spalten > 8 || (zeilen == 1 && spalten == 1) || zeilen < 1 || spalten < 1) {
+            // falls eine der obigen Bedingungen zutrifft, wird dem Benutzer diese Meldung gezeigt.
+            info.setText("Bitte achten Sie darauf, dass die Anzahl Zeilen und Spalten nicht grösser als 8 ist, dass entweder die Anzahl Zeilen oder die Anzahl Spalten grösser als 1 ist und, dass die Anzahl Zeilen und Spalten nicht kleiner als 1 ist.");
+
+            // breche die Methode ab, da keine sinnvolle Matrix mit den gegebenen Zahlen generiert werden kann
+            return;
+        }
+
+        // generiert den Graphen
+        model.getGraph().graphGenerieren(zeilen, spalten);
+
+        // Graph zeichnen
+        graphZeichnen();
+
+        // -----------------------------------------------------------------------------------------------------
+        // Dieser Abschnitt dient aktuell nur zum Testen.
+        // -----------------------------------------------------------------------------------------------------
+
+        // Graph zeichnen
 //		graphMitMaximalerFlussZeichnen();
 
-		// -----------------------------------------------------------------------------------------------------
-	}
-	
-	/**
-	 * Mit dieser Methode kann der Nutzer sagen, dass er einen Startknoten setzen moechte.
-	 */
-	@FXML
-	public void startknotenSetzen() {
-		// setze den gewuenschten Knoten auf den Wert fuer einen Startknoten
-		knoten_setzen = 0;
-		
-		// aktiviere den Knopf (Zielknoten), welches nicht angeklickt wurde, und deaktiviere den Knopf (Startknoten), welches angeklickt wurde
-		startknoten_setzen.setDisable(true);
-		zielknoten_setzen.setDisable(false);
-	}
-	
-	/**
-	 * Mit dieser Methode kann der Nutzer sagen, dass er einen Zielknoten setzen moechte.
-	 */
-	@FXML
-	public void zielknotenSetzen() {
-		// setze den gewuenschten Knoten auf den Wert fuer einen Zielknoten
-		knoten_setzen = 2;
-		
-		// aktiviere den Knopf (Startknoten), welches nicht angeklickt wurde, und deaktiviere den Knopf (Zielknoten), welches angeklickt wurde
-		startknoten_setzen.setDisable(false);
-		zielknoten_setzen.setDisable(true);
-	}
+        // -----------------------------------------------------------------------------------------------------
+    }
 
-	/**
-	 * Diese Methode gibt den Graphen mithilfe von JavaFXSmartGraph in einem SubScene aus.
-	 */
-	private void graphZeichnen() {
-		// Graph erstellen
-		Graph<Knoten, Kante> graph = new GraphEdgeList<>();
-		
-		// alle Knoten holen
-		Knoten[][] knoten = model.getGraph().getKnoten();
-				
-		// erstelle eine ArrayList, um die Knoten, welche mit Hilfe von JavaFXSmartGraph ausgegeben werden, abzuspeichern.
-		ArrayList<Vertex<Knoten>> nodes = new ArrayList<Vertex<Knoten>>();
-		
-		// erstelle Variablen, um die Knoten im Matrixform zu platzieren.
-		// ArrayList fuer die Position der Knoten
-		ArrayList<Double> x_positionen = new ArrayList<Double>();
-		ArrayList<Double> y_positionen = new ArrayList<Double>();
-		// Veraenderung von X und Y in Relation zur Anzahl der Knoten
-		double veraenderung_x = 400 / knoten[0].length;
-		double veraenderung_y = 400 / knoten[0].length;
-		// Position von einem Knoten
-		double x = 100;
-		double y = 100;
-		
-		// fuege jeden Knoten einzeln hinzu
-		for (int i = 0; i < knoten.length; i++) {
-			for (int j = 0; j < knoten[i].length; j++) {
-				// erstelle den Knoten fuer die Ausgabe auf dem Graphen, der eigentlicher Knoten wurde aber bereits erstellt
-				nodes.add(graph.insertVertex(knoten[i][j]));
-				
-				// speichere die Koordinate des Knotens ab
-				x_positionen.add(x);
-				y_positionen.add(y);
-				
-				// passt die X-Koordinate dem naechsten Knoten an
-				x += veraenderung_x;
-			}
-			// setze die X-Koordinate wieder auf 100 fuer den ersten Knoten einer Zeile
-			x = 100;
-			
-			// passt die X-Koordinate der naechsten Zeile an
-			y += veraenderung_y;
-		}
-				
-		// lade die Properties-Datei
-		SmartGraphProperties properties = new SmartGraphProperties();
-		
-		// erstelle die Darstellung aus dem Graphen und der Properties-Datei
-		SmartGraphPanel<Knoten, Kante> graphView = new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy());
-				
-		// gebe den Graphen auf einer SubScene aus
-		SubScene subscene = new SubScene(new SmartGraphDemoContainer(graphView), 700, 600);
-			
-		// ueberpruefe, ob schon einen Graphen auf dem GUI gibt
-		// loesche diesen Graphen, wenn es diesen schon gibt
-		if (hbox.getChildren().size() > 0) {
-			hbox.getChildren().remove(0);
-		}
-		
-		// gebe den neuerstellten Graphen auf dem GUI aus
-		hbox.getChildren().add(subscene);
-		
-		// platziere alle Knoten an die vorhin berechneten Koordinaten
-		for (int i = 0; i < nodes.size(); i++) {
-			graphView.setVertexPosition(nodes.get(i), x_positionen.get(i), y_positionen.get(i));
-		}
-	}
+    /**
+     * Mit dieser Methode kann der Nutzer sagen, dass er einen Startknoten setzen moechte.
+     */
+    @FXML
+    public void startknotenSetzen() {
+        // setze den gewuenschten Knoten auf den Wert fuer einen Startknoten
+        knoten_setzen = 0;
+
+        // aktiviere den Knopf (Zielknoten), welches nicht angeklickt wurde, und deaktiviere den Knopf (Startknoten), welches angeklickt wurde
+        startknoten_setzen.setDisable(true);
+        zielknoten_setzen.setDisable(false);
+    }
+
+    /**
+     * Mit dieser Methode kann der Nutzer sagen, dass er einen Zielknoten setzen moechte.
+     */
+    @FXML
+    public void zielknotenSetzen() {
+        // setze den gewuenschten Knoten auf den Wert fuer einen Zielknoten
+        knoten_setzen = 2;
+
+        // aktiviere den Knopf (Startknoten), welches nicht angeklickt wurde, und deaktiviere den Knopf (Zielknoten), welches angeklickt wurde
+        startknoten_setzen.setDisable(false);
+        zielknoten_setzen.setDisable(true);
+    }
+
+    /**
+     * Diese Methode gibt den Graphen mithilfe von JavaFXSmartGraph in einem SubScene aus.
+     */
+    private void graphZeichnen() {
+        // Graph erstellen
+        Digraph<Knoten, String> graph = new DigraphEdgeList<>();
+
+        // alle Knoten holen
+        Knoten[][] knoten = model.getGraph().getKnoten();
+
+        // alle Kanten holen
+        ArrayList<Kante> kanten = model.getGraph().getKanten();
+
+        // erstelle eine ArrayList, um die Knoten, welche mit Hilfe von JavaFXSmartGraph ausgegeben werden, abzuspeichern.
+        ArrayList<Vertex<Knoten>> nodes = new ArrayList<Vertex<Knoten>>();
+
+        // erstelle eine ArrayList, um die Knoten, welche mit Hilfe von JavaFXSmartGraph ausgegeben werden, abzuspeichern.
+        ArrayList<Edge<String, Knoten>> nodess = new ArrayList<Edge<String, Knoten>>();
+
+        // erstelle Variablen, um die Knoten im Matrixform zu platzieren.
+        // ArrayList fuer die Position der Knoten
+        ArrayList<Double> x_positionen = new ArrayList<Double>();
+        ArrayList<Double> y_positionen = new ArrayList<Double>();
+        // Veraenderung von X und Y in Relation zur Anzahl der Knoten
+        double veraenderung_x = 400 / knoten[0].length;
+        double veraenderung_y = 400 / knoten[0].length;
+        // Position von einem Knoten
+        double x = 100;
+        double y = 100;
+
+        // fuege jeden Knoten einzeln hinzu
+        for (int i = 0; i < knoten.length; i++) {
+            for (int j = 0; j < knoten[i].length; j++) {
+                // erstelle den Knoten fuer die Ausgabe auf dem Graphen, der eigentliche Knoten wurde aber bereits erstellt
+                nodes.add(graph.insertVertex(knoten[i][j]));
+
+                // speichere die Koordinate des Knotens ab
+                x_positionen.add(x);
+                y_positionen.add(y);
+
+                // passt die X-Koordinate dem naechsten Knoten an
+                x += veraenderung_x;
+            }
+            // setze die X-Koordinate wieder auf 100 fuer den ersten Knoten einer Zeile
+            x = 100;
+
+            // passt die X-Koordinate der naechsten Zeile an
+            y += veraenderung_y;
+        }
+
+        // fuege jede Kante einzeln hinzu
+        for (int i = 0; i < kanten.size(); i++) {
+            // erstelle den Knoten fuer die Ausgabe auf dem Graphen, der eigentlicher Knoten wurde aber bereits erstellt
+            System.out.println(kanten.get(i).getKnoten_1() + "" +kanten.get(i).getKnoten_2()+"");
+            nodess.add(graph.insertEdge(kanten.get(i).getKnoten_1(), kanten.get(i).getKnoten_2(), kanten.get(i).getKapazitaet() + ""));
+            //nodess.add(graph.insertEdge(kanten.get(i).getKnoten_1(), kanten.get(i).getKnoten_2(), kanten.get(i).getKapazitaet() + ""));
+        }
+
+        // lade die Properties-Datei
+        SmartGraphProperties properties = new SmartGraphProperties();
+
+        // erstelle die Darstellung aus dem Graphen und der Properties-Datei
+        SmartGraphPanel<Knoten, String> graphView = new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy());
+
+        // gebe den Graphen auf einer SubScene aus
+        SubScene subscene = new SubScene(new SmartGraphDemoContainer(graphView), 700, 600);
+
+        // ueberpruefe, ob schon einen Graphen auf dem GUI gibt
+        // loesche diesen Graphen, wenn es diesen schon gibt
+        if (hbox.getChildren().size() > 0) {
+            hbox.getChildren().remove(0);
+        }
+
+        // gebe den neuerstellten Graphen auf dem GUI aus
+        hbox.getChildren().add(subscene);
+
+        // platziere alle Knoten an die vorhin berechneten Koordinaten
+        for (int i = 0; i < nodes.size(); i++) {
+            graphView.setVertexPosition(nodes.get(i), x_positionen.get(i), y_positionen.get(i));
+        }
+
+
+    }
 
 //	/**
 //	 * Diese Methode zeichnet den Graphen mit dem maximalen Fluss auf.
@@ -451,7 +467,7 @@ public class Controller {
 //		 */
 //		knotenFaerben(2, "Z", Color.RED);
 //	}
-	
+
 //	/**
 //	 * Diese Methode faerbt einen einzelnen Knoten und beschriftet diesen mit dem gewuenschten Text.
 //	 * 
@@ -506,7 +522,7 @@ public class Controller {
 //			graphMitMaximalerFlussZeichnen();
 //		}
 //	}
-		
+
 //	/**
 //	 * Diese Methode sorgt dafuer, dass der Nutzer einen Knoten anklicken kann.
 //	 * 
