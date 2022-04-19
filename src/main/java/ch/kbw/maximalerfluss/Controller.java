@@ -252,13 +252,55 @@ public class Controller {
 		 * diesem zugegriffen werden kann.
 		 */
 		String[] position_als_text = startknoten_setzen.getText().split("\\.");
+		/*
+		 * Falls die der Nutzer mehr als zwei Zahlenbloecke oder kein Text eingegeben hatte oder als letztes Zeichen einen Punkt eingeben hatte, soll ein entsprechender Fehlermeldung auftauchen und diese Methode abgebrochen werden.
+		 */
+		if (startknoten_setzen.getText().length() <= 0 || position_als_text.length > 2 || startknoten_setzen.getText().charAt(startknoten_setzen.getText().length() - 1) == '.') {
+			info.setText("Bitte geben Sie die ID im folgenden Format ein: [Zeile].[Spalte]");
+			return;
+		}
 		int[] position = new int[2];
-		position[0] = Integer.parseInt(position_als_text[0]);
-		position[1] = Integer.parseInt(position_als_text[1]);
+		try {
+			position[0] = Integer.parseInt(position_als_text[0]);
+			position[1] = Integer.parseInt(position_als_text[1]);
+		} catch (NumberFormatException e) {
+			/*
+			 * Falls es Probleme bei Parsing vom String in Int gibt, wird der Nutzer darauf aufmerksam gemacht. Danach wird diese Methode abgebrochen.
+			 */
+			info.setText("Bitte verwenden Sie nur Zahlen und den Punkt als Trennzeichen. Bitte verwenden Sie keine Leerschläge.");
+			return;
+		} catch (IndexOutOfBoundsException e) {
+			/*
+			 * Falls nicht zwei Zahlenbloecke eingegeben wurde, wird der Nutzer darauf aufmerksam gemacht. Danach wird diese Methode abgebrochen.
+			 */
+			info.setText("Bitte geben Sie die ID im folgenden Format ein: [Zeile].[Spalte]");
+			return;
+		}
 
 		// hole die Knoten vom Model
 		Knoten[][] knoten = model.getGraph().getKnoten();
 
+		try {
+			// wandle den neuen Startknoten in einen Startknoten um
+			knoten[position[0] - 1][position[1] - 1].setKategorie(0);
+		} catch (IndexOutOfBoundsException e) {
+			/*
+			 * Falls die Zahlen zu gross oder zu klein sind und dadurch kein passender Knoten angesprochen werden kann, wird eine entsprechende Fehlermeldung ausgegeben.
+			 * 
+			 * Danach wird diese Methode abgebrochen.
+			 */
+			info.setText("Die Zahl für die Zeile muss kleiner sein als " + (knoten.length + 1) + ". Die Zahl für die Spalte muss kleiner sein als " + (knoten[0].length + 1) + ". Ausserdem müssen beide Zahlen grösser als 0 sein.");
+			return;
+		} catch (NullPointerException e) {
+			/*
+			 * Falls der Graph noch nicht generiert wurde, wird dem Nutzer mitgeteilt, dass dieser zuerst den Graph generieren muss.
+			 * 
+			 * Danach wird diese Methode abgebrochen.
+			 */
+			info.setText("Sie müssen zuerst den Graphen generieren lassen.");
+			return;
+		}
+		
 		/*
 		 * Zuerst wird ueberprueft, ob bereits ein alter Startknoten abgespeichert
 		 * wurde.
@@ -266,12 +308,9 @@ public class Controller {
 		 * Falls ein alter Startknoten abgespeichert wurde, wird dieser in einen
 		 * normalen Knoten umgewandelt.
 		 */
-		if (id_startknoten != null) {
+		if (id_startknoten != null && (id_startknoten[0] != position[0] || id_startknoten[1] != position[1])) {
 			knoten[id_startknoten[0] - 1][id_startknoten[1] - 1].setKategorie(1);
 		}
-
-		// wandle den neuen Startknoten in einen Startknoten um
-		knoten[position[0] - 1][position[1] - 1].setKategorie(0);
 
 		// setzte die ID des neuen Startknotens als ID vom neuen alten Startknoten
 		id_startknoten = position;
@@ -295,27 +334,67 @@ public class Controller {
 		 * diesem zugegriffen werden kann.
 		 */
 		String[] position_als_text = zielknoten_setzen.getText().split("\\.");
+		/*
+		 * Falls die der Nutzer mehr als zwei Zahlenbloecke oder kein Text eingegeben hatte oder als letztes Zeichen einen Punkt eingeben hatte, soll ein entsprechender Fehlermeldung auftauchen und diese Methode abgebrochen werden.
+		 */
+		if (zielknoten_setzen.getText().length() <= 0 || position_als_text.length > 2 || zielknoten_setzen.getText().charAt(zielknoten_setzen.getText().length() - 1) == '.') {
+			info.setText("Bitte geben Sie die ID im folgenden Format ein: [Zeile].[Spalte]");
+			return;
+		}
 		int[] position = new int[2];
-		position[0] = Integer.parseInt(position_als_text[0]);
-		position[1] = Integer.parseInt(position_als_text[1]);
+		try {
+			position[0] = Integer.parseInt(position_als_text[0]);
+			position[1] = Integer.parseInt(position_als_text[1]);
+		} catch (NumberFormatException e) {
+			/*
+			 * Falls es Probleme bei Parsing vom String in Int gibt, wird der Nutzer darauf aufmerksam gemacht. Danach wird diese Methode abgebrochen.
+			 */
+			info.setText("Bitte verwenden Sie nur Zahlen und den Punkt als Trennzeichen. Bitte verwenden Sie keine Leerschläge.");
+			return;
+		} catch (IndexOutOfBoundsException e) {
+			/*
+			 * Falls nicht zwei Zahlenbloecke eingegeben wurde, wird der Nutzer darauf aufmerksam gemacht. Danach wird diese Methode abgebrochen.
+			 */
+			info.setText("Bitte geben Sie die ID im folgenden Format ein: [Zeile].[Spalte]");
+			return;
+		}
 
 		// hole die Knoten vom Model
 		Knoten[][] knoten = model.getGraph().getKnoten();
 
+		try {
+			// wandle den neuen Zielknoten in einen Zielknoten um
+			knoten[position[0] - 1][position[1] - 1].setKategorie(2);
+		} catch (IndexOutOfBoundsException e) {
+			/*
+			 * Falls die Zahlen zu gross oder zu klein sind und dadurch kein passender Knoten angesprochen werden kann, wird eine entsprechende Fehlermeldung ausgegeben.
+			 * 
+			 * Danach wird diese Methode abgebrochen.
+			 */
+			info.setText("Die Zahl für die Zeile muss kleiner sein als " + (knoten.length + 1) + ". Die Zahl für die Spalte muss kleiner sein als " + (knoten[0].length + 1) + ". Ausserdem müssen beide Zahlen grösser als 0 sein.");
+			return;
+		} catch (NullPointerException e) {
+			/*
+			 * Falls der Graph noch nicht generiert wurde, wird dem Nutzer mitgeteilt, dass dieser zuerst den Graph generieren muss.
+			 * 
+			 * Danach wird diese Methode abgebrochen.
+			 */
+			info.setText("Sie müssen zuerst den Graphen generieren lassen.");
+			return;
+		}
+		
 		/*
-		 * Zuerst wird ueberprueft, ob bereits ein alter Zielknoten abgespeichert wurde.
+		 * Zuerst wird ueberprueft, ob bereits ein alter Zielknoten abgespeichert
+		 * wurde.
 		 * 
-		 * Falls ein alter Zielknoten abgespeichert wurde, wird dieser in einen normalen
-		 * Knoten umgewandelt.
+		 * Falls ein alter Zielknoten abgespeichert wurde, wird dieser in einen
+		 * normalen Knoten umgewandelt.
 		 */
-		if (id_zielknoten != null) {
+		if (id_zielknoten != null && (id_zielknoten[0] != position[0] || id_zielknoten[1] != position[1])) {
 			knoten[id_zielknoten[0] - 1][id_zielknoten[1] - 1].setKategorie(1);
 		}
 
-		// wandle den neuen Zielknoten in einen Zielknoten um
-		knoten[position[0] - 1][position[1] - 1].setKategorie(2);
-
-		// setzte die ID des neuen Zielknotens als ID vom neuen alten Zielknotens
+		// setzte die ID des neuen Zielknotens als ID vom neuen alten Zielknoten
 		id_zielknoten = position;
 
 		// zeichne den Graphen neu auf
