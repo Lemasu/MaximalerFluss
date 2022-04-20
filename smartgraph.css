@@ -23,7 +23,7 @@
 }
 
 .edge-label {
-    -fx-font: normal 5pt "sans-serif";
+    -fx-font: normal 8pt "sans-serif";
 }
 
 .arrow {
@@ -39,4 +39,13 @@
     -fx-stroke: green;
     -fx-stroke-type: inside; /* you should keep this if using arrows */
     -fx-fill: yellowgreen;
+}
+
+.myEdge {
+    -fx-stroke-width: 2;
+    -fx-stroke: blue;
+    -fx-stroke-dash-array: 2 5 2 5; /* remove for clean edges */
+    -fx-fill: transparent; /*important for curved edges. do not remove */
+    -fx-stroke-line-cap: round;
+    -fx-opacity: 0.8;
 }
