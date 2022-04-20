@@ -307,8 +307,10 @@ public class Controller {
 		 * 
 		 * Falls ein alter Startknoten abgespeichert wurde, wird dieser in einen
 		 * normalen Knoten umgewandelt.
+		 * 
+		 * Der alter Startknoten wird aber nur ueberschrieben, falls dieser nicht bereits durch den Zielknoten ueberschrieben wurde.
 		 */
-		if (id_startknoten != null && (id_startknoten[0] != position[0] || id_startknoten[1] != position[1])) {
+		if (id_startknoten != null && (id_startknoten[0] != position[0] || id_startknoten[1] != position[1]) && knoten[id_startknoten[0] - 1][id_startknoten[1] - 1].getKategorie() != 2) {
 			knoten[id_startknoten[0] - 1][id_startknoten[1] - 1].setKategorie(1);
 		}
 
@@ -399,8 +401,10 @@ public class Controller {
 		 * 
 		 * Falls ein alter Zielknoten abgespeichert wurde, wird dieser in einen normalen
 		 * Knoten umgewandelt.
+		 * 
+		 * Der alter Zielknoten wird aber nur ueberschrieben, falls dieser nicht bereits durch den Startknoten ueberschrieben wurde.
 		 */
-		if (id_zielknoten != null && (id_zielknoten[0] != position[0] || id_zielknoten[1] != position[1])) {
+		if (id_zielknoten != null && (id_zielknoten[0] != position[0] || id_zielknoten[1] != position[1]) && knoten[id_startknoten[0] - 1][id_startknoten[1] - 1].getKategorie() != 0) {
 			knoten[id_zielknoten[0] - 1][id_zielknoten[1] - 1].setKategorie(1);
 		}
 
