@@ -4,20 +4,17 @@ import java.util.ArrayList;
 
 import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
 import com.brunomnsilva.smartgraph.graph.*;
-import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Paint;
+import javafx.scene.layout.StackPane;
 
 /**
  * Das ist der Controller der Applikation.
@@ -96,7 +93,7 @@ public class Controller {
      * Das ist der HBox, in dem der Graph dargestellt wird.
      */
     @FXML
-    private HBox hbox;
+    private StackPane hbox;
 
 	/**
 	 * Das ist der Textfeld, in welchem der Nutzer angeben kann, welcher Knoten als
@@ -168,6 +165,14 @@ public class Controller {
      */
     public void setModel(Model model) {
         this.model = model;
+    }
+    
+    /**
+     * Mit dieser Methode kann diese Applikation beendet werden.
+     */
+    @FXML
+    public void applikationBeenden() {
+    	Platform.exit();
     }
 
     /**
@@ -481,9 +486,11 @@ public class Controller {
 
         // erstelle die Darstellung aus dem Graphen und der Properties-Datei
         SmartGraphPanel<Knoten, Kante> graphView = new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy());
-
+        
+        SmartGraphDemoContainer graph_container = new SmartGraphDemoContainer(graphView);
+        
         // gebe den Graphen auf einer SubScene aus
-        SubScene subscene = new SubScene(new SmartGraphDemoContainer(graphView), 700, 600);
+        SubScene subscene = new SubScene(graph_container, 700, 600);
 
         // ueberpruefe, ob schon einen Graphen auf dem GUI gibt
         // loesche diesen Graphen, wenn es diesen schon gibt
@@ -493,7 +500,14 @@ public class Controller {
 
         // gebe den neuerstellten Graphen auf dem GUI aus
         hbox.getChildren().add(subscene);
-
+        
+        subscene.heightProperty().bind(hbox.heightProperty());
+        subscene.widthProperty().bind(hbox.widthProperty());
+        
+        graph_container.setMinSize(hbox.getMinHeight(), hbox.getMinWidth());
+        graph_container.setPrefSize(hbox.getPrefHeight(), hbox.getPrefWidth());
+        graph_container.setMaxSize(hbox.getMaxHeight(), hbox.getMaxWidth());
+        
         // platziere alle Knoten an die vorhin berechneten Koordinaten
         for (int i = 0; i < nodes.size(); i++) {
             graphView.setVertexPosition(nodes.get(i), x_positionen.get(i), y_positionen.get(i));
