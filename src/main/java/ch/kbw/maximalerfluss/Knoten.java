@@ -24,17 +24,17 @@ public class Knoten {
 	 * 1 = normaler Knoten
 	 * 2 = Ziel
 	 */
-	private final int kategorie;
+	private int kategorie;
 
 	/**
 	 * Das ist der Standardkonstruktor.
 	 * 
-	 * @param waagerechte_position Das ist die waagerechte Position dieses Knotens.
-	 * @param senkrechte_position Das ist die senkrechte Position dieses Knotens.
+	 * @param waagerechte_position Das ist die Zeile dieses Knotens.
+	 * @param senkrechte_position Das ist die Spalte dieses Knotens.
 	 * @param kategorie Das ist die Kategorie dieses Knotens.
 	 */
-	public Knoten(int waagerechte_position, int senkrechte_position, int kategorie) {
-		this.id = waagerechte_position + "." + senkrechte_position;
+	public Knoten(int zeile, int spalte, int kategorie) {
+		this.id = zeile + "." + spalte;
 		this.kategorie = kategorie;
 	}
 	
@@ -55,4 +55,18 @@ public class Knoten {
 	public int getKategorie() {
 		return kategorie;
 	}
+
+	/**
+	 * Das ist der Setter fuer die Kategorie dieses Knotens.
+	 * 
+	 * @param kategorie Das ist die gewuenschte Kategorie fuer diesen Knoten.
+	 */
+	public void setKategorie(int kategorie) {
+		this.kategorie = kategorie;
+	}
+	
+	@Override
+    public String toString() {
+        return id;
+    } 
 }
