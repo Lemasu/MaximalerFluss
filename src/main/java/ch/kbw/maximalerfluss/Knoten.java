@@ -64,4 +64,9 @@ public class Knoten {
 	public void setKategorie(int kategorie) {
 		this.kategorie = kategorie;
 	}
+	
+	@Override
+    public String toString() {
+        return id;
+    } 
 }

@@ -87,6 +87,11 @@ public class Kante {
 		return kapazitaet;
 	}
 
+	@Override
+	public String toString() {
+		return ""+kapazitaet;
+	}
+
 
 }
 

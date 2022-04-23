@@ -149,18 +149,19 @@ public class Graph {
     private void kantenZufaelligGenerieren(int zeilen, int spalten) {
         final Random rand = new Random();
         // Anzahl maximale Kanten
-        // int max = (zeilen * spalten) * (zeilen * spalten - 1);
+        int max = (zeilen * spalten) * (zeilen * spalten - 1);
         // Anzahl minimale Kanten
-        //int min = (zeilen * spalten - 1);
+        int min = (zeilen * spalten - 1);
         // zufaellige Anzahl Kanten
-        //int anzahl = rand.nextInt((max - min) + 1) + min;
+        int anzahl = rand.nextInt((max - min) + 1) + min;
 
-        int anzahl = (zeilen * spalten - 1);
+        //int anzahl = (zeilen * spalten - 1);
         boolean status = false;
         boolean status2 = false;
         boolean status3 = true;
         int gleicheKanten = 0;
         int anzahlKanten = 0;
+        int kapazitaet = 0;
         // Variablen, um die Knoten zu identifizieren
         Integer a, b, c, d;
         a = b = c = d = 0;
@@ -190,6 +191,8 @@ public class Graph {
                         // überprüfen, ob es schon die Kante mit den ausgewählten Knoten gab oder nicht
                         if (gleicheKanten == 0) {
                             // wenn es die Kante noch nicht gab, sie erstellen
+                            //kapazitaet++;
+                            //kanten.add(new Kante(knoten[a][b], knoten[c][d], kapazitaet));
                             kanten.add(new Kante(knoten[a][b], knoten[c][d], (rand.nextInt(20) + 1)));
                             /*if (rand.nextBoolean() == true) {
                                 kanten.add(new Kante(knoten[a][b], knoten[c][d], (rand.nextInt(20) + 1)));
@@ -225,12 +228,13 @@ public class Graph {
             }
             if (status3 == false) {
                 kanten.clear();
+                kapazitaet = 0;
             } else {
                 status = true;
             }
         }
         for (int i = 0; i < kanten.size(); i++) {
-            System.out.println(kanten.get(i).getKnoten_1().getId() + kanten.get(i).getKnoten_2().getId());
+            System.out.println(kanten.get(i).getKnoten_1().getId() + "->" + kanten.get(i).getKnoten_2().getId()+ " "+kanten.get(i).getKapazitaet());
         }
     }
 
