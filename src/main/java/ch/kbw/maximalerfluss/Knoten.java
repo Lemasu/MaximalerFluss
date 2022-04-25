@@ -1,5 +1,7 @@
 package ch.kbw.maximalerfluss;
 
+import java.util.ArrayList;
+
 /**
  * Dies ist die Klasse fuer die Knoten in einem Graphen.
  * 
@@ -15,7 +17,7 @@ public class Knoten {
 	 * 
 	 * Die Zaehlung beginnt bei 1.
 	 */
-	private final String id;
+	private String id;
 	
 	/**
 	 * Das ist die Kategorie eines Knotens.
@@ -27,6 +29,18 @@ public class Knoten {
 	private int kategorie;
 
 	/**
+	 * Die Adjenzliste eines Knoten.
+	 * Beinhaltet alle benachbarten Knoten.
+	 */
+	public ArrayList<Knoten> adjazenzListeKnoten;
+
+	/**
+	 * Die Adjenzliste eines Knoten.
+	 * Beinhaltet alle benachbarten Kanten.
+	 */
+	public ArrayList<Kante> adjazenzListeKanten;
+
+	/**
 	 * Das ist der Standardkonstruktor.
 	 * 
 	 * @param waagerechte_position Das ist die Zeile dieses Knotens.
@@ -36,8 +50,14 @@ public class Knoten {
 	public Knoten(int zeile, int spalte, int kategorie) {
 		this.id = zeile + "." + spalte;
 		this.kategorie = kategorie;
+		this.adjazenzListeKnoten = new ArrayList<Knoten>();
+		this.adjazenzListeKanten = new ArrayList<Kante>();
 	}
-	
+
+	public Knoten() {
+
+	}
+
 	/**
      * Das ist der Getter fuer die ID dieses Knotens.
      * 
@@ -64,9 +84,27 @@ public class Knoten {
 	public void setKategorie(int kategorie) {
 		this.kategorie = kategorie;
 	}
-	
+
+	/**
+	 * Das ist der Getter fuer die Adjazenzliste der Knoten dieses Knotens.
+	 *
+	 * @return Das ist die Adjazenzliste der Knoten dieses Knotens.
+	 */
+	public ArrayList<Knoten> getAdjazenzListeKnoten() {
+		return adjazenzListeKnoten;
+	}
+
+	/**
+	 * Das ist der Getter fuer die Adjazenzliste der Kanten dieses Knotens.
+	 *
+	 * @return Das ist die Adjazenzliste der Kanten dieses Knotens.
+	 */
+	public ArrayList<Kante> getAdjazenzListeKanten() {
+		return adjazenzListeKanten;
+	}
+
 	@Override
-    public String toString() {
-        return id;
-    } 
+	public String toString() {
+		return id;
+	}
 }

@@ -26,6 +26,12 @@ public class Graph {
      */
     private ArrayList<Kante> kanten;
 
+	/**
+	 * Das sind die Rückkanten im Graphen.
+	 * Sie sind nötig, um das Problem der ungünstigen Pfadwahl zu beheben.
+	 */
+	private ArrayList<Kante> rueckKanten;
+
     /**
      * Das sind die Kanten, welche den maximalen Fluss ermoeglichen.
      * <p>
@@ -54,6 +60,7 @@ public class Graph {
         //doppelt?
         knoten = new Knoten[zeilen][spalten];
         kanten = new ArrayList<Kante>();
+		rueckKanten = new ArrayList<Kante>();
 
         // generiere die Knoten des Graphen
         knotenGenerieren(zeilen, spalten);
@@ -61,6 +68,12 @@ public class Graph {
         // generiere die Kanten des Graphen
         // kantenGenerieren();
         kantenZufaelligGenerieren(zeilen, spalten);
+
+		// generiere die Rückkanten des Graphen
+		rueckKantenGenerieren();
+
+		// generiere die Adjazenzlisten der Knoten
+		adjazenzListenGenerieren();
 
         // -----------------------------------------------------------------------------------------------------
         // Dieser Abschnitt dient nur zum Testen.
@@ -234,35 +247,96 @@ public class Graph {
             }
         }
         for (int i = 0; i < kanten.size(); i++) {
-            System.out.println(kanten.get(i).getKnoten_1().getId() + "->" + kanten.get(i).getKnoten_2().getId()+ " "+kanten.get(i).getKapazitaet());
+            System.out.println(kanten.get(i).getKnoten_1().getId() + "->" + kanten.get(i).getKnoten_2().getId()+ " "+kanten.get(i).getMaxKapazitaet());
         }
     }
 
+	/**
+	 * Mit dieser Methode werden die Rückkanten eines Graphen generiert.
+	 */
+	private void rueckKantenGenerieren() {
 
-    /**
-     * Das ist der Getter fuer die Kanten des Graphen.
-     *
-     * @return Das sind die Kanten des Graphen.
-     */
-    public ArrayList<Kante> getKanten() {
-        return kanten;
-    }
+		for (Kante kante : kanten) {
+			Kante neueKante = new Kante(kante.getKnoten_2(),kante.getKnoten_1(),0);
+			rueckKanten.add(neueKante);
+		}
 
-    /**
-     * Das ist der Getter fuer die Knoten des Graphen.
-     *
-     * @return Das sind die Knoten des Graphen.
-     */
-    public Knoten[][] getKnoten() {
-        return knoten;
-    }
+		// -----------------------------------------------------------------------------------------------------
+		// Dieser Abschnitt dient nur zum Testen.
+		// -----------------------------------------------------------------------------------------------------
 
-    /**
-     * Das ist der Getter fuer die Kanten des maximalen Flusses.
-     *
-     * @return Das sind die Kanten des maximalen Flusses.
-     */
-    public ArrayList<Kante> getKanten_maximaler_fluss() {
-        return kanten_maximaler_fluss;
-    }
+		System.out.println();
+		System.out.println("--------------------------------------------------------");
+		System.out.println("Rückkanten");
+		System.out.println("--------------------------------------------------------");
+		System.out.println();
+
+		for (Kante kante : rueckKanten) {
+			System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
+					+ kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
+					+ kante.getRestKapazitaet() + " / maximale Kapazitaet: " +
+					kante.getMaxKapazitaet() + "]");
+		}
+
+		System.out.println();
+		System.out.println("--------------------------------------------------------");
+		System.out.println();
+
+		// -----------------------------------------------------------------------------------------------------
+	}
+
+	private void adjazenzListenGenerieren() {
+		for (Knoten[] knotens : knoten) {
+			for (Knoten knoten : knotens) {
+				for (Kante kante : kanten) {
+					if (kante.getKnoten_1()==knoten) {
+						knoten.adjazenzListeKnoten.add(kante.getKnoten_2());
+						knoten.adjazenzListeKanten.add(kante);
+					}
+				}
+				for (Kante kante : rueckKanten) {
+					if (kante.getKnoten_1()==knoten) {
+						knoten.adjazenzListeKnoten.add(kante.getKnoten_2());
+						knoten.adjazenzListeKanten.add(kante);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Das ist der Getter fuer die Knoten des Graphen.
+	 *
+	 * @return Das sind die Knoten des Graphen.
+	 */
+	public Knoten[][] getKnoten() {
+		return knoten;
+	}
+
+	/**
+	 * Das ist der Getter fuer die Kanten des Graphen.
+	 * 
+	 * @return Das sind die Kanten des Graphen.
+	 */
+	public ArrayList<Kante> getKanten() {
+		return kanten;
+	}
+
+	/**
+	 * Das ist der Getter fuer die Rueckkanten des Graphen.
+	 *
+	 * @return Das sind die Rueckkanten des Graphen.
+	 */
+	public ArrayList<Kante> getRueckKanten() {
+		return rueckKanten;
+	}
+
+	/**
+	 * Das ist der Getter fuer die Kanten des maximalen Flusses.
+	 * 
+	 * @return Das sind die Kanten des maximalen Flusses.
+	 */
+	public ArrayList<Kante> getKanten_maximaler_fluss() {
+		return kanten_maximaler_fluss;
+	}
 }

@@ -98,6 +98,7 @@
          </HBox>
          <HBox alignment="CENTER_RIGHT">
             <Button mnemonicParsing="false" onAction="#generate" text="generate" textAlignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#berechnen" text="berechnen" textAlignment="CENTER" />
          </HBox>
       </VBox>
    </children>

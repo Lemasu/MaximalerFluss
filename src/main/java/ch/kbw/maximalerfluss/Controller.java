@@ -1,14 +1,13 @@
 package ch.kbw.maximalerfluss;
 
 import java.util.ArrayList;
-
 import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
 import com.brunomnsilva.smartgraph.graph.*;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
-
 import javafx.application.Platform;
+import ch.kbw.maximalerfluss.algorithmus.Algorithmus;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
@@ -18,7 +17,6 @@ import javafx.scene.layout.StackPane;
 
 /**
  * Das ist der Controller der Applikation.
- * <p>
  * Diese Klasse basiert auf das Projekt der Gruppe "Zyklensuche".
  *
  * @author Alex Schaub
@@ -28,6 +26,11 @@ public class Controller {
      * Das ist das Model dieses Controllers.
      */
     private Model model;
+
+	/**
+	 * Das ist der Algorithmus dieses Controllers
+	 */
+	private Algorithmus algorithmus;
 
     /**
      * Das sind die Knoten des Graphen.
@@ -51,7 +54,6 @@ public class Controller {
 
     /**
      * Das ist die Liste mit den Informationen von den Kanten.
-     * <p>
      * Dieser Liste wird von der ListView benoetigt.
      */
     private ObservableList<String> informationen_kanten;
@@ -72,10 +74,9 @@ public class Controller {
      * bereits aufgerufen wurde.
      */
     private boolean graph_mit_maximaler_fluss_zeichnen_aufgerufen;
-    
+
 	/**
 	 * Das ist die ID vom aktuellen Startknoten.
-	 * <p>
 	 * Die ID wird als einen Int-Array abgespeichert, um damit spaeter einfacher auf
 	 * den Startknoten zugreifen zu koennen.
 	 */
@@ -83,7 +84,6 @@ public class Controller {
 
 	/**
 	 * Das ist die ID vom aktuellen Zielknoten.
-	 * <p>
 	 * Die ID wird als einen Int-Array abgespeichert, um damit spaeter einfacher auf
 	 * den Startknoten zugreifen zu koennen.
 	 */
@@ -165,6 +165,7 @@ public class Controller {
      */
     public void setModel(Model model) {
         this.model = model;
+		algorithmus = new Algorithmus(model.getGraph());
     }
     
     /**
@@ -821,4 +822,11 @@ public class Controller {
 //			}
 //		}
 //	}
+
+	@FXML
+	public void berechnen() {
+		algorithmus.resetFlow();
+		algorithmus.berechneMaxFlow();
+	}
+
 }
