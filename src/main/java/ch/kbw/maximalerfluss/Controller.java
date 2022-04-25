@@ -26,6 +26,11 @@ import javafx.scene.paint.Paint;
  */
 public class Controller {
 	/**
+	 * Das ist der Algorithmus in diesem Controller
+	 */
+	private Algorithmus algorithmus;
+
+	/**
 	 * Das ist das Model dieses Controllers.
 	 */
 	private Model model;
@@ -163,6 +168,7 @@ public class Controller {
 	 */
 	public void setModel(Model model) {
 		this.model = model;
+		algorithmus = new Algorithmus(model.getGraph());
 	}
 
 	/**
@@ -609,13 +615,10 @@ public class Controller {
 		}
 	}
 
-	private Algorithmus algorithmus = new Algorithmus();
-
 	@FXML
 	public void berechnen() {
-		algorithmus.resetFlow(model.getGraph());
-		algorithmus.berechneMaxFlow(model.getGraph());
+		algorithmus.resetFlow();
+		algorithmus.berechneMaxFlow();
 	}
-
 
 }
