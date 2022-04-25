@@ -55,7 +55,7 @@ public class Graph {
      * @param zeilen  Das ist die Anzahl der Zeilen des Graphen.
      * @param spalten Das ist die Anzahl der Spalten des Graphen.
      */
-    public void graphGenerieren(int zeilen, int spalten) {
+    public void graphGenerieren(int zeilen, int spalten, int anzahl) {
         // Initialize variables
         //doppelt?
         knoten = new Knoten[zeilen][spalten];
@@ -67,7 +67,7 @@ public class Graph {
 
         // generiere die Kanten des Graphen
         // kantenGenerieren();
-        kantenZufaelligGenerieren(zeilen, spalten);
+		kantenZufaelligGenerieren(zeilen, spalten, anzahl);
 
 		// generiere die Rückkanten des Graphen
 		rueckKantenGenerieren();
@@ -159,16 +159,8 @@ public class Graph {
      * Mit dieser Methode werden die Kanten eines Graphen generiert.
      */
 
-    private void kantenZufaelligGenerieren(int zeilen, int spalten) {
+    private void kantenZufaelligGenerieren(int zeilen, int spalten, int anzahl) {
         final Random rand = new Random();
-        // Anzahl maximale Kanten
-        int max = (zeilen * spalten) * (zeilen * spalten - 1);
-        // Anzahl minimale Kanten
-        int min = (zeilen * spalten - 1);
-        // zufaellige Anzahl Kanten
-        int anzahl = rand.nextInt((max - min) + 1) + min;
-
-        //int anzahl = (zeilen * spalten - 1);
         boolean status = false;
         boolean status2 = false;
         boolean status3 = true;
@@ -179,7 +171,7 @@ public class Graph {
         Integer a, b, c, d;
         a = b = c = d = 0;
 
-        // solange nicht jeder Knoten mindestens eine Kante hat, läuft diese Schleife
+        // solange nicht jeder Knoten mindestens eine Kante hat, wird diese Schleife wiederholt
         while (status == false) {
             for (int i = 0; i < anzahl; i++) {
                 status2 = false;
@@ -197,21 +189,12 @@ public class Graph {
                             // wenn es die Kante mit den ausgewählten Knoten schon gibt, dann "gleichKanten++;"
                             if (kanten.get(l).getKnoten_1() == knoten[a][b] && kanten.get(l).getKnoten_2() == knoten[c][d]) {
                                 gleicheKanten++;
-                            } /*else if (kanten.get(l).getKnoten_1() == knoten[c][d] && kanten.get(l).getKnoten_2() == knoten[a][b]) {
-                                gleicheKanten++;
-                            }*/
+                            }
                         }
                         // überprüfen, ob es schon die Kante mit den ausgewählten Knoten gab oder nicht
                         if (gleicheKanten == 0) {
                             // wenn es die Kante noch nicht gab, sie erstellen
-                            //kapazitaet++;
-                            //kanten.add(new Kante(knoten[a][b], knoten[c][d], kapazitaet));
                             kanten.add(new Kante(knoten[a][b], knoten[c][d], (rand.nextInt(20) + 1)));
-                            /*if (rand.nextBoolean() == true) {
-                                kanten.add(new Kante(knoten[a][b], knoten[c][d], (rand.nextInt(20) + 1)));
-                            } else {
-                                kanten.add(new Kante(knoten[c][d], knoten[a][b], (rand.nextInt(20) + 1)));
-                            }*/
                             status2 = true;
                         }
                         gleicheKanten = 0;
@@ -232,7 +215,6 @@ public class Graph {
                     }
                     for (int k = 0; k < kanten.size(); k++) {
                     }
-
                     if (anzahlKanten == 0) {
                         status3 = false;
                     }
