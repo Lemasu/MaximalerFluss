@@ -11,7 +11,9 @@ public class CustomThread extends Thread {
 
 	@Override
 	public void run() {
-		while (true) {
+		boolean run = true;
+		
+		while (run) {
 			try {
 				// initialisieren der minimalen und maximalen Anzahl der Kanten, aufgrund von was gerade im Textfeld anzahl_zeilen
 				// und anzahl_spalten steht.
@@ -20,7 +22,9 @@ public class CustomThread extends Thread {
 				// aktualisieren des Textes des Labels info_kanten
 				Platform.runLater(() -> controller.getInfo_kanten().setText("Anzahl Kanten (min = " + min + ", max = " + max + "):"));
 				Thread.sleep(100);
-			} catch (InterruptedException | NullPointerException | NumberFormatException e) {
+			} catch (InterruptedException e) {
+				return;
+			} catch (NullPointerException | NumberFormatException e) {
 				e.printStackTrace();
 			}
 		}
