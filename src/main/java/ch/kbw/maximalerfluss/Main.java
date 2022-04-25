@@ -27,6 +27,11 @@ public class Main extends Application {
 	 */
 	private Controller controller;
 
+	/**
+	 * Das ist der Thread, der im Hintergrund laeuft, um den Label info_kanten zu aktualisieren.
+	 */
+	private CustomThread t1;
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -35,6 +40,8 @@ public class Main extends Application {
 			Pane root = myLoader.load();
 			controller = (Controller) myLoader.getController();
 			controller.setModel(model);
+			t1 = new CustomThread(controller);
+			t1.start();
 			Scene scene = new Scene(root, 400, 400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setTitle("Maximaler Fluss");
@@ -54,6 +61,10 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void stop(){
+			t1.interrupt();
 	}
 
 	public static void main(String[] args) {
