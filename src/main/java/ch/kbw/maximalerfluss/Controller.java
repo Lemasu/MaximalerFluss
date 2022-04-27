@@ -3,6 +3,7 @@ package ch.kbw.maximalerfluss;
 import java.util.ArrayList;
 import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
 import com.brunomnsilva.smartgraph.graph.*;
+import com.brunomnsilva.smartgraph.graphview.SmartArrow;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
@@ -16,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.input.KeyEvent;
 import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
 
 /**
  * Das ist der Controller der Applikation.
@@ -202,6 +204,9 @@ public class Controller {
         int spalten;
         int kanten;
 
+        // ändern der Textfarbe des Labels info
+        info.setTextFill(Color.RED);
+
         // probiere die Zeilen und Spalten auf die Inhalte der Textfelder zu setzen
         try {
             zeilen = Integer.parseInt(anzahl_zeilen.getText());
@@ -364,6 +369,10 @@ public class Controller {
          * hatte oder als letztes Zeichen einen Punkt eingeben hatte, soll ein
          * entsprechender Fehlermeldung auftauchen und diese Methode abgebrochen werden.
          */
+
+        // ändern der Textfarbe des Labels info
+        info.setTextFill(Color.RED);
+
         if (zielknoten_setzen.getText().length() <= 0 || position_als_text.length > 2
                 || zielknoten_setzen.getText().charAt(zielknoten_setzen.getText().length() - 1) == '.') {
             info.setText("Bitte geben Sie die ID im folgenden Format ein: [Zeile].[Spalte]");
@@ -442,10 +451,12 @@ public class Controller {
      * Diese Methode gibt den Graphen mithilfe von JavaFXSmartGraph in einem SubScene aus.
      */
     private void graphZeichnen() {
+        // ändern der Textfarbe des Labels info
+        info.setTextFill(Color.RED);
+
         // leere das Info-Feld, damit alte Informationen nicht dauernd zu sehen sind
         info.setText("");
 
-        // Graph erstellen
         Digraph<Knoten, Kante> graph = new DigraphEdgeList<>();
 
         // alle Knoten holen
@@ -555,13 +566,19 @@ public class Controller {
                 // faerbe den Knoten Rot
                 graphView.getStylableVertex(node).setStyle("-fx-fill: pink; -fx-stroke: red;");
             }
+
+
         }
 
         // setStyle für Kanten
-        for (int i = 0; i < kanten.size(); i++) {
-            // erstelle den Knoten fuer die Ausgabe auf dem Graphen, der eigentlicher Knoten wurde aber bereits erstellt
-            graphView.getStylableEdge(kanten.get(i)).setStyleClass("myEdge");
+        for (int j = 0; j < kanten.size(); j++) {
+            if(0< kanten.get(j).getAuslastung()) {
+                graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
+                // graphView.getStylableLabel(edges.get(j)).setStyleClass("maxFluss-label");
+                // graphView.getStylableLabel((Edge<Kante, Knoten>)kanten.get(j)).setStyleClass("maxFluss-label");
+            }
         }
+
     }
 
 //	/**
@@ -844,7 +861,14 @@ public class Controller {
 	public void berechnen() {
 		algorithmus.resetFlow();
 		algorithmus.berechneMaxFlow();
-	}
+
+        graphZeichnen();
+
+        // ändern der Textfarbe des Labels info
+        info.setTextFill(Color.BLUE);
+
+        info.setText("Maximaler Fluss: "+algorithmus.getMaxFlow());
+    }
 
     public TextField getAnzahl_zeilen() {
 
@@ -874,4 +898,5 @@ public class Controller {
     public TextField getAnzahl_kanten() {
         return anzahl_kanten;
     }
+
 }
