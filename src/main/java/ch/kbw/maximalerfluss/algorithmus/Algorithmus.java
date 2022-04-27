@@ -1,8 +1,11 @@
 package ch.kbw.maximalerfluss.algorithmus;
 
+import ch.kbw.maximalerfluss.Controller;
 import ch.kbw.maximalerfluss.Graph;
 import ch.kbw.maximalerfluss.Kante;
 import ch.kbw.maximalerfluss.Knoten;
+import com.brunomnsilva.smartgraph.graph.Digraph;
+import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,6 +19,7 @@ import java.util.Random;
 public class Algorithmus {
 
     private Graph graph;
+    private Digraph<Knoten, String> graphNeu = new DigraphEdgeList<>();
     private ArrayList<ArrayList<Kante>> pfadKantenOptionen;
     private ArrayList<Knoten> pfadKnoten;
     private ArrayList<Kante> pfadKanten;
@@ -23,9 +27,11 @@ public class Algorithmus {
     private int bottleneckValue;
     private int maxFlow;
     private boolean finished;
+    private Controller controller;
 
-    public Algorithmus(Graph graphOriginal) {
+    public Algorithmus(Graph graphOriginal, Controller controller) {
         this.graph = graphOriginal;
+        this.controller = controller;
     }
 
     public void berechneMaxFlow() {
@@ -172,7 +178,7 @@ public class Algorithmus {
         for (int i = 0; i < graph.getKnoten().length; i++) {
             System.out.print((i + 1) + ". ArrayList: | ");
             for (int j = 0; j < graph.getKnoten()[i].length; j++) {
-                System.out.print("[Knoten " + graph.getKnoten()[i][j].getId() + " gehoert zum Kategorie "
+                System.out.print("[Knoten " + graph.getKnoten()[i][j].getId() + " gehoert zur Kategorie "
                         + graph.getKnoten()[i][j].getKategorie() + "] | ");
             }
             System.out.println();
@@ -189,6 +195,12 @@ public class Algorithmus {
         System.out.println("Kanten");
         System.out.println("--------------------------------------------------------");
         System.out.println();
+
+
+
+
+
+
 
         for (Kante kante : graph.getKanten()) {
             System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
@@ -220,5 +232,12 @@ public class Algorithmus {
         System.out.println("--------------------------------------------------------");
         System.out.println();
     }
-    // -----------------------------------------------------------------------------------------------------
+
+    public Digraph<Knoten, String> getGraphNeu() {
+        return graphNeu;
+    }
+
+    public void setGraphNeu(Digraph<Knoten, String> graphNeu) {
+        this.graphNeu = graphNeu;
+    }
 }

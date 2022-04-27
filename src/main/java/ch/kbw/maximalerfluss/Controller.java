@@ -3,6 +3,7 @@ package ch.kbw.maximalerfluss;
 import java.util.ArrayList;
 import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
 import com.brunomnsilva.smartgraph.graph.*;
+import com.brunomnsilva.smartgraph.graphview.SmartArrow;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
@@ -93,6 +94,9 @@ public class Controller {
      */
     private int[] id_zielknoten;
 
+    private Digraph<Knoten, Kante> graphOriginal = new DigraphEdgeList<>();
+
+
     /**
      * Das ist die StackPane, in dem der Graph dargestellt wird.
      */
@@ -181,7 +185,7 @@ public class Controller {
      */
     public void setModel(Model model) {
         this.model = model;
-		algorithmus = new Algorithmus(model.getGraph());
+		algorithmus = new Algorithmus(model.getGraph(), this);
     }
 
     /**
@@ -445,7 +449,6 @@ public class Controller {
         // leere das Info-Feld, damit alte Informationen nicht dauernd zu sehen sind
         info.setText("");
 
-        // Graph erstellen
         Digraph<Knoten, Kante> graph = new DigraphEdgeList<>();
 
         // alle Knoten holen
@@ -555,13 +558,19 @@ public class Controller {
                 // faerbe den Knoten Rot
                 graphView.getStylableVertex(node).setStyle("-fx-fill: pink; -fx-stroke: red;");
             }
+
+
         }
 
         // setStyle für Kanten
-        for (int i = 0; i < kanten.size(); i++) {
-            // erstelle den Knoten fuer die Ausgabe auf dem Graphen, der eigentlicher Knoten wurde aber bereits erstellt
-            graphView.getStylableEdge(kanten.get(i)).setStyleClass("myEdge");
+        for (int j = 0; j < kanten.size(); j++) {
+            if(0< kanten.get(j).getAuslastung()) {
+                graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
+                //graphView.getStylableLabel((Edge<Kante, Knoten>)kanten.get(j)).setStyleClass("maxFluss-label");
+            }
         }
+
+        this.graphOriginal = graph;
     }
 
 //	/**
@@ -844,7 +853,34 @@ public class Controller {
 	public void berechnen() {
 		algorithmus.resetFlow();
 		algorithmus.berechneMaxFlow();
-	}
+        SmartGraphProperties properties = new SmartGraphProperties();
+        SmartGraphPanel<Knoten, String> graphView = new SmartGraphPanel<>(algorithmus.getGraphNeu(), properties, new SmartCircularSortedPlacementStrategy());
+
+        SmartGraphDemoContainer graph_container = new SmartGraphDemoContainer(graphView);
+
+        // gebe den Graphen auf einer SubScene aus
+        SubScene subscene = new SubScene(graph_container, 700, 600);
+
+        // ueberpruefe, ob schon einen Graphen auf dem GUI gibt
+        // loesche diesen Graphen, wenn es diesen schon gibt
+        if (stackpane.getChildren().size() > 0) {
+            stackpane.getChildren().remove(0);
+        }
+
+        // gebe den neuerstellten Graphen auf dem GUI aus
+        stackpane.getChildren().add(subscene);
+
+        subscene.heightProperty().bind(stackpane.heightProperty());
+        subscene.widthProperty().bind(stackpane.widthProperty());
+
+        graph_container.setMinSize(stackpane.getMinHeight(), stackpane.getMinWidth());
+        graph_container.setPrefSize(stackpane.getPrefHeight(), stackpane.getPrefWidth());
+        graph_container.setMaxSize(stackpane.getMaxHeight(), stackpane.getMaxWidth());
+
+        graphZeichnen();
+
+
+    }
 
     public TextField getAnzahl_zeilen() {
 
@@ -873,5 +909,13 @@ public class Controller {
 
     public TextField getAnzahl_kanten() {
         return anzahl_kanten;
+    }
+
+    public Digraph<Knoten, Kante> getGraphOriginal() {
+        return graphOriginal;
+    }
+
+    public void setGraphOriginal(Digraph<Knoten, Kante> graphOriginal) {
+        this.graphOriginal = graphOriginal;
     }
 }

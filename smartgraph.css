@@ -15,8 +15,8 @@
 
 .edge {
     -fx-stroke-width: 2;
-    -fx-stroke: #FF6D66;  
-    -fx-stroke-dash-array: 2 5 2 5; /* remove for clean edges */  
+    -fx-stroke: #FF6D66;
+    -fx-stroke-dash-array: 2 5 2 5; /* remove for clean edges */
     -fx-fill: transparent; /*important for curved edges. do not remove */
     -fx-stroke-line-cap: round;
     -fx-opacity: 0.8;
@@ -28,11 +28,11 @@
 
 .arrow {
     -fx-stroke-width: 2;
-    -fx-stroke: #FF6D66;  
+    -fx-stroke: #FF6D66;
     -fx-opacity: 0.8;
 }
 
-/* Custom vertex. You should revert any unwanted styling in the default element, 
+/* Custom vertex. You should revert any unwanted styling in the default element,
    style, since custom styles will be appended to the default style */
 .myVertex {
     -fx-stroke-width: 5;
@@ -41,11 +41,16 @@
     -fx-fill: yellowgreen;
 }
 
-.myEdge {
+.maxFluss {
     -fx-stroke-width: 2;
     -fx-stroke: blue;
     -fx-stroke-dash-array: 2 5 2 5; /* remove for clean edges */
     -fx-fill: transparent; /*important for curved edges. do not remove */
     -fx-stroke-line-cap: round;
     -fx-opacity: 0.8;
+    -fx-font: normal 20pt "sans-serif";
 }
+
+/*.maxFluss-label {
+    -fx-font: normal 20pt "sans-serif";
+}*/

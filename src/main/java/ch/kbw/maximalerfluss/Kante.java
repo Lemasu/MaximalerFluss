@@ -111,7 +111,7 @@ public class Kante {
 
 	@Override
 	public String toString() {
-		return ""+maxKapazitaet;
+		return ""+auslastung+"/"+maxKapazitaet;
 	}
 }
 
