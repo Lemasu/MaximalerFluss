@@ -51,11 +51,11 @@ public class Main extends Application {
 			 * schalte den Vollbildmodus ein und sorge dafuer, dass der Nutzer diesen nicht
 			 * verlassen kann
 			 */
-			/*primaryStage.setMaximized(true);
+			primaryStage.setMaximized(true);
 			primaryStage.setFullScreen(true);
 			primaryStage.setResizable(false);
 			primaryStage.setFullScreenExitHint("");
-			primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);*/
+			primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
 			primaryStage.show();
 		} catch (Exception e) {

@@ -52,5 +52,9 @@
 }
 
 /*.maxFluss-label {
+    -fx-text-fill: blue;
+}*/
+
+/*.maxFluss-label {
     -fx-font: normal 20pt "sans-serif";
 }*/

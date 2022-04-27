@@ -240,4 +240,8 @@ public class Algorithmus {
     public void setGraphNeu(Digraph<Knoten, String> graphNeu) {
         this.graphNeu = graphNeu;
     }
+
+    public int getMaxFlow() {
+        return maxFlow;
+    }
 }
