@@ -28,7 +28,8 @@ public class Main extends Application {
 	private Controller controller;
 
 	/**
-	 * Das ist der Thread, der im Hintergrund laeuft, um den Label info_kanten zu aktualisieren.
+	 * Das ist der Thread, der im Hintergrund laeuft, um den Label info_kanten zu
+	 * aktualisieren.
 	 */
 	private CustomThread t1;
 
@@ -51,11 +52,11 @@ public class Main extends Application {
 			 * schalte den Vollbildmodus ein und sorge dafuer, dass der Nutzer diesen nicht
 			 * verlassen kann
 			 */
-			primaryStage.setMaximized(true);
-			primaryStage.setFullScreen(true);
-			primaryStage.setResizable(false);
-			primaryStage.setFullScreenExitHint("");
-			primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+//			primaryStage.setMaximized(true);
+//			primaryStage.setFullScreen(true);
+//			primaryStage.setResizable(false);
+//			primaryStage.setFullScreenExitHint("");
+//			primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
 			primaryStage.show();
 		} catch (Exception e) {
@@ -63,8 +64,8 @@ public class Main extends Application {
 		}
 	}
 
-	public void stop(){
-			t1.interrupt();
+	public void stop() {
+		t1.interrupt();
 	}
 
 	public static void main(String[] args) {

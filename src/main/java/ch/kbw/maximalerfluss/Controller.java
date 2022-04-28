@@ -199,6 +199,10 @@ public class Controller {
      */
     @FXML
     public void generate() {
+    	// loesche die IDs fuer die alten Start- und Zielknoten
+    	id_startknoten = null;
+    	id_zielknoten = null;
+    	
         // initialisiere die Zeilen, Spalten und Kanten des Graphen
         int zeilen;
         int spalten;
@@ -436,7 +440,7 @@ public class Controller {
          *
          * Der alter Zielknoten wird aber nur ueberschrieben, falls dieser nicht bereits durch den Startknoten ueberschrieben wurde.
          */
-        if (id_zielknoten != null && (id_zielknoten[0] != position[0] || id_zielknoten[1] != position[1]) && knoten[id_startknoten[0] - 1][id_startknoten[1] - 1].getKategorie() != 0) {
+        if (id_zielknoten != null && (id_zielknoten[0] != position[0] || id_zielknoten[1] != position[1]) && knoten[id_zielknoten[0] - 1][id_zielknoten[1] - 1].getKategorie() != 0) {
             knoten[id_zielknoten[0] - 1][id_zielknoten[1] - 1].setKategorie(1);
         }
 
