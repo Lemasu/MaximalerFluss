@@ -227,18 +227,22 @@ public class Algorithmus {
         // Die Kapazität der Kanten erhöhen
         for (Kante kanteGraph : graph.getKanten()) {
             for (Kante kantePfad : pfadKanten) {
-                if (kanteGraph.getKnoten_1()==kantePfad.getKnoten_2()&&kanteGraph.getKnoten_2()==kantePfad.getKnoten_1()) {
-                    kanteGraph.setAuslastung(kanteGraph.getAuslastung()-bottleneckValue);
-                    kanteGraph.setRestKapazitaet(kanteGraph.getRestKapazitaet()+bottleneckValue);
+                if (graph.getRueckKanten().contains(kantePfad)) {
+                    if (kanteGraph.getKnoten_1()==kantePfad.getKnoten_2()&&kanteGraph.getKnoten_2()==kantePfad.getKnoten_1()) {
+                        kanteGraph.setAuslastung(kanteGraph.getAuslastung()-bottleneckValue);
+                        kanteGraph.setRestKapazitaet(kanteGraph.getRestKapazitaet()+bottleneckValue);
+                    }
                 }
             }
         }
         // Die Kapazität der Rückkanten erhöhen
         for (Kante rueckKanteGraph : graph.getRueckKanten()) {
             for (Kante kantePfad : pfadKanten) {
-                if (rueckKanteGraph.getKnoten_1()==kantePfad.getKnoten_2()&&rueckKanteGraph.getKnoten_2()==kantePfad.getKnoten_1()) {
-                    rueckKanteGraph.setAuslastung(rueckKanteGraph.getAuslastung()-bottleneckValue);
-                    rueckKanteGraph.setRestKapazitaet(rueckKanteGraph.getRestKapazitaet()+bottleneckValue);
+                if (graph.getKanten().contains(kantePfad)) {
+                    if (rueckKanteGraph.getKnoten_1() == kantePfad.getKnoten_2() && rueckKanteGraph.getKnoten_2() == kantePfad.getKnoten_1()) {
+                        rueckKanteGraph.setAuslastung(rueckKanteGraph.getAuslastung() - bottleneckValue);
+                        rueckKanteGraph.setRestKapazitaet(rueckKanteGraph.getRestKapazitaet() + bottleneckValue);
+                    }
                 }
             }
         }
