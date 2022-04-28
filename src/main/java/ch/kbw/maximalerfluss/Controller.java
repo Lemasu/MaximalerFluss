@@ -274,6 +274,9 @@ public class Controller {
          */
         String[] position_als_text = startknoten_setzen.getText().split("\\.");
         
+        // ändern der Textfarbe des Labels info
+        info.setTextFill(Color.RED);
+        
         /*
          * Falls die der Nutzer mehr als zwei Zahlenbloecke oder kein Text eingegeben
          * hatte oder als letztes Zeichen einen Punkt eingeben hatte, soll ein
