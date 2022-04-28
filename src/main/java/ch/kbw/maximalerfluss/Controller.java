@@ -273,6 +273,7 @@ public class Controller {
          * diesem zugegriffen werden kann.
          */
         String[] position_als_text = startknoten_setzen.getText().split("\\.");
+        
         /*
          * Falls die der Nutzer mehr als zwei Zahlenbloecke oder kein Text eingegeben
          * hatte oder als letztes Zeichen einen Punkt eingeben hatte, soll ein
@@ -283,6 +284,12 @@ public class Controller {
             info.setText("Bitte geben Sie die ID im folgenden Format ein: [Zeile].[Spalte]");
             return;
         }
+        
+        /*
+         * Die ID soll vom String in Integer umgewandelt werden.
+         * 
+         * Die beiden Teile der ID, welche fuer die Zeile und Spalte stehen, werden fuer die spaetere Verwendung separat abgespeichert.
+         */
         int[] position = new int[2];
         try {
             position[0] = Integer.parseInt(position_als_text[0]);
@@ -368,20 +375,26 @@ public class Controller {
          * diesem zugegriffen werden kann.
          */
         String[] position_als_text = zielknoten_setzen.getText().split("\\.");
+
+        // ändern der Textfarbe des Labels info
+        info.setTextFill(Color.RED);
+
         /*
          * Falls die der Nutzer mehr als zwei Zahlenbloecke oder kein Text eingegeben
          * hatte oder als letztes Zeichen einen Punkt eingeben hatte, soll ein
          * entsprechender Fehlermeldung auftauchen und diese Methode abgebrochen werden.
          */
-
-        // ändern der Textfarbe des Labels info
-        info.setTextFill(Color.RED);
-
         if (zielknoten_setzen.getText().length() <= 0 || position_als_text.length > 2
                 || zielknoten_setzen.getText().charAt(zielknoten_setzen.getText().length() - 1) == '.') {
             info.setText("Bitte geben Sie die ID im folgenden Format ein: [Zeile].[Spalte]");
             return;
         }
+        
+        /*
+         * Die ID soll vom String in Integer umgewandelt werden.
+         * 
+         * Die beiden Teile der ID, welche fuer die Zeile und Spalte stehen, werden fuer die spaetere Verwendung separat abgespeichert.
+         */
         int[] position = new int[2];
         try {
             position[0] = Integer.parseInt(position_als_text[0]);
