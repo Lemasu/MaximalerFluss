@@ -496,11 +496,15 @@ public class Controller {
         ArrayList<Double> x_positionen = new ArrayList<Double>();
         ArrayList<Double> y_positionen = new ArrayList<Double>();
         // Veraenderung von X und Y in Relation zur Anzahl der Knoten
-        double veraenderung_x = 400 / knoten[0].length;
-        double veraenderung_y = 400 / knoten[0].length;
-        // Position von einem Knoten
-        double x = 100;
-        double y = 100;
+        double veraenderung_x = stackpane.getWidth() / (knoten[0].length + 1);
+        double veraenderung_y = stackpane.getHeight() / (knoten.length + 1);
+        /*
+         * Position von einem Knoten
+         * 
+         * Die Koordinate von einem Knoten haengt von der Anzahl Zeilen und Spalten ab.
+         */
+        double x = veraenderung_x;
+        double y = veraenderung_y;
 
         // fuege jeden Knoten einzeln hinzu
         for (int i = 0; i < knoten.length; i++) {
@@ -515,8 +519,9 @@ public class Controller {
                 // passt die X-Koordinate dem naechsten Knoten an
                 x += veraenderung_x;
             }
-            // setze die X-Koordinate wieder auf 100 fuer den ersten Knoten einer Zeile
-            x = 100;
+            
+            // setze die X-Koordinate wieder auf X-Position fuer den ersten Knoten einer Zeile
+            x = veraenderung_x;
 
             // passt die X-Koordinate der naechsten Zeile an
             y += veraenderung_y;
