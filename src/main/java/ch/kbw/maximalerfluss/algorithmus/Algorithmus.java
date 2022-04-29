@@ -91,6 +91,8 @@ public class Algorithmus {
         this.maxFlow=0;
         startUndZielKnotenBestimmen();
 
+        knotenInfosAusgeben();
+
         // solange neue Pfade gefunden werden, soll diese Schleife ausgeführt werden.
         while (!finished) {
             nextIteration();
@@ -98,6 +100,9 @@ public class Algorithmus {
                 berechneBottleneck();
                 updateGraph();
             }
+
+            kantenInfosAusgeben();
+            rueckKantenInfosAusgeben();
         }
     }
 
@@ -116,6 +121,35 @@ public class Algorithmus {
 
         // kontrollieren, ob es noch Pfade gibt
         if (pfadKantenOptionen.size()>0) {
+
+            // Rückkanten vor normalen Kanten verwenden
+
+            // neue Liste um einen Error zu vermeiden
+            ArrayList<ArrayList<Kante>> toRemove = new ArrayList<ArrayList<Kante>>();
+
+            for (ArrayList<Kante> pfad1 : pfadKantenOptionen) {
+                for (Kante kante1 : pfad1) {
+                    for (ArrayList<Kante> pfad2 : pfadKantenOptionen) {
+                        if (pfad1==pfad2) {
+                            continue;
+                        }
+                        for (Kante kante2 : pfad2) {
+                            if ((kante1.getKnoten_1()==kante2.getKnoten_1())&&(kante1.getKnoten_2()==kante2.getKnoten_2())&&kante1!=kante2) {
+                                if (graph.getRueckKanten().contains(kante1)&&graph.getKanten().contains(kante2)) {
+                                    toRemove.add(pfad2);
+                                }
+                                if (graph.getRueckKanten().contains(kante2)&&graph.getKanten().contains(kante1)) {
+                                    toRemove.add(pfad1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // Die Pfade mit den normalen Kante(n) entfernen
+            pfadKantenOptionen.removeAll(toRemove);
+            System.out.println(pfadKantenOptionen.size());
+
             // zufällig einen Pfad auswählen
             Random rn = new Random();
             int random = rn.nextInt(pfadKantenOptionen.size());
