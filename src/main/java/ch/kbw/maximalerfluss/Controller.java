@@ -3,7 +3,6 @@ package ch.kbw.maximalerfluss;
 import java.util.ArrayList;
 import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
 import com.brunomnsilva.smartgraph.graph.*;
-import com.brunomnsilva.smartgraph.graphview.SmartArrow;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
@@ -15,8 +14,6 @@ import javafx.scene.SubScene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
-import javafx.scene.input.KeyEvent;
-import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 
 /**
@@ -94,6 +91,12 @@ public class Controller {
      * den Startknoten zugreifen zu koennen.
      */
     private int[] id_zielknoten;
+    
+    // erstelle die Darstellung aus dem Graphen und der Properties-Datei
+    SmartGraphPanel<Knoten, Kante> graphView;
+    
+    // erstelle eine ArrayList, um die Knoten, welche mit Hilfe von JavaFXSmartGraph ausgegeben werden, abzuspeichern.
+    private ArrayList<Vertex<Knoten>> nodes;
 
     /**
      * Das ist die StackPane, in dem der Graph dargestellt wird.
@@ -358,9 +361,35 @@ public class Controller {
 
         // setzte die ID des neuen Startknotens als ID vom neuen alten Startknoten
         id_startknoten = position;
+        
+        // faerbe alle Knoten
+        for (int i = 0; i < nodes.size(); i++) {
+            // hole den aktuellen Knoten
+            Vertex<Knoten> node = nodes.get(i);
 
-        // zeichne den Graphen neu auf
-        graphZeichnen();
+            /*
+             * ueberpruefe die Kategorie des aktuellen Knotens
+             *
+             * falls der aktueller Knoten die Kategorie Startknoten, also 0, besitzt, wird
+             * der aktueller Knoten gruen gefaerbt
+             *
+             * falls der aktueller Knoten die Kategorie Zielknoten, also 1, besitzt, erhaelt
+             * der aktueller Knoten die Standardfarbe
+             * 
+             * falls der aktueller Knoten die Kategorie Zielknoten, also 2, besitzt, wird
+             * der aktueller Knoten rot gefaerbt
+             */
+            if (node.element().getKategorie() == 0) {
+                // faerbe den Knoten Gruen
+                graphView.getStylableVertex(node).setStyle("-fx-fill: lightgreen; -fx-stroke: green;");
+            } else if (node.element().getKategorie() == 2) {
+                // faerbe den Knoten Rot
+                graphView.getStylableVertex(node).setStyle("-fx-fill: pink; -fx-stroke: red;");
+            } else {
+            	// setze keinen Style, dadurch erhaelt die Knoten die Standardfarbe
+            	graphView.getStylableVertex(node).setStyle("");
+            }
+        }
     }
 
     /**
@@ -463,8 +492,34 @@ public class Controller {
         // setzte die ID des neuen Zielknotens als ID vom neuen alten Zielknoten
         id_zielknoten = position;
 
-        // zeichne den Graphen neu auf
-        graphZeichnen();
+        // faerbe alle Knoten
+        for (int i = 0; i < nodes.size(); i++) {
+            // hole den aktuellen Knoten
+            Vertex<Knoten> node = nodes.get(i);
+
+            /*
+             * ueberpruefe die Kategorie des aktuellen Knotens
+             *
+             * falls der aktueller Knoten die Kategorie Startknoten, also 0, besitzt, wird
+             * der aktueller Knoten gruen gefaerbt
+             *
+             * falls der aktueller Knoten die Kategorie Zielknoten, also 1, besitzt, erhaelt
+             * der aktueller Knoten die Standardfarbe
+             * 
+             * falls der aktueller Knoten die Kategorie Zielknoten, also 2, besitzt, wird
+             * der aktueller Knoten rot gefaerbt
+             */
+            if (node.element().getKategorie() == 0) {
+                // faerbe den Knoten Gruen
+                graphView.getStylableVertex(node).setStyle("-fx-fill: lightgreen; -fx-stroke: green;");
+            } else if (node.element().getKategorie() == 2) {
+                // faerbe den Knoten Rot
+                graphView.getStylableVertex(node).setStyle("-fx-fill: pink; -fx-stroke: red;");
+            } else {
+            	// setze keinen Style, dadurch erhaelt die Knoten die Standardfarbe
+            	graphView.getStylableVertex(node).setStyle("");
+            }
+        }
     }
 
     /**
@@ -483,10 +538,9 @@ public class Controller {
         Knoten[][] knoten = model.getGraph().getKnoten();
 
         // alle Kanten holen
-        ArrayList<Kante> kanten = model.getGraph().getKanten();
+        kanten = model.getGraph().getKanten();
 
-        // erstelle eine ArrayList, um die Knoten, welche mit Hilfe von JavaFXSmartGraph ausgegeben werden, abzuspeichern.
-        ArrayList<Vertex<Knoten>> nodes = new ArrayList<Vertex<Knoten>>();
+        nodes = new ArrayList<Vertex<Knoten>>();
 
         // erstelle eine ArrayList, um die Kanten, welche mit Hilfe von JavaFXSmartGraph ausgegeben werden, abzuspeichern.
         ArrayList<Edge<Kante, Knoten>> edges = new ArrayList<Edge<Kante, Knoten>>();
@@ -538,8 +592,7 @@ public class Controller {
         // lade die Properties-Datei
         SmartGraphProperties properties = new SmartGraphProperties();
 
-        // erstelle die Darstellung aus dem Graphen und der Properties-Datei
-        SmartGraphPanel<Knoten, Kante> graphView = new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy());
+        graphView = new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy());
 
         SmartGraphDemoContainer graph_container = new SmartGraphDemoContainer(graphView);
 
@@ -574,36 +627,7 @@ public class Controller {
 
             // platziere den aktuellen Knoten
             graphView.setVertexPosition(node, x_positionen.get(i), y_positionen.get(i));
-
-            /*
-             * ueberpruefe die Kategorie des aktuellen Knotens
-             *
-             * falls der aktueller Knoten die Kategorie Startknoten, also 0, besitzt, wird
-             * der aktueller Knoten gruen gefaerbt
-             *
-             * falls der aktueller Knoten die Kategorie Zielknoten, also 2, besitzt, wird
-             * der aktueller Knoten rot gefaerbt
-             */
-            if (node.element().getKategorie() == 0) {
-                // faerbe den Knoten Gruen
-                graphView.getStylableVertex(node).setStyle("-fx-fill: lightgreen; -fx-stroke: green;");
-            } else if (node.element().getKategorie() == 2) {
-                // faerbe den Knoten Rot
-                graphView.getStylableVertex(node).setStyle("-fx-fill: pink; -fx-stroke: red;");
-            }
-
-
         }
-
-        // setStyle für Kanten
-        for (int j = 0; j < kanten.size(); j++) {
-            if(0< kanten.get(j).getAuslastung()) {
-                graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
-                // graphView.getStylableLabel(edges.get(j)).setStyleClass("maxFluss-label");
-                // graphView.getStylableLabel((Edge<Kante, Knoten>)kanten.get(j)).setStyleClass("maxFluss-label");
-            }
-        }
-
     }
 
 //	/**
@@ -887,7 +911,16 @@ public class Controller {
 		algorithmus.resetFlow();
 		algorithmus.berechneMaxFlow();
 
-        graphZeichnen();
+        // setStyle für Kanten
+        for (int j = 0; j < kanten.size(); j++) {
+            if (0< kanten.get(j).getAuslastung()) {
+            	// falls die Kante benutzt wurde, nutze die Klasse "maxFluss"
+                graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
+            } else {
+            	// falls die Kante nicht benutzt wurde, nutze die Klasse "edge"
+            	graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
+            }
+        }
 
         // ändern der Textfarbe des Labels info
         info.setTextFill(Color.BLUE);
@@ -896,7 +929,6 @@ public class Controller {
     }
 
     public TextField getAnzahl_zeilen() {
-
         return anzahl_zeilen;
     }
 
@@ -923,5 +955,4 @@ public class Controller {
     public TextField getAnzahl_kanten() {
         return anzahl_kanten;
     }
-
 }
