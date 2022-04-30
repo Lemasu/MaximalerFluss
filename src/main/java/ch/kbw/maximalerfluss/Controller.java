@@ -324,6 +324,14 @@ public class Controller {
         Knoten[][] knoten = model.getGraph().getKnoten();
 
         try {
+        	/*
+        	 * setze die ID fuer den alten Zielknoten auf Null, 
+        	 * falls dieser jetzt ueberschrieben werden soll
+        	 */
+        	if (knoten[position[0] - 1][position[1] - 1].getKategorie() == 2) {
+        		id_zielknoten = null;
+        	}
+        	
             // wandle den neuen Startknoten in einen Startknoten um
             knoten[position[0] - 1][position[1] - 1].setKategorie(0);
         } catch (IndexOutOfBoundsException e) {
@@ -458,6 +466,14 @@ public class Controller {
         Knoten[][] knoten = model.getGraph().getKnoten();
 
         try {
+        	/*
+        	 * setze die ID fuer den alten Startknoten auf Null, 
+        	 * falls dieser jetzt ueberschrieben werden soll
+        	 */
+        	if (knoten[position[0] - 1][position[1] - 1].getKategorie() == 0) {
+        		id_startknoten = null;
+        	}
+        	
             // wandle den neuen Zielknoten in einen Zielknoten um
             knoten[position[0] - 1][position[1] - 1].setKategorie(2);
         } catch (IndexOutOfBoundsException e) {
@@ -598,8 +614,13 @@ public class Controller {
         // lade die Properties-Datei
         SmartGraphProperties properties = new SmartGraphProperties();
 
+        // erstelle den SmartGraphPanel, auf welchem den Graphen angezeigt werden soll
         graphView = new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy());
 
+        /*
+         * erstelle den SmartGraphDemoContainer, auf welchem den SmartGraphPanel angezeigt 
+         * werden soll
+         */
         SmartGraphDemoContainer graph_container = new SmartGraphDemoContainer(graphView);
 
         // gebe den Graphen auf einer SubScene aus
@@ -614,6 +635,10 @@ public class Controller {
         // gebe den neuerstellten Graphen auf dem GUI aus
         stackpane.getChildren().add(subscene);
 
+        /*
+         * binde die Groesse des Subscenes, damit dieser sich an die Bildschirmgroesse des 
+         * Nutzers anpasst
+         */
         subscene.heightProperty().bind(stackpane.heightProperty());
         subscene.widthProperty().bind(stackpane.widthProperty());
 
@@ -914,24 +939,29 @@ public class Controller {
 
 	@FXML
 	public void berechnen() {
-		algorithmus.resetFlow();
-		algorithmus.berechneMaxFlow();
+		if (id_startknoten != null && id_zielknoten != null) {
+			algorithmus.resetFlow();
+			algorithmus.berechneMaxFlow();
 
-        // setStyle für Kanten
-        for (int j = 0; j < kanten.size(); j++) {
-            if (0< kanten.get(j).getAuslastung()) {
-            	// falls die Kante benutzt wurde, nutze die Klasse "maxFluss"
-                graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
-            } else {
-            	// falls die Kante nicht benutzt wurde, nutze die Klasse "edge"
-            	graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
-            }
-        }
+			// setStyle für Kanten
+			for (int j = 0; j < kanten.size(); j++) {
+				if (0< kanten.get(j).getAuslastung()) {
+					// falls die Kante benutzt wurde, nutze die Klasse "maxFluss"
+					graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
+				} else {
+					// falls die Kante nicht benutzt wurde, nutze die Klasse "edge"
+					graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
+				}
+			}
 
-        // ändern der Textfarbe des Labels info
-        info.setTextFill(Color.BLUE);
+			// ändern der Textfarbe des Labels info
+			info.setTextFill(Color.BLUE);
 
-        info.setText("Maximaler Fluss: "+algorithmus.getMaxFlow());
+			info.setText("Maximaler Fluss: "+algorithmus.getMaxFlow());
+		} else {
+			// teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
+			info.setText("Um den maximalen Fluss berechnen zu lassen, muss erst der Start- und Zielknoten gesetzt sein.");
+		}
     }
 
     public TextField getAnzahl_zeilen() {
