@@ -642,10 +642,6 @@ public class Controller {
         subscene.heightProperty().bind(stackpane.heightProperty());
         subscene.widthProperty().bind(stackpane.widthProperty());
 
-        graph_container.setMinSize(stackpane.getMinHeight(), stackpane.getMinWidth());
-        graph_container.setPrefSize(stackpane.getPrefHeight(), stackpane.getPrefWidth());
-        graph_container.setMaxSize(stackpane.getMaxHeight(), stackpane.getMaxWidth());
-
         // platziere alle Knoten an die vorhin berechneten Koordinaten
         for (int i = 0; i < nodes.size(); i++) {
             graphView.setVertexPosition(nodes.get(i), x_positionen.get(i), y_positionen.get(i));
