@@ -210,7 +210,7 @@ public class Controller {
         int zeilen;
         int spalten;
         int kanten;
-
+        
         // ändern der Textfarbe des Labels info
         info.setTextFill(Color.RED);
 
@@ -276,6 +276,9 @@ public class Controller {
          * diesem zugegriffen werden kann.
          */
         String[] position_als_text = startknoten_setzen.getText().split("\\.");
+        
+        // leere das Infofeld
+        info.setText("");
         
         // ändern der Textfarbe des Labels info
         info.setTextFill(Color.RED);
@@ -408,6 +411,9 @@ public class Controller {
          */
         String[] position_als_text = zielknoten_setzen.getText().split("\\.");
 
+        // leere das Infofeld
+        info.setText("");
+        
         // ändern der Textfarbe des Labels info
         info.setTextFill(Color.RED);
 
