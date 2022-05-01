@@ -70,6 +70,11 @@ public class Algorithmus {
     private boolean finished;
 
     /**
+     * Das ist der String um den Pfad auszugeben
+     */
+    private String pfad;
+
+    /**
      * Das ist der Standardkonstruktor.
      *
      * @param graphOriginal Das ist der Graph für den der maximale Fluss berechnet wird.
@@ -88,6 +93,7 @@ public class Algorithmus {
         this.bottleneckValue=0;
         this.finished=false;
         this.maxFlow=0;
+        this.pfad="";
         startUndZielKnotenBestimmen();
     }
 
@@ -104,6 +110,11 @@ public class Algorithmus {
             if (!finished) {
                 berechneBottleneck();
                 updateGraph();
+                pfad = pfad+startKnoten.getId();
+                for(Kante kante : pfadKanten) {
+                    pfad = pfad+", "+kante.getKnoten_2().getId();
+                }
+                pfad = pfad+" | Fluss:"+bottleneckValue+"\n";
             }
 
             kantenInfosAusgeben();
@@ -111,11 +122,19 @@ public class Algorithmus {
         }
     }
 
+    /**
+     * Diese Funktion führt den nächsten Schritt des Algorithmus aus
+     */
     public void nextStep() {
         nextIteration();
         if (!finished) {
             berechneBottleneck();
             updateGraph();
+            pfad = pfad+startKnoten.getId();
+            for(Kante kante : pfadKanten) {
+                pfad = pfad+", "+kante.getKnoten_2().getId();
+            }
+            pfad = pfad+" | Fluss:"+bottleneckValue+"\n";
             kantenInfosAusgeben();
             rueckKantenInfosAusgeben();
         }
@@ -375,6 +394,10 @@ public class Algorithmus {
         System.out.println();
         System.out.println("--------------------------------------------------------");
         System.out.println();
+    }
+
+    public String getPfad() {
+        return pfad;
     }
 
     public boolean isFinished() {

@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -135,6 +136,12 @@ public class Controller {
      */
     @FXML
     private TextField anzahl_kanten;
+
+    /**
+     * Das ist das Textfeld fuer die Anzahl der Spalten im Graphen, welcher generiert werden soll.
+     */
+    @FXML
+    private TextArea pfade;
 
     /**
      * Dieses Label dient dazu, dem Nutzer Informationen zu uebermitteln.
@@ -959,6 +966,8 @@ public class Controller {
 				}
 			}
 
+            pfade.setText(algorithmus.getPfad());
+
 			// ändern der Textfarbe des Labels info
 			info.setTextFill(Color.BLUE);
 
@@ -984,6 +993,8 @@ public class Controller {
                     graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
                 }
             }
+
+            pfade.setText(algorithmus.getPfad());
 
             algorithmus.nextIteration();
 
@@ -1014,6 +1025,8 @@ public class Controller {
                 graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
             }
         }
+
+        pfade.setText("");
 
         info.setText("");
     }
