@@ -1,11 +1,8 @@
 package ch.kbw.maximalerfluss.algorithmus;
 
-import ch.kbw.maximalerfluss.Controller;
 import ch.kbw.maximalerfluss.Graph;
 import ch.kbw.maximalerfluss.Kante;
 import ch.kbw.maximalerfluss.Knoten;
-import com.brunomnsilva.smartgraph.graph.Digraph;
-import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -70,9 +67,9 @@ public class Algorithmus {
     private boolean finished;
 
     /**
-     * Das ist der String um den Pfad auszugeben
+     * Das ist der String um die Pfade zu speichern
      */
-    private String pfad;
+    private String pfade;
 
     /**
      * Das ist der Standardkonstruktor.
@@ -93,7 +90,7 @@ public class Algorithmus {
         this.bottleneckValue=0;
         this.finished=false;
         this.maxFlow=0;
-        this.pfad="";
+        this.pfade ="";
         startUndZielKnotenBestimmen();
     }
 
@@ -101,24 +98,9 @@ public class Algorithmus {
      * Diese Funktion berechnet den maximalen Fluss.
      */
     public void berechneMaxFlow() {
-
-        knotenInfosAusgeben();
-
-        // solange neue Pfade gefunden werden, soll diese Schleife ausgeführt werden.
+        // solange neue Pfade gefunden werden, soll ein nächster Schritt durchgeführt werden.
         while (!finished) {
-            nextIteration();
-            if (!finished) {
-                berechneBottleneck();
-                updateGraph();
-                pfad = pfad+startKnoten.getId();
-                for(Kante kante : pfadKanten) {
-                    pfad = pfad+", "+kante.getKnoten_2().getId();
-                }
-                pfad = pfad+" | Fluss:"+bottleneckValue+"\n";
-            }
-
-            kantenInfosAusgeben();
-            rueckKantenInfosAusgeben();
+            nextStep();
         }
     }
 
@@ -126,31 +108,27 @@ public class Algorithmus {
      * Diese Funktion führt den nächsten Schritt des Algorithmus aus
      */
     public void nextStep() {
-        nextIteration();
+        nextPfad();
         if (!finished) {
             berechneBottleneck();
             updateGraph();
-            pfad = pfad+startKnoten.getId();
-            for(Kante kante : pfadKanten) {
-                pfad = pfad+", "+kante.getKnoten_2().getId();
-            }
-            pfad = pfad+" | Fluss:"+bottleneckValue+"\n";
-            kantenInfosAusgeben();
-            rueckKantenInfosAusgeben();
+            savePfad();
         }
+        kantenInfosAusgeben();
+        rueckKantenInfosAusgeben();
     }
 
     /**
      * Diese Funktion führt eine Tiefensuche durch und wählt einen Pfad aus.
      */
-    public void nextIteration() {
+    public void nextPfad() {
         // Inhalt aller ArrayListen löschen
         pfadKantenOptionen.clear();
         pfadKnoten.clear();
         pfadKanten.clear();
 
         // Tiefensuche durchführen
-        depthSearch(startKnoten);
+        tiefensuche(startKnoten);
         System.out.println(pfadKantenOptionen.size());
 
         // kontrollieren, ob es noch Pfade gibt
@@ -203,7 +181,7 @@ public class Algorithmus {
      * vom Start- zum Zielknoten und fügt sie {@link #pfadKantenOptionen} hinzu
      * @param knoten Das ist der Knoten, von wo aus die Tiefensuche gestartet wird.
      */
-    private void depthSearch(Knoten knoten) {
+    private void tiefensuche(Knoten knoten) {
         // Der angegebene Knoten wird dem Pfad hinzugefügt
         pfadKnoten.add(knoten);
 
@@ -228,7 +206,7 @@ public class Algorithmus {
             pfadKanten.add(kante);
 
             // Eine neue Tiefensuche wird gestartet
-            depthSearch(kante.getKnoten_2());
+            tiefensuche(kante.getKnoten_2());
 
             // Die Kante und der Knoten werden entfernt und die for Schleife geht weiter
             pfadKanten.remove(kante);
@@ -333,6 +311,14 @@ public class Algorithmus {
         }
     }
 
+    private void savePfad() {
+        pfade = pfade +startKnoten.getId();
+        for(Kante kante : pfadKanten) {
+            pfade = pfade +", "+kante.getKnoten_2().getId();
+        }
+        pfade = pfade +" | Fluss: "+bottleneckValue+"\n";
+    }
+
 
     // -----------------------------------------------------------------------------------------------------
     // Dieser Abschnitt dient nur zum Testen.
@@ -396,8 +382,8 @@ public class Algorithmus {
         System.out.println();
     }
 
-    public String getPfad() {
-        return pfad;
+    public String getPfade() {
+        return pfade;
     }
 
     public boolean isFinished() {

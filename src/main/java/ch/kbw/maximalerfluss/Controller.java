@@ -955,20 +955,11 @@ public class Controller {
 		if (id_startknoten != null && id_zielknoten != null) {
 			algorithmus.berechneMaxFlow();
 
-			// setStyle für Kanten
-			for (int j = 0; j < kanten.size(); j++) {
-				if (0< kanten.get(j).getAuslastung()) {
-					// falls die Kante benutzt wurde, nutze die Klasse "maxFluss"
-					graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
-				} else {
-					// falls die Kante nicht benutzt wurde, nutze die Klasse "edge"
-					graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
-				}
-			}
+            kantenFaerben();
 
-            pfade.setText(algorithmus.getPfad());
+            pfade.setText(algorithmus.getPfade());
 
-			// ändern der Textfarbe des Labels info
+            // ändern der Textfarbe des Labels info
 			info.setTextFill(Color.BLUE);
 
 			info.setText("Maximaler Fluss: "+algorithmus.getMaxFlow());
@@ -983,20 +974,11 @@ public class Controller {
         if (id_startknoten != null && id_zielknoten != null) {
             algorithmus.nextStep();
 
-            // setStyle für Kanten
-            for (int j = 0; j < kanten.size(); j++) {
-                if (0< kanten.get(j).getAuslastung()) {
-                    // falls die Kante benutzt wurde, nutze die Klasse "maxFluss"
-                    graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
-                } else {
-                    // falls die Kante nicht benutzt wurde, nutze die Klasse "edge"
-                    graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
-                }
-            }
+            kantenFaerben();
 
-            pfade.setText(algorithmus.getPfad());
+            pfade.setText(algorithmus.getPfade());
 
-            algorithmus.nextIteration();
+            algorithmus.nextPfad();
 
             if (algorithmus.isFinished()) {
                 // ändern der Textfarbe des Labels info
@@ -1015,7 +997,14 @@ public class Controller {
         algorithmus.initialize();
         algorithmus.resetFlow();
 
-        // setStyle für Kanten
+        kantenFaerben();
+
+        pfade.setText("");
+
+        info.setText("");
+    }
+
+    private void kantenFaerben() {
         for (int j = 0; j < kanten.size(); j++) {
             if (0< kanten.get(j).getAuslastung()) {
                 // falls die Kante benutzt wurde, nutze die Klasse "maxFluss"
@@ -1025,10 +1014,6 @@ public class Controller {
                 graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
             }
         }
-
-        pfade.setText("");
-
-        info.setText("");
     }
 
     public TextField getAnzahl_zeilen() {
