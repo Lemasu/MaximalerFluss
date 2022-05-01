@@ -1,4 +1,4 @@
-package ch.kbw.maximalerfluss;
+package ch.kbw.maximalerfluss.gui;
 
 import java.util.ArrayList;
 import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
@@ -7,6 +7,9 @@ import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrateg
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import javafx.application.Platform;
+import ch.kbw.maximalerfluss.Kante;
+import ch.kbw.maximalerfluss.Knoten;
+import ch.kbw.maximalerfluss.Model;
 import ch.kbw.maximalerfluss.algorithmus.Algorithmus;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,55 +30,45 @@ public class Controller {
     /**
      * Das ist das Model dieses Controllers.
      */
-    private Model model;
+    Model model;
 
 	/**
 	 * Das ist der Algorithmus dieses Controllers
 	 */
-	private Algorithmus algorithmus;
+	Algorithmus algorithmus;
 
     /**
      * Das sind die Knoten des Graphen.
      */
-    private Knoten[][] knoten;
-
-    /**
-     * Das sind die Positionen der einzelnen Knoten in X-Richtung des Graphen.
-     */
-    private ArrayList<ArrayList<Integer>> x_positionen;
-
-    /**
-     * Das sind die Positionen der einzelnen Knoten in Y-Richtung des Graphen.
-     */
-    private ArrayList<ArrayList<Integer>> y_positionen;
+    Knoten[][] knoten;
 
     /**
      * Das sind die Kanten des Graphen.
      */
-    private ArrayList<Kante> kanten;
+    ArrayList<Kante> kanten;
 
     /**
      * Das ist die Liste mit den Informationen von den Kanten.
      * Dieser Liste wird von der ListView benoetigt.
      */
-    private ObservableList<String> informationen_kanten;
+    ObservableList<String> informationen_kanten;
 
     /**
      * Das ist die Groesse der Kreise fuer die Knoten des Graphen.
      */
-    private int kreisgroesse;
+    int kreisgroesse;
 
     /**
      * Dieser Boolean zeigt auf, ob die Methode "graphZeichnen()" bereits aufgerufen
      * wurde.
      */
-    private boolean graph_zeichnen_aufgerufen;
+    boolean graph_zeichnen_aufgerufen;
 
     /**
      * Dieser Boolean zeigt auf, ob die Methode "graphMitMaximalerFlussZeichnen()"
      * bereits aufgerufen wurde.
      */
-    private boolean graph_mit_maximaler_fluss_zeichnen_aufgerufen;
+    boolean graph_mit_maximaler_fluss_zeichnen_aufgerufen;
 
     /**
      * Das ist die ID vom aktuellen Startknoten.
@@ -83,7 +76,7 @@ public class Controller {
      * Die ID wird als einen Int-Array abgespeichert, um damit spaeter einfacher auf
      * den Startknoten zugreifen zu koennen.
      */
-    private int[] id_startknoten;
+    int[] id_startknoten;
 
     /**
      * Das ist die ID vom aktuellen Zielknoten.
@@ -91,69 +84,88 @@ public class Controller {
      * Die ID wird als einen Int-Array abgespeichert, um damit spaeter einfacher auf
      * den Startknoten zugreifen zu koennen.
      */
-    private int[] id_zielknoten;
+    int[] id_zielknoten;
     
-    // erstelle die Darstellung aus dem Graphen und der Properties-Datei
+    /**
+     * Das ist das Panel, in dem der Graph mithilfe der Properties-Datei dargestellt wird.
+     */
     SmartGraphPanel<Knoten, Kante> graphView;
     
-    // erstelle eine ArrayList, um die Knoten, welche mit Hilfe von JavaFXSmartGraph ausgegeben werden, abzuspeichern.
-    private ArrayList<Vertex<Knoten>> nodes;
+    /**
+     * Das ist der Graph.
+     */
+    Digraph<Knoten, Kante> graph;
+    
+    /**
+     * Diese ArrayList speichert die Knoten des Graphen ab.
+     */
+    ArrayList<Vertex<Knoten>> nodes;
+    
+    /**
+     * Das sind die X-Koordinaten der Knoten.
+     */
+    ArrayList<Double> x_positionen;
+    
+    /**
+     * Das sind die Y-Koordinaten der Knoten.
+     */
+    ArrayList<Double> y_positionen;
 
     /**
      * Das ist die StackPane, in dem der Graph dargestellt wird.
      */
     @FXML
-    private StackPane stackpane;
+    StackPane stackpane;
 
     /**
      * Das ist das Textfeld, in welchem der Nutzer angeben kann, welcher Knoten als
      * Startknoten gesetzt werden soll.
      */
     @FXML
-    private TextField startknoten_setzen;
+    TextField startknoten_setzen;
 
     /**
      * Das ist das Textfeld, in welchem der Nutzer angeben kann, welcher Knoten als
      * Zielknoten gesetzt werden soll.
      */
     @FXML
-    private TextField zielknoten_setzen;
+    TextField zielknoten_setzen;
 
     /**
      * Das ist das Textfeld fuer die Anzahl der Zeilen im Graphen, welcher generiert werden soll.
      */
     @FXML
-    private TextField anzahl_zeilen;
+    TextField anzahl_zeilen;
 
     /**
      * Das ist das Textfeld fuer die Anzahl der Spalten im Graphen, welcher generiert werden soll.
      */
     @FXML
-    private TextField anzahl_spalten;
+    TextField anzahl_spalten;
 
     /**
      * Das ist das Textfeld fuer die Anzahl der Spalten im Graphen, welcher generiert werden soll.
      */
     @FXML
-    private TextField anzahl_kanten;
+    TextField anzahl_kanten;
 
     /**
      * Das ist das Textfeld fuer die Anzahl der Spalten im Graphen, welcher generiert werden soll.
      */
     @FXML
-    private TextArea pfade;
+    TextArea pfade;
 
     /**
      * Dieses Label dient dazu, dem Nutzer Informationen zu uebermitteln.
      */
     @FXML
-    private Label info;
+    Label info;
 
     /**
      * Dieses Label dient dazu, dem Nutzer die Bedingungen der Anzahl Kanten zu uebermitteln.
      */
     @FXML
-    private Label info_kanten;
+    Label info_kanten;
 
     /**
      * Diese Methode wird bei der Initalisierung dieses Controllers aufgerufen.
@@ -267,8 +279,8 @@ public class Controller {
         // Graph zeichnen
         graphZeichnen();
 
-        // Den Fluss zurücksetzen und den Algorithmus neu initailisieren
-        resetFlow();
+        GraphViewInitThread graphview_init = new GraphViewInitThread(this);
+        graphview_init.start();
     }
 
     /**
@@ -564,14 +576,14 @@ public class Controller {
     /**
      * Diese Methode gibt den Graphen mithilfe von JavaFXSmartGraph in einem SubScene aus.
      */
-    private void graphZeichnen() {
+    void graphZeichnen() {
         // ändern der Textfarbe des Labels info
         info.setTextFill(Color.RED);
 
         // leere das Info-Feld, damit alte Informationen nicht dauernd zu sehen sind
         info.setText("");
 
-        Digraph<Knoten, Kante> graph = new DigraphEdgeList<>();
+        graph = new DigraphEdgeList<>();
 
         // alle Knoten holen
         Knoten[][] knoten = model.getGraph().getKnoten();
@@ -586,8 +598,8 @@ public class Controller {
 
         // erstelle Variablen, um die Knoten im Matrixform zu platzieren.
         // ArrayList fuer die Position der Knoten
-        ArrayList<Double> x_positionen = new ArrayList<Double>();
-        ArrayList<Double> y_positionen = new ArrayList<Double>();
+        x_positionen = new ArrayList<Double>();
+        y_positionen = new ArrayList<Double>();
         // Veraenderung von X und Y in Relation zur Anzahl der Knoten
         double veraenderung_x = stackpane.getWidth() / (knoten[0].length + 1);
         double veraenderung_y = stackpane.getHeight() / (knoten.length + 1);
@@ -956,10 +968,12 @@ public class Controller {
 			algorithmus.berechneMaxFlow();
 
             kantenFaerben();
-
+            // aktualisiere den Graphen, damit die Auslastungen der benutzten Kanten angezeigt werden
+            graphView.update();
+            
             pfade.setText(algorithmus.getPfade());
-
-            // ändern der Textfarbe des Labels info
+            
+			// ändern der Textfarbe des Labels info
 			info.setTextFill(Color.BLUE);
 
 			info.setText("Maximaler Fluss: "+algorithmus.getMaxFlow());
@@ -980,6 +994,9 @@ public class Controller {
 
             algorithmus.nextPfad();
 
+            // aktualisiere den Graphen, damit die Auslastungen der benutzten Kanten angezeigt werden
+            graphView.update();
+            
             if (algorithmus.isFinished()) {
                 // ändern der Textfarbe des Labels info
                 info.setTextFill(Color.BLUE);
@@ -1014,6 +1031,13 @@ public class Controller {
                 graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
             }
         }
+        
+        // aktualisiere den Graphen, damit die Auslastungen der benutzten Kanten angezeigt werden
+        graphView.update();
+
+        pfade.setText("");
+
+        info.setText("");
     }
 
     public TextField getAnzahl_zeilen() {

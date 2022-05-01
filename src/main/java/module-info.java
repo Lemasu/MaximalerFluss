@@ -5,6 +5,6 @@ module ch.kbw.maximalerfluss {
 	requires transitive javafx.fxml;
 	requires JavaFXSmartGraph;
 
-    opens ch.kbw.maximalerfluss to javafx.fxml;
+    opens ch.kbw.maximalerfluss.gui to javafx.fxml;
     exports ch.kbw.maximalerfluss;
 }
