@@ -1,5 +1,7 @@
 package ch.kbw.maximalerfluss;
 
+import ch.kbw.maximalerfluss.gui.Controller;
+import ch.kbw.maximalerfluss.gui.CustomThread;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;

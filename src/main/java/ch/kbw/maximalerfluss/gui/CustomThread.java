@@ -1,4 +1,4 @@
-package ch.kbw.maximalerfluss;
+package ch.kbw.maximalerfluss.gui;
 
 import javafx.application.Platform;
 

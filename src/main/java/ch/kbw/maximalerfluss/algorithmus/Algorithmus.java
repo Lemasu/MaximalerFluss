@@ -1,9 +1,10 @@
 package ch.kbw.maximalerfluss.algorithmus;
 
-import ch.kbw.maximalerfluss.Controller;
 import ch.kbw.maximalerfluss.Graph;
 import ch.kbw.maximalerfluss.Kante;
 import ch.kbw.maximalerfluss.Knoten;
+import ch.kbw.maximalerfluss.gui.Controller;
+
 import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 
