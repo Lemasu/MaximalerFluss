@@ -259,6 +259,9 @@ public class Controller {
 
         // Graph zeichnen
         graphZeichnen();
+
+        // Den Fluss zurücksetzen und den Algorithmus neu initailisieren
+        resetFlow();
     }
 
     /**
@@ -372,6 +375,10 @@ public class Controller {
 
         // setzte die ID des neuen Startknotens als ID vom neuen alten Startknoten
         id_startknoten = position;
+
+
+        // Den Fluss zurücksetzen und den Algorithmus neu initailisieren
+        resetFlow();
         
         // faerbe alle Knoten
         for (int i = 0; i < nodes.size(); i++) {
@@ -513,6 +520,9 @@ public class Controller {
 
         // setzte die ID des neuen Zielknotens als ID vom neuen alten Zielknoten
         id_zielknoten = position;
+
+        // Den Fluss zurücksetzen und den Algorithmus neu initailisieren
+        resetFlow();
 
         // faerbe alle Knoten
         for (int i = 0; i < nodes.size(); i++) {
@@ -936,7 +946,6 @@ public class Controller {
 	@FXML
 	public void berechnen() {
 		if (id_startknoten != null && id_zielknoten != null) {
-			algorithmus.resetFlow();
 			algorithmus.berechneMaxFlow();
 
 			// setStyle für Kanten
@@ -958,6 +967,55 @@ public class Controller {
 			// teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
 			info.setText("Um den maximalen Fluss berechnen zu lassen, muss erst der Start- und Zielknoten gesetzt sein.");
 		}
+    }
+
+    @FXML
+    public void nextStep() {
+        if (id_startknoten != null && id_zielknoten != null) {
+            algorithmus.nextStep();
+
+            // setStyle für Kanten
+            for (int j = 0; j < kanten.size(); j++) {
+                if (0< kanten.get(j).getAuslastung()) {
+                    // falls die Kante benutzt wurde, nutze die Klasse "maxFluss"
+                    graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
+                } else {
+                    // falls die Kante nicht benutzt wurde, nutze die Klasse "edge"
+                    graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
+                }
+            }
+
+            algorithmus.nextIteration();
+
+            if (algorithmus.isFinished()) {
+                // ändern der Textfarbe des Labels info
+                info.setTextFill(Color.BLUE);
+
+                info.setText("Maximaler Fluss: " + algorithmus.getMaxFlow());
+            }
+        } else {
+            // teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
+            info.setText("Um den maximalen Fluss berechnen zu lassen, muss erst der Start- und Zielknoten gesetzt sein.");
+        }
+    }
+
+    @FXML
+    public void resetFlow() {
+        algorithmus.initialize();
+        algorithmus.resetFlow();
+
+        // setStyle für Kanten
+        for (int j = 0; j < kanten.size(); j++) {
+            if (0< kanten.get(j).getAuslastung()) {
+                // falls die Kante benutzt wurde, nutze die Klasse "maxFluss"
+                graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
+            } else {
+                // falls die Kante nicht benutzt wurde, nutze die Klasse "edge"
+                graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
+            }
+        }
+
+        info.setText("");
     }
 
     public TextField getAnzahl_zeilen() {

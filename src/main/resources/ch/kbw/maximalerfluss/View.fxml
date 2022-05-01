@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.kbw.maximalerfluss.Controller">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.kbw.maximalerfluss.Controller">
    <children>
       <VBox prefHeight="25.0">
          <children>
@@ -106,6 +106,8 @@
          </HBox>
          <HBox alignment="CENTER_RIGHT">
 			<Button mnemonicParsing="false" onAction="#generate" text="Graph generieren" textAlignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#resetFlow" text="resetFlow" textAlignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#nextStep" text="nextStep" textAlignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#berechnen" text="berechnen" textAlignment="CENTER" />
          </HBox>
       </VBox>

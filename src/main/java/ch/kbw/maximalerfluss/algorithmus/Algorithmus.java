@@ -79,10 +79,9 @@ public class Algorithmus {
     }
 
     /**
-     * Diese Funktion berechnet den maximalen Fluss.
+     * Diese Funktion initialisiert alles neu in dieser Klasse
      */
-    public void berechneMaxFlow() {
-        // alles initialisieren
+    public void initialize() {
         pfadKantenOptionen = new ArrayList<ArrayList<Kante>>();
         pfadKnoten = new ArrayList<>();
         pfadKanten = new ArrayList<>();
@@ -90,6 +89,12 @@ public class Algorithmus {
         this.finished=false;
         this.maxFlow=0;
         startUndZielKnotenBestimmen();
+    }
+
+    /**
+     * Diese Funktion berechnet den maximalen Fluss.
+     */
+    public void berechneMaxFlow() {
 
         knotenInfosAusgeben();
 
@@ -101,6 +106,16 @@ public class Algorithmus {
                 updateGraph();
             }
 
+            kantenInfosAusgeben();
+            rueckKantenInfosAusgeben();
+        }
+    }
+
+    public void nextStep() {
+        nextIteration();
+        if (!finished) {
+            berechneBottleneck();
+            updateGraph();
             kantenInfosAusgeben();
             rueckKantenInfosAusgeben();
         }
@@ -360,6 +375,14 @@ public class Algorithmus {
         System.out.println();
         System.out.println("--------------------------------------------------------");
         System.out.println();
+    }
+
+    public boolean isFinished() {
+        if (pfadKantenOptionen.size()>0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public int getMaxFlow() {
