@@ -114,8 +114,6 @@ public class Algorithmus {
             updateGraph();
             savePfad();
         }
-        kantenInfosAusgeben();
-        rueckKantenInfosAusgeben();
     }
 
     /**
@@ -129,7 +127,6 @@ public class Algorithmus {
 
         // Tiefensuche durchführen
         tiefensuche(startKnoten);
-        System.out.println(pfadKantenOptionen.size());
 
         // kontrollieren, ob es noch Pfade gibt
         if (pfadKantenOptionen.size()>0) {
@@ -160,18 +157,12 @@ public class Algorithmus {
             }
             // Die Pfade mit den normalen Kante(n) entfernen
             pfadKantenOptionen.removeAll(toRemove);
-            System.out.println(pfadKantenOptionen.size());
 
             // zufällig einen Pfad auswählen
             Random rn = new Random();
             int random = rn.nextInt(pfadKantenOptionen.size());
             pfadKanten = (ArrayList<Kante>) pfadKantenOptionen.get(random).clone();
         } else {
-            kantenInfosAusgeben();
-            rueckKantenInfosAusgeben();
-            // Den maximalen Fluss ausgeben und finished auf true setzen
-            System.out.println("Der maximale Fluss wurde berechnet: ");
-            System.out.println("Maximaler Fluss = " + maxFlow);
             finished = true;
         }
     }
