@@ -176,7 +176,7 @@ public class Algorithmus {
         // Der angegebene Knoten wird dem Pfad hinzugefügt
         pfadKnoten.add(knoten);
 
-        // Wenn man beim Zielknoten angekommen ist, wird der Pfad gespeichert und Funktion beendet
+        // Wenn man beim Zielknoten angekommen ist, wird der Pfad gespeichert und die Funktion beendet
         if (knoten == zielKnoten) {
             pfadKantenOptionen.add((ArrayList<Kante>) pfadKanten.clone());
             return;
@@ -187,7 +187,7 @@ public class Algorithmus {
             return;
         }
 
-        // Für jeden benachbarten Knoten des wird eine neue Tiefensuche ausgeführt,
+        // Für jeden benachbarten Knoten wird eine neue Tiefensuche ausgeführt,
         // sofern er nicht bereits besucht wurde oder die Kante keine Kapazität mehr hat.
         for (Kante kante : knoten.getAdjazenzListeKanten()) {
             if (pfadKnoten.contains(kante.getKnoten_2())||kante.getRestKapazitaet()==0) {
