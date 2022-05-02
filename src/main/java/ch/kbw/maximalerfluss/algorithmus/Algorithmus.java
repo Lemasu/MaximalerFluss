@@ -385,6 +385,10 @@ public class Algorithmus {
         }
     }
 
+    public boolean getFinished() {
+        return finished;
+    }
+
     public int getMaxFlow() {
         return maxFlow;
     }

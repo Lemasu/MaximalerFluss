@@ -965,14 +965,21 @@ public class Controller {
 	@FXML
 	public void berechnen() {
 		if (id_startknoten != null && id_zielknoten != null) {
-			algorithmus.berechneMaxFlow();
+            if (!algorithmus.getFinished()) {
+                algorithmus.berechneMaxFlow();
 
-            kantenFaerben();
-            // aktualisiere den Graphen, damit die Auslastungen der benutzten Kanten angezeigt werden
-            graphView.update();
+                kantenFaerben();
 
-            pfade.setText(algorithmus.getPfade());
-            pfade.setText("\nMaximaler Fluss: "+algorithmus.getMaxFlow());
+                // aktualisiere den Graphen, damit die Auslastungen der benutzten Kanten angezeigt werden
+                graphView.update();
+
+                // Die Pfade ausgeben
+                pfade.setText(algorithmus.getPfade());
+
+                // Den maximalen Fluss ausgeben
+                pfade.setText(pfade.getText() + "-----------------------" +
+                        "-----------------------------------------------\nMaximaler Fluss: " + algorithmus.getMaxFlow());
+            }
 		} else {
 			// teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
 			info.setText("Um den maximalen Fluss berechnen zu lassen, muss erst der Start- und Zielknoten gesetzt sein.");
@@ -986,6 +993,7 @@ public class Controller {
 
             kantenFaerben();
 
+            // Pfad ausgeben
             pfade.setText(algorithmus.getPfade());
 
             algorithmus.nextPfad();
@@ -994,8 +1002,9 @@ public class Controller {
             graphView.update();
             
             if (algorithmus.isFinished()) {
-                // ändern der Textfarbe des Labels info
-                pfade.setText(pfade.getText() + "\nMaximaler Fluss: " + algorithmus.getMaxFlow());
+                // Den maximalen Fluss ausgeben
+                pfade.setText(pfade.getText() + "-----------------------" +
+                        "-----------------------------------------------\nMaximaler Fluss: " + algorithmus.getMaxFlow());
             }
         } else {
             // teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
