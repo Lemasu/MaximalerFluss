@@ -104,15 +104,13 @@
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                   </HBox.margin>
                </VBox>
-               <VBox HBox.hgrow="ALWAYS">
+               <HBox>
                   <children>
-                     <HBox VBox.vgrow="ALWAYS">
-                        <children>
-                           <Label text="Ausgabe: " />
-                           <TextArea fx:id="pfade" />
-                        </children>
-                     </HBox>
+                     <Label text="Ausgabe: " />
+                     <TextArea fx:id="ausgabe" />
                   </children>
+               </HBox>
+               <VBox HBox.hgrow="ALWAYS">
                   <HBox.margin>
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                   </HBox.margin>

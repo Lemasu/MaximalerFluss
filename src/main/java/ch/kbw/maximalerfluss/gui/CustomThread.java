@@ -5,6 +5,8 @@ import javafx.application.Platform;
 /**
  * Dieser Thread passt den Label fuer die Angabe der Minimal- und Maxmialanzahl 
  * an Kanten an.
+ *
+ * @author Alex Schaub, Marc Schwendemann, Aron Gassner
  */
 public class CustomThread extends Thread {
 	/**

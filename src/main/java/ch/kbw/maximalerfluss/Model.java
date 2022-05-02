@@ -3,7 +3,7 @@ package ch.kbw.maximalerfluss;
 /**
  * Das ist der Modelklasse fuer dieses Projekt.
  * 
- * @author Alex Schaub
+ * @author Alex Schaub, Marc Schwendemann, Aron Gassner
  */
 public class Model {
 	private Graph graph;
