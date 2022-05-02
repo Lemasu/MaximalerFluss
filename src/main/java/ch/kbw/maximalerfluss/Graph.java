@@ -158,7 +158,6 @@ public class Graph {
     /**
      * Mit dieser Methode werden die Kanten eines Graphen generiert.
      */
-
     private void kantenZufaelligGenerieren(int zeilen, int spalten, int anzahl) {
         final Random rand = new Random();
         boolean status = false;
