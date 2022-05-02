@@ -651,8 +651,8 @@ public class Controller {
      * Diese Funktion berechnet den maximalen Fluss.
      * Führt den Algorithumus durch und zeigt die verwendeten Pfade für den maximalen Fluss
      *
-     * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
-     * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
+     * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen
+     * und angepasst. Abfragedatum 02.05.2022.<a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
      */
     @FXML
     public void berechnen() {
@@ -680,8 +680,8 @@ public class Controller {
     /**
      * Diese Funktion führt den nächsten Schirtt des Algorithmus durch.
      *
-     * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
-     * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
+     * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen
+     * und angepasst. Abfragedatum 02.05.2022.<a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
      */
     @FXML
     public void nextStep() {
@@ -711,8 +711,8 @@ public class Controller {
     /**
      * Diese Funktion setzt den Graphen zurück.
      *
-     * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
-     * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
+     * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen
+     * und angepasst. Abfragedatum 02.05.2022.<a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
      */
     @FXML
     public void resetFlow() {
@@ -729,8 +729,8 @@ public class Controller {
     /**
      * Diese Funktion faerbt die Kanten entsprechend.
      *
-     * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
-     * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
+     * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen
+     * und angepasst. Abfragedatum 02.05.2022.<a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
      */
     private void kantenFaerben() {
         for (int j = 0; j < kanten.size(); j++) {
