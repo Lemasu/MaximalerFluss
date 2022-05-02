@@ -14,12 +14,7 @@ public class Model {
 	public Model() {
 		this.graph = new Graph();
 	}
-	
-	/**
-	 * Das ist der Getter fuer den Graphen.
-	 * 
-	 * @return Das ist der Graph, welcher zurueckgegeben wird.
-	 */
+
 	public Graph getGraph() {
 		return graph;
 	}

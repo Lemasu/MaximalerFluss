@@ -16,7 +16,7 @@ public class Graph {
     /**
      * Das sind die Knoten im Graphen.
      *
-     * Die einzelnen ArrayLists in dieser ArrayList bilden den Graphen ab und wird
+     * Die einzelnen ArrayLists in dieser ArrayList bilden den Graphen ab und werden
      * von links nach rechts gelesen.
      */
     private Knoten[][] knoten;
@@ -31,14 +31,6 @@ public class Graph {
 	 * Sie sind nötig, um das Problem der ungünstigen Pfadwahl zu beheben.
 	 */
 	private ArrayList<Kante> rueckKanten;
-
-    /**
-     * Das sind die Kanten, welche den maximalen Fluss ermoeglichen.
-     *
-     * Aktuell ist noch nicht klar, ob diese ArrayList wirklich in die Klasse Graph
-     * gehoert.
-     */
-    private ArrayList<Kante> kanten_maximaler_fluss;
 
     /**
      * Das ist der Standardkonstruktor.
@@ -208,29 +200,14 @@ public class Graph {
 		}
 	}
 
-	/**
-	 * Das ist der Getter fuer die Knoten des Graphen.
-	 *
-	 * @return Das sind die Knoten des Graphen.
-	 */
 	public Knoten[][] getKnoten() {
 		return knoten;
 	}
 
-	/**
-	 * Das ist der Getter fuer die Kanten des Graphen.
-	 * 
-	 * @return Das sind die Kanten des Graphen.
-	 */
 	public ArrayList<Kante> getKanten() {
 		return kanten;
 	}
 
-	/**
-	 * Das ist der Getter fuer die Rueckkanten des Graphen.
-	 *
-	 * @return Das sind die Rueckkanten des Graphen.
-	 */
 	public ArrayList<Kante> getRueckKanten() {
 		return rueckKanten;
 	}

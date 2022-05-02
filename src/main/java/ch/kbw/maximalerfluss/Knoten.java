@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * @author Alex Schaub, Marc Schwendemann, Aron Gassner
  */
 public class Knoten {
+
 	/**
 	 * Das ist die ID eines Knotens.
 	 * 
@@ -30,21 +31,21 @@ public class Knoten {
 
 	/**
 	 * Die Adjenzliste eines Knoten.
-	 * Beinhaltet alle benachbarten Knoten.
+	 * Sie beinhaltet alle benachbarten Knoten.
 	 */
 	public ArrayList<Knoten> adjazenzListeKnoten;
 
 	/**
 	 * Die Adjenzliste eines Knoten.
-	 * Beinhaltet alle benachbarten Kanten.
+	 * Sie beinhaltet alle benachbarten Kanten.
 	 */
 	public ArrayList<Kante> adjazenzListeKanten;
 
 	/**
 	 * Das ist der Standardkonstruktor.
-	 * 
-	 * @param waagerechte_position Das ist die Zeile dieses Knotens.
-	 * @param senkrechte_position Das ist die Spalte dieses Knotens.
+	 *
+	 * @param zeile Das ist die Zeile dieses Knotens.
+	 * @param spalte Das ist die Spalte dieses Knotens.
 	 * @param kategorie Das ist die Kategorie dieses Knotens.
 	 */
 	public Knoten(int zeile, int spalte, int kategorie) {
@@ -58,47 +59,18 @@ public class Knoten {
 
 	}
 
-	/**
-     * Das ist der Getter fuer die ID dieses Knotens.
-     * 
-     * @return Das ist die ID dieses Knotens.
-     */
     public String getId() {
 		return id;
 	}
 
-	/**
-     * Das ist der Getter fuer die Kategorie dieses Knotens.
-     * 
-     * @return Das ist die Kategorie dieses Knotens.
-     */
 	public int getKategorie() {
 		return kategorie;
 	}
 
-	/**
-	 * Das ist der Setter fuer die Kategorie dieses Knotens.
-	 * 
-	 * @param kategorie Das ist die gewuenschte Kategorie fuer diesen Knoten.
-	 */
 	public void setKategorie(int kategorie) {
 		this.kategorie = kategorie;
 	}
 
-	/**
-	 * Das ist der Getter fuer die Adjazenzliste der Knoten dieses Knotens.
-	 *
-	 * @return Das ist die Adjazenzliste der Knoten dieses Knotens.
-	 */
-	public ArrayList<Knoten> getAdjazenzListeKnoten() {
-		return adjazenzListeKnoten;
-	}
-
-	/**
-	 * Das ist der Getter fuer die Adjazenzliste der Kanten dieses Knotens.
-	 *
-	 * @return Das ist die Adjazenzliste der Kanten dieses Knotens.
-	 */
 	public ArrayList<Kante> getAdjazenzListeKanten() {
 		return adjazenzListeKanten;
 	}
