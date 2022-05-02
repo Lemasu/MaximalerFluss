@@ -38,7 +38,7 @@ public class Main extends Application {
 	/**
 	 * Teile dieses Codes wurden von <a href="https://stackoverflow.com/a/20400760">Stack Overflow</a> übernommen und angepasst. Abfragedatum 02.05.2022.
 	 * <a href="https://stackoverflow.com/users/474365/geert-schuring">Geert Schuring</a> Jahr 2013.
-	 * <p>
+	 *
 	 * Teile dieses Codes wurden von <a href="https://stackoverflow.com/a/31427041">Stack Overflow</a> übernommen und angepasst. Abfragedatum 02.05.2022.
 	 * <a href="https://stackoverflow.com/users/1759128/itachiuchiha">Geert Schuring</a> Jahr 2015.
 	 */
