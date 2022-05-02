@@ -210,6 +210,9 @@ public class Controller {
 
     /**
      * Mit dieser Methode kann diese Applikation beendet werden.
+     * <p>
+	 * Teile dieses Codes wurden von <a href="https://stackoverflow.com/a/42598179">Stack Overflow</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://stackoverflow.com/users/2189127/james-d">James_D</a> Jahr 2017.
      */
     @FXML
     public void applikationBeenden() {
@@ -218,6 +221,9 @@ public class Controller {
 
     /**
      * Mit dieser Methode wird ein neuer Graph generiert und ausgegeben.
+     * <p>
+	 * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
      */
     @FXML
     public void generate() {
@@ -289,6 +295,9 @@ public class Controller {
      * <p>
      * Der Nutzer kann im Textfeld die ID vom Knoten eingeben. Dieser wird dann als
      * neuer Startknoten gesetzt.
+     * <p>
+	 * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
      */
     @FXML
     public void startknotenSetzen() {
@@ -435,6 +444,9 @@ public class Controller {
      * <p>
      * Der Nutzer kann im Textfeld die ID vom Knoten eingeben. Dieser wird dann als
      * neuer Zielknoten gesetzt.
+     * <p>
+	 * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
      */
     @FXML
     public void zielknotenSetzen() {
@@ -575,6 +587,9 @@ public class Controller {
 
     /**
      * Diese Methode gibt den Graphen mithilfe von JavaFXSmartGraph in einem SubScene aus.
+     * <p>
+	 * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
      */
     void graphZeichnen() {
         // ändern der Textfarbe des Labels info
@@ -962,6 +977,10 @@ public class Controller {
 //		}
 //	}
 
+	/**
+	 * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
+	 */
 	@FXML
 	public void berechnen() {
 		if (id_startknoten != null && id_zielknoten != null) {
@@ -977,8 +996,7 @@ public class Controller {
                 pfade.setText(algorithmus.getPfade());
 
                 // Den maximalen Fluss ausgeben
-                pfade.setText(pfade.getText() + "-----------------------" +
-                        "-----------------------------------------------\nMaximaler Fluss: " + algorithmus.getMaxFlow());
+                pfade.setText(pfade.getText() + "\nMaximaler Fluss: " + algorithmus.getMaxFlow());
             }
 		} else {
 			// teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
@@ -986,6 +1004,10 @@ public class Controller {
 		}
     }
 
+	/**
+	 * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
+	 */
     @FXML
     public void nextStep() {
         if (id_startknoten != null && id_zielknoten != null) {
@@ -1003,8 +1025,7 @@ public class Controller {
             
             if (algorithmus.isFinished()) {
                 // Den maximalen Fluss ausgeben
-                pfade.setText(pfade.getText() + "-----------------------" +
-                        "-----------------------------------------------\nMaximaler Fluss: " + algorithmus.getMaxFlow());
+                pfade.setText(pfade.getText() + "\nMaximaler Fluss: " + algorithmus.getMaxFlow());
             }
         } else {
             // teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
@@ -1012,6 +1033,10 @@ public class Controller {
         }
     }
 
+	/**
+	 * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
+	 */
     @FXML
     public void resetFlow() {
         algorithmus.initialize();
@@ -1024,6 +1049,10 @@ public class Controller {
         info.setText("");
     }
 
+	/**
+	 * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
+	 */
     private void kantenFaerben() {
         for (int j = 0; j < kanten.size(); j++) {
             if (0< kanten.get(j).getAuslastung()) {

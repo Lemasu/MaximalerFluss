@@ -11,6 +11,10 @@ public class GraphViewInitThread extends Thread {
 		this.controller = controller;
 	}
 	
+	/**
+	 * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
+	 */
 	@Override
 	public void run() {
 		// warte, bis der SmartGraphPanel eine Groesse hat

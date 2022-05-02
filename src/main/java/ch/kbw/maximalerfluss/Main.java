@@ -35,6 +35,13 @@ public class Main extends Application {
 	 */
 	private CustomThread t1;
 
+	/**
+	 * Teile dieses Codes wurden von <a href="https://stackoverflow.com/a/20400760">Stack Overflow</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://stackoverflow.com/users/474365/geert-schuring">Geert Schuring</a> Jahr 2013.
+	 * <p>
+	 * Teile dieses Codes wurden von <a href="https://stackoverflow.com/a/31427041">Stack Overflow</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://stackoverflow.com/users/1759128/itachiuchiha">Geert Schuring</a> Jahr 2015.
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -66,6 +73,10 @@ public class Main extends Application {
 		}
 	}
 
+	/**
+	 * Teile dieses Codes wurden von <a href="https://stackoverflow.com/a/42598179">Stack Overflow</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://stackoverflow.com/users/2189127/james-d">James_D</a> Jahr 2017.
+	 */
 	public void stop() {
 		t1.interrupt();
 	}
