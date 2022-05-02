@@ -996,8 +996,7 @@ public class Controller {
                 pfade.setText(algorithmus.getPfade());
 
                 // Den maximalen Fluss ausgeben
-                pfade.setText(pfade.getText() + "-----------------------" +
-                        "-----------------------------------------------\nMaximaler Fluss: " + algorithmus.getMaxFlow());
+                pfade.setText(pfade.getText() + "\nMaximaler Fluss: " + algorithmus.getMaxFlow());
             }
 		} else {
 			// teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
@@ -1026,8 +1025,7 @@ public class Controller {
             
             if (algorithmus.isFinished()) {
                 // Den maximalen Fluss ausgeben
-                pfade.setText(pfade.getText() + "-----------------------" +
-                        "-----------------------------------------------\nMaximaler Fluss: " + algorithmus.getMaxFlow());
+                pfade.setText(pfade.getText() + "\nMaximaler Fluss: " + algorithmus.getMaxFlow());
             }
         } else {
             // teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
