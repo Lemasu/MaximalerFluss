@@ -16,7 +16,7 @@ import javafx.scene.layout.Pane;
  * 
  * Die FXML-Datei View.fxml basiert auf das Projekt der Gruppe "Zyklensuche".
  * 
- * @author Alex Schaub
+ * @author Alex Schaub, Marc Schwendemann, Aron Gassner
  */
 public class Main extends Application {
 	/**

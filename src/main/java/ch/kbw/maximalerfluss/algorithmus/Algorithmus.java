@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * Diese Klasse enthält den Algorithmus, der den maximalen Fluss berechnet.
  *
- * @author Marc Schwendemann
+ * @author Alex Schaub, Marc Schwendemann, Aron Gassner
  */
 
 public class Algorithmus {
