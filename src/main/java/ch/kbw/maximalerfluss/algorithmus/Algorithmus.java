@@ -302,75 +302,15 @@ public class Algorithmus {
         }
     }
 
+    /**
+     * Diese Funktion speichert den neusten Pfad im String {@link #pfade}
+     */
     private void savePfad() {
         pfade = pfade +startKnoten.getId();
         for(Kante kante : pfadKanten) {
             pfade = pfade +", "+kante.getKnoten_2().getId();
         }
         pfade = pfade +" | Fluss: "+bottleneckValue+"\n";
-    }
-
-
-    // -----------------------------------------------------------------------------------------------------
-    // Dieser Abschnitt dient nur zum Testen.
-    // -----------------------------------------------------------------------------------------------------
-    public void knotenInfosAusgeben() {
-        System.out.println();
-        System.out.println("--------------------------------------------------------");
-        System.out.println("Knoten");
-        System.out.println("--------------------------------------------------------");
-        System.out.println();
-
-        for (int i = 0; i < graph.getKnoten().length; i++) {
-            System.out.print((i + 1) + ". ArrayList: | ");
-            for (int j = 0; j < graph.getKnoten()[i].length; j++) {
-                System.out.print("[Knoten " + graph.getKnoten()[i][j].getId() + " gehoert zur Kategorie "
-                        + graph.getKnoten()[i][j].getKategorie() + "] | ");
-            }
-            System.out.println();
-        }
-
-        System.out.println();
-        System.out.println("--------------------------------------------------------");
-        System.out.println();
-    }
-
-    public void kantenInfosAusgeben() {
-        System.out.println();
-        System.out.println("--------------------------------------------------------");
-        System.out.println("Kanten");
-        System.out.println("--------------------------------------------------------");
-        System.out.println();
-
-        for (Kante kante : graph.getKanten()) {
-            System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
-                    + kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
-                    + kante.getRestKapazitaet() + " / maximale Kapazitaet: " +
-                    kante.getMaxKapazitaet() + "]");
-        }
-
-        System.out.println();
-        System.out.println("--------------------------------------------------------");
-        System.out.println();
-    }
-
-    public void rueckKantenInfosAusgeben() {
-        System.out.println();
-        System.out.println("--------------------------------------------------------");
-        System.out.println("Rückkanten");
-        System.out.println("--------------------------------------------------------");
-        System.out.println();
-
-        for (Kante kante : graph.getRueckKanten()) {
-            System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
-                    + kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
-                    + kante.getRestKapazitaet() + " / maximale Kapazitaet: " +
-                    kante.getMaxKapazitaet() + "]");
-        }
-
-        System.out.println();
-        System.out.println("--------------------------------------------------------");
-        System.out.println();
     }
 
     public String getPfade() {
