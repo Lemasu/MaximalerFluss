@@ -970,13 +970,9 @@ public class Controller {
             kantenFaerben();
             // aktualisiere den Graphen, damit die Auslastungen der benutzten Kanten angezeigt werden
             graphView.update();
-            
-            pfade.setText(algorithmus.getPfade());
-            
-			// ändern der Textfarbe des Labels info
-			info.setTextFill(Color.BLUE);
 
-			info.setText("Maximaler Fluss: "+algorithmus.getMaxFlow());
+            pfade.setText(algorithmus.getPfade());
+            pfade.setText("\nMaximaler Fluss: "+algorithmus.getMaxFlow());
 		} else {
 			// teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
 			info.setText("Um den maximalen Fluss berechnen zu lassen, muss erst der Start- und Zielknoten gesetzt sein.");
@@ -999,9 +995,7 @@ public class Controller {
             
             if (algorithmus.isFinished()) {
                 // ändern der Textfarbe des Labels info
-                info.setTextFill(Color.BLUE);
-
-                info.setText("Maximaler Fluss: " + algorithmus.getMaxFlow());
+                pfade.setText(pfade.getText() + "\nMaximaler Fluss: " + algorithmus.getMaxFlow());
             }
         } else {
             // teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
