@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * 
  * Diese Klasse basiert auf das Projekt der Gruppe "Zyklensuche".
  * 
- * @author Alex Schaub
+ * @author Alex Schaub, Marc Schwendemann, Aron Gassner
  */
 public class Knoten {
 	/**
