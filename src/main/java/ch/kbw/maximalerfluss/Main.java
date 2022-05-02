@@ -1,5 +1,7 @@
 package ch.kbw.maximalerfluss;
 
+import ch.kbw.maximalerfluss.gui.Controller;
+import ch.kbw.maximalerfluss.gui.CustomThread;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -28,7 +30,8 @@ public class Main extends Application {
 	private Controller controller;
 
 	/**
-	 * Das ist der Thread, der im Hintergrund laeuft, um den Label info_kanten zu aktualisieren.
+	 * Das ist der Thread, der im Hintergrund laeuft, um den Label info_kanten zu
+	 * aktualisieren.
 	 */
 	private CustomThread t1;
 
@@ -63,8 +66,8 @@ public class Main extends Application {
 		}
 	}
 
-	public void stop(){
-			t1.interrupt();
+	public void stop() {
+		t1.interrupt();
 	}
 
 	public static void main(String[] args) {

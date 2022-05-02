@@ -1,11 +1,8 @@
 package ch.kbw.maximalerfluss.algorithmus;
 
-import ch.kbw.maximalerfluss.Controller;
 import ch.kbw.maximalerfluss.Graph;
 import ch.kbw.maximalerfluss.Kante;
 import ch.kbw.maximalerfluss.Knoten;
-import com.brunomnsilva.smartgraph.graph.Digraph;
-import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -70,6 +67,11 @@ public class Algorithmus {
     private boolean finished;
 
     /**
+     * Das ist der String um die Pfade zu speichern
+     */
+    private String pfade;
+
+    /**
      * Das ist der Standardkonstruktor.
      *
      * @param graphOriginal Das ist der Graph für den der maximale Fluss berechnet wird.
@@ -79,53 +81,88 @@ public class Algorithmus {
     }
 
     /**
-     * Diese Funktion berechnet den maximalen Fluss.
+     * Diese Funktion initialisiert alles neu in dieser Klasse
      */
-    public void berechneMaxFlow() {
-        // alles initialisieren
+    public void initialize() {
         pfadKantenOptionen = new ArrayList<ArrayList<Kante>>();
         pfadKnoten = new ArrayList<>();
         pfadKanten = new ArrayList<>();
         this.bottleneckValue=0;
         this.finished=false;
         this.maxFlow=0;
+        this.pfade ="";
         startUndZielKnotenBestimmen();
+    }
 
-        // solange neue Pfade gefunden werden, soll diese Schleife ausgeführt werden.
+    /**
+     * Diese Funktion berechnet den maximalen Fluss.
+     */
+    public void berechneMaxFlow() {
+        // solange neue Pfade gefunden werden, soll ein nächster Schritt durchgeführt werden.
         while (!finished) {
-            nextIteration();
-            if (!finished) {
-                berechneBottleneck();
-                updateGraph();
-            }
+            nextStep();
+        }
+    }
+
+    /**
+     * Diese Funktion führt den nächsten Schritt des Algorithmus aus
+     */
+    public void nextStep() {
+        nextPfad();
+        if (!finished) {
+            berechneBottleneck();
+            updateGraph();
+            savePfad();
         }
     }
 
     /**
      * Diese Funktion führt eine Tiefensuche durch und wählt einen Pfad aus.
      */
-    public void nextIteration() {
+    public void nextPfad() {
         // Inhalt aller ArrayListen löschen
         pfadKantenOptionen.clear();
         pfadKnoten.clear();
         pfadKanten.clear();
 
         // Tiefensuche durchführen
-        depthSearch(startKnoten);
-        System.out.println(pfadKantenOptionen.size());
+        tiefensuche(startKnoten);
 
         // kontrollieren, ob es noch Pfade gibt
         if (pfadKantenOptionen.size()>0) {
+
+            // Rückkanten vor normalen Kanten verwenden
+
+            // neue Liste um einen Error zu vermeiden
+            ArrayList<ArrayList<Kante>> toRemove = new ArrayList<ArrayList<Kante>>();
+
+            for (ArrayList<Kante> pfad1 : pfadKantenOptionen) {
+                for (Kante kante1 : pfad1) {
+                    for (ArrayList<Kante> pfad2 : pfadKantenOptionen) {
+                        if (pfad1==pfad2) {
+                            continue;
+                        }
+                        for (Kante kante2 : pfad2) {
+                            if ((kante1.getKnoten_1()==kante2.getKnoten_1())&&(kante1.getKnoten_2()==kante2.getKnoten_2())&&kante1!=kante2) {
+                                if (graph.getRueckKanten().contains(kante1)&&graph.getKanten().contains(kante2)) {
+                                    toRemove.add(pfad2);
+                                }
+                                if (graph.getRueckKanten().contains(kante2)&&graph.getKanten().contains(kante1)) {
+                                    toRemove.add(pfad1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // Die Pfade mit den normalen Kante(n) entfernen
+            pfadKantenOptionen.removeAll(toRemove);
+
             // zufällig einen Pfad auswählen
             Random rn = new Random();
             int random = rn.nextInt(pfadKantenOptionen.size());
             pfadKanten = (ArrayList<Kante>) pfadKantenOptionen.get(random).clone();
         } else {
-            kantenInfosAusgeben();
-            rueckKantenInfosAusgeben();
-            // Den maximalen Fluss ausgeben und finished auf true setzen
-            System.out.println("Der maximale Fluss wurde berechnet: ");
-            System.out.println("Maximaler Fluss = " + maxFlow);
             finished = true;
         }
     }
@@ -135,11 +172,11 @@ public class Algorithmus {
      * vom Start- zum Zielknoten und fügt sie {@link #pfadKantenOptionen} hinzu
      * @param knoten Das ist der Knoten, von wo aus die Tiefensuche gestartet wird.
      */
-    private void depthSearch(Knoten knoten) {
+    private void tiefensuche(Knoten knoten) {
         // Der angegebene Knoten wird dem Pfad hinzugefügt
         pfadKnoten.add(knoten);
 
-        // Wenn man beim Zielknoten angekommen ist, wird der Pfad gespeichert und Funktion beendet
+        // Wenn man beim Zielknoten angekommen ist, wird der Pfad gespeichert und die Funktion beendet
         if (knoten == zielKnoten) {
             pfadKantenOptionen.add((ArrayList<Kante>) pfadKanten.clone());
             return;
@@ -150,7 +187,7 @@ public class Algorithmus {
             return;
         }
 
-        // Für jeden benachbarten Knoten des wird eine neue Tiefensuche ausgeführt,
+        // Für jeden benachbarten Knoten wird eine neue Tiefensuche ausgeführt,
         // sofern er nicht bereits besucht wurde oder die Kante keine Kapazität mehr hat.
         for (Kante kante : knoten.getAdjazenzListeKanten()) {
             if (pfadKnoten.contains(kante.getKnoten_2())||kante.getRestKapazitaet()==0) {
@@ -160,7 +197,7 @@ public class Algorithmus {
             pfadKanten.add(kante);
 
             // Eine neue Tiefensuche wird gestartet
-            depthSearch(kante.getKnoten_2());
+            tiefensuche(kante.getKnoten_2());
 
             // Die Kante und der Knoten werden entfernt und die for Schleife geht weiter
             pfadKanten.remove(kante);
@@ -227,18 +264,22 @@ public class Algorithmus {
         // Die Kapazität der Kanten erhöhen
         for (Kante kanteGraph : graph.getKanten()) {
             for (Kante kantePfad : pfadKanten) {
-                if (kanteGraph.getKnoten_1()==kantePfad.getKnoten_2()&&kanteGraph.getKnoten_2()==kantePfad.getKnoten_1()) {
-                    kanteGraph.setAuslastung(kanteGraph.getAuslastung()-bottleneckValue);
-                    kanteGraph.setRestKapazitaet(kanteGraph.getRestKapazitaet()+bottleneckValue);
+                if (graph.getRueckKanten().contains(kantePfad)) {
+                    if (kanteGraph.getKnoten_1()==kantePfad.getKnoten_2()&&kanteGraph.getKnoten_2()==kantePfad.getKnoten_1()) {
+                        kanteGraph.setAuslastung(kanteGraph.getAuslastung()-bottleneckValue);
+                        kanteGraph.setRestKapazitaet(kanteGraph.getRestKapazitaet()+bottleneckValue);
+                    }
                 }
             }
         }
         // Die Kapazität der Rückkanten erhöhen
         for (Kante rueckKanteGraph : graph.getRueckKanten()) {
             for (Kante kantePfad : pfadKanten) {
-                if (rueckKanteGraph.getKnoten_1()==kantePfad.getKnoten_2()&&rueckKanteGraph.getKnoten_2()==kantePfad.getKnoten_1()) {
-                    rueckKanteGraph.setAuslastung(rueckKanteGraph.getAuslastung()-bottleneckValue);
-                    rueckKanteGraph.setRestKapazitaet(rueckKanteGraph.getRestKapazitaet()+bottleneckValue);
+                if (graph.getKanten().contains(kantePfad)) {
+                    if (rueckKanteGraph.getKnoten_1() == kantePfad.getKnoten_2() && rueckKanteGraph.getKnoten_2() == kantePfad.getKnoten_1()) {
+                        rueckKanteGraph.setAuslastung(rueckKanteGraph.getAuslastung() - bottleneckValue);
+                        rueckKanteGraph.setRestKapazitaet(rueckKanteGraph.getRestKapazitaet() + bottleneckValue);
+                    }
                 }
             }
         }
@@ -259,6 +300,14 @@ public class Algorithmus {
             kante.setAuslastung(0);
             kante.setRestKapazitaet(0);
         }
+    }
+
+    private void savePfad() {
+        pfade = pfade +startKnoten.getId();
+        for(Kante kante : pfadKanten) {
+            pfade = pfade +", "+kante.getKnoten_2().getId();
+        }
+        pfade = pfade +" | Fluss: "+bottleneckValue+"\n";
     }
 
 
@@ -322,6 +371,18 @@ public class Algorithmus {
         System.out.println();
         System.out.println("--------------------------------------------------------");
         System.out.println();
+    }
+
+    public String getPfade() {
+        return pfade;
+    }
+
+    public boolean isFinished() {
+        if (pfadKantenOptionen.size()>0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public int getMaxFlow() {

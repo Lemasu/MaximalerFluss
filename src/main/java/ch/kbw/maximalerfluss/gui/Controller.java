@@ -1,22 +1,23 @@
-package ch.kbw.maximalerfluss;
+package ch.kbw.maximalerfluss.gui;
 
 import java.util.ArrayList;
 import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
 import com.brunomnsilva.smartgraph.graph.*;
-import com.brunomnsilva.smartgraph.graphview.SmartArrow;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import javafx.application.Platform;
+import ch.kbw.maximalerfluss.Kante;
+import ch.kbw.maximalerfluss.Knoten;
+import ch.kbw.maximalerfluss.Model;
 import ch.kbw.maximalerfluss.algorithmus.Algorithmus;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
-import javafx.scene.input.KeyEvent;
-import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 
 /**
@@ -29,55 +30,45 @@ public class Controller {
     /**
      * Das ist das Model dieses Controllers.
      */
-    private Model model;
+    Model model;
 
 	/**
 	 * Das ist der Algorithmus dieses Controllers
 	 */
-	private Algorithmus algorithmus;
+	Algorithmus algorithmus;
 
     /**
      * Das sind die Knoten des Graphen.
      */
-    private Knoten[][] knoten;
-
-    /**
-     * Das sind die Positionen der einzelnen Knoten in X-Richtung des Graphen.
-     */
-    private ArrayList<ArrayList<Integer>> x_positionen;
-
-    /**
-     * Das sind die Positionen der einzelnen Knoten in Y-Richtung des Graphen.
-     */
-    private ArrayList<ArrayList<Integer>> y_positionen;
+    Knoten[][] knoten;
 
     /**
      * Das sind die Kanten des Graphen.
      */
-    private ArrayList<Kante> kanten;
+    ArrayList<Kante> kanten;
 
     /**
      * Das ist die Liste mit den Informationen von den Kanten.
      * Dieser Liste wird von der ListView benoetigt.
      */
-    private ObservableList<String> informationen_kanten;
+    ObservableList<String> informationen_kanten;
 
     /**
      * Das ist die Groesse der Kreise fuer die Knoten des Graphen.
      */
-    private int kreisgroesse;
+    int kreisgroesse;
 
     /**
      * Dieser Boolean zeigt auf, ob die Methode "graphZeichnen()" bereits aufgerufen
      * wurde.
      */
-    private boolean graph_zeichnen_aufgerufen;
+    boolean graph_zeichnen_aufgerufen;
 
     /**
      * Dieser Boolean zeigt auf, ob die Methode "graphMitMaximalerFlussZeichnen()"
      * bereits aufgerufen wurde.
      */
-    private boolean graph_mit_maximaler_fluss_zeichnen_aufgerufen;
+    boolean graph_mit_maximaler_fluss_zeichnen_aufgerufen;
 
     /**
      * Das ist die ID vom aktuellen Startknoten.
@@ -85,7 +76,7 @@ public class Controller {
      * Die ID wird als einen Int-Array abgespeichert, um damit spaeter einfacher auf
      * den Startknoten zugreifen zu koennen.
      */
-    private int[] id_startknoten;
+    int[] id_startknoten;
 
     /**
      * Das ist die ID vom aktuellen Zielknoten.
@@ -93,57 +84,88 @@ public class Controller {
      * Die ID wird als einen Int-Array abgespeichert, um damit spaeter einfacher auf
      * den Startknoten zugreifen zu koennen.
      */
-    private int[] id_zielknoten;
+    int[] id_zielknoten;
+    
+    /**
+     * Das ist das Panel, in dem der Graph mithilfe der Properties-Datei dargestellt wird.
+     */
+    SmartGraphPanel<Knoten, Kante> graphView;
+    
+    /**
+     * Das ist der Graph.
+     */
+    Digraph<Knoten, Kante> graph;
+    
+    /**
+     * Diese ArrayList speichert die Knoten des Graphen ab.
+     */
+    ArrayList<Vertex<Knoten>> nodes;
+    
+    /**
+     * Das sind die X-Koordinaten der Knoten.
+     */
+    ArrayList<Double> x_positionen;
+    
+    /**
+     * Das sind die Y-Koordinaten der Knoten.
+     */
+    ArrayList<Double> y_positionen;
 
     /**
      * Das ist die StackPane, in dem der Graph dargestellt wird.
      */
     @FXML
-    private StackPane stackpane;
+    StackPane stackpane;
 
     /**
      * Das ist das Textfeld, in welchem der Nutzer angeben kann, welcher Knoten als
      * Startknoten gesetzt werden soll.
      */
     @FXML
-    private TextField startknoten_setzen;
+    TextField startknoten_setzen;
 
     /**
      * Das ist das Textfeld, in welchem der Nutzer angeben kann, welcher Knoten als
      * Zielknoten gesetzt werden soll.
      */
     @FXML
-    private TextField zielknoten_setzen;
+    TextField zielknoten_setzen;
 
     /**
      * Das ist das Textfeld fuer die Anzahl der Zeilen im Graphen, welcher generiert werden soll.
      */
     @FXML
-    private TextField anzahl_zeilen;
+    TextField anzahl_zeilen;
 
     /**
      * Das ist das Textfeld fuer die Anzahl der Spalten im Graphen, welcher generiert werden soll.
      */
     @FXML
-    private TextField anzahl_spalten;
+    TextField anzahl_spalten;
 
     /**
      * Das ist das Textfeld fuer die Anzahl der Spalten im Graphen, welcher generiert werden soll.
      */
     @FXML
-    private TextField anzahl_kanten;
+    TextField anzahl_kanten;
+
+    /**
+     * Das ist das Textfeld fuer die Anzahl der Spalten im Graphen, welcher generiert werden soll.
+     */
+    @FXML
+    TextArea pfade;
 
     /**
      * Dieses Label dient dazu, dem Nutzer Informationen zu uebermitteln.
      */
     @FXML
-    private Label info;
+    Label info;
 
     /**
      * Dieses Label dient dazu, dem Nutzer die Bedingungen der Anzahl Kanten zu uebermitteln.
      */
     @FXML
-    private Label info_kanten;
+    Label info_kanten;
 
     /**
      * Diese Methode wird bei der Initalisierung dieses Controllers aufgerufen.
@@ -199,11 +221,15 @@ public class Controller {
      */
     @FXML
     public void generate() {
+    	// loesche die IDs fuer die alten Start- und Zielknoten
+    	id_startknoten = null;
+    	id_zielknoten = null;
+    	
         // initialisiere die Zeilen, Spalten und Kanten des Graphen
         int zeilen;
         int spalten;
         int kanten;
-
+        
         // ändern der Textfarbe des Labels info
         info.setTextFill(Color.RED);
 
@@ -252,6 +278,9 @@ public class Controller {
 
         // Graph zeichnen
         graphZeichnen();
+
+        GraphViewInitThread graphview_init = new GraphViewInitThread(this);
+        graphview_init.start();
     }
 
     /**
@@ -269,6 +298,13 @@ public class Controller {
          * diesem zugegriffen werden kann.
          */
         String[] position_als_text = startknoten_setzen.getText().split("\\.");
+        
+        // leere das Infofeld
+        info.setText("");
+        
+        // ändern der Textfarbe des Labels info
+        info.setTextFill(Color.RED);
+        
         /*
          * Falls die der Nutzer mehr als zwei Zahlenbloecke oder kein Text eingegeben
          * hatte oder als letztes Zeichen einen Punkt eingeben hatte, soll ein
@@ -279,6 +315,12 @@ public class Controller {
             info.setText("Bitte geben Sie die ID im folgenden Format ein: [Zeile].[Spalte]");
             return;
         }
+        
+        /*
+         * Die ID soll vom String in Integer umgewandelt werden.
+         * 
+         * Die beiden Teile der ID, welche fuer die Zeile und Spalte stehen, werden fuer die spaetere Verwendung separat abgespeichert.
+         */
         int[] position = new int[2];
         try {
             position[0] = Integer.parseInt(position_als_text[0]);
@@ -304,6 +346,14 @@ public class Controller {
         Knoten[][] knoten = model.getGraph().getKnoten();
 
         try {
+        	/*
+        	 * setze die ID fuer den alten Zielknoten auf Null, 
+        	 * falls dieser jetzt ueberschrieben werden soll
+        	 */
+        	if (knoten[position[0] - 1][position[1] - 1].getKategorie() == 2) {
+        		id_zielknoten = null;
+        	}
+        	
             // wandle den neuen Startknoten in einen Startknoten um
             knoten[position[0] - 1][position[1] - 1].setKategorie(0);
         } catch (IndexOutOfBoundsException e) {
@@ -345,8 +395,38 @@ public class Controller {
         // setzte die ID des neuen Startknotens als ID vom neuen alten Startknoten
         id_startknoten = position;
 
-        // zeichne den Graphen neu auf
-        graphZeichnen();
+
+        // Den Fluss zurücksetzen und den Algorithmus neu initailisieren
+        resetFlow();
+        
+        // faerbe alle Knoten
+        for (int i = 0; i < nodes.size(); i++) {
+            // hole den aktuellen Knoten
+            Vertex<Knoten> node = nodes.get(i);
+
+            /*
+             * ueberpruefe die Kategorie des aktuellen Knotens
+             *
+             * falls der aktueller Knoten die Kategorie Startknoten, also 0, besitzt, wird
+             * der aktueller Knoten gruen gefaerbt
+             *
+             * falls der aktueller Knoten die Kategorie Zielknoten, also 1, besitzt, erhaelt
+             * der aktueller Knoten die Standardfarbe
+             * 
+             * falls der aktueller Knoten die Kategorie Zielknoten, also 2, besitzt, wird
+             * der aktueller Knoten rot gefaerbt
+             */
+            if (node.element().getKategorie() == 0) {
+                // faerbe den Knoten Gruen
+                graphView.getStylableVertex(node).setStyle("-fx-fill: lightgreen; -fx-stroke: green;");
+            } else if (node.element().getKategorie() == 2) {
+                // faerbe den Knoten Rot
+                graphView.getStylableVertex(node).setStyle("-fx-fill: pink; -fx-stroke: red;");
+            } else {
+            	// setze keinen Style, dadurch erhaelt die Knoten die Standardfarbe
+            	graphView.getStylableVertex(node).setStyle("");
+            }
+        }
     }
 
     /**
@@ -364,20 +444,29 @@ public class Controller {
          * diesem zugegriffen werden kann.
          */
         String[] position_als_text = zielknoten_setzen.getText().split("\\.");
+
+        // leere das Infofeld
+        info.setText("");
+        
+        // ändern der Textfarbe des Labels info
+        info.setTextFill(Color.RED);
+
         /*
          * Falls die der Nutzer mehr als zwei Zahlenbloecke oder kein Text eingegeben
          * hatte oder als letztes Zeichen einen Punkt eingeben hatte, soll ein
          * entsprechender Fehlermeldung auftauchen und diese Methode abgebrochen werden.
          */
-
-        // ändern der Textfarbe des Labels info
-        info.setTextFill(Color.RED);
-
         if (zielknoten_setzen.getText().length() <= 0 || position_als_text.length > 2
                 || zielknoten_setzen.getText().charAt(zielknoten_setzen.getText().length() - 1) == '.') {
             info.setText("Bitte geben Sie die ID im folgenden Format ein: [Zeile].[Spalte]");
             return;
         }
+        
+        /*
+         * Die ID soll vom String in Integer umgewandelt werden.
+         * 
+         * Die beiden Teile der ID, welche fuer die Zeile und Spalte stehen, werden fuer die spaetere Verwendung separat abgespeichert.
+         */
         int[] position = new int[2];
         try {
             position[0] = Integer.parseInt(position_als_text[0]);
@@ -403,6 +492,14 @@ public class Controller {
         Knoten[][] knoten = model.getGraph().getKnoten();
 
         try {
+        	/*
+        	 * setze die ID fuer den alten Startknoten auf Null, 
+        	 * falls dieser jetzt ueberschrieben werden soll
+        	 */
+        	if (knoten[position[0] - 1][position[1] - 1].getKategorie() == 0) {
+        		id_startknoten = null;
+        	}
+        	
             // wandle den neuen Zielknoten in einen Zielknoten um
             knoten[position[0] - 1][position[1] - 1].setKategorie(2);
         } catch (IndexOutOfBoundsException e) {
@@ -436,51 +533,83 @@ public class Controller {
          *
          * Der alter Zielknoten wird aber nur ueberschrieben, falls dieser nicht bereits durch den Startknoten ueberschrieben wurde.
          */
-        if (id_zielknoten != null && (id_zielknoten[0] != position[0] || id_zielknoten[1] != position[1]) && knoten[id_startknoten[0] - 1][id_startknoten[1] - 1].getKategorie() != 0) {
+        if (id_zielknoten != null && (id_zielknoten[0] != position[0] || id_zielknoten[1] != position[1]) && knoten[id_zielknoten[0] - 1][id_zielknoten[1] - 1].getKategorie() != 0) {
             knoten[id_zielknoten[0] - 1][id_zielknoten[1] - 1].setKategorie(1);
         }
 
         // setzte die ID des neuen Zielknotens als ID vom neuen alten Zielknoten
         id_zielknoten = position;
 
-        // zeichne den Graphen neu auf
-        graphZeichnen();
+        // Den Fluss zurücksetzen und den Algorithmus neu initailisieren
+        resetFlow();
+
+        // faerbe alle Knoten
+        for (int i = 0; i < nodes.size(); i++) {
+            // hole den aktuellen Knoten
+            Vertex<Knoten> node = nodes.get(i);
+
+            /*
+             * ueberpruefe die Kategorie des aktuellen Knotens
+             *
+             * falls der aktueller Knoten die Kategorie Startknoten, also 0, besitzt, wird
+             * der aktueller Knoten gruen gefaerbt
+             *
+             * falls der aktueller Knoten die Kategorie Zielknoten, also 1, besitzt, erhaelt
+             * der aktueller Knoten die Standardfarbe
+             * 
+             * falls der aktueller Knoten die Kategorie Zielknoten, also 2, besitzt, wird
+             * der aktueller Knoten rot gefaerbt
+             */
+            if (node.element().getKategorie() == 0) {
+                // faerbe den Knoten Gruen
+                graphView.getStylableVertex(node).setStyle("-fx-fill: lightgreen; -fx-stroke: green;");
+            } else if (node.element().getKategorie() == 2) {
+                // faerbe den Knoten Rot
+                graphView.getStylableVertex(node).setStyle("-fx-fill: pink; -fx-stroke: red;");
+            } else {
+            	// setze keinen Style, dadurch erhaelt die Knoten die Standardfarbe
+            	graphView.getStylableVertex(node).setStyle("");
+            }
+        }
     }
 
     /**
      * Diese Methode gibt den Graphen mithilfe von JavaFXSmartGraph in einem SubScene aus.
      */
-    private void graphZeichnen() {
+    void graphZeichnen() {
         // ändern der Textfarbe des Labels info
         info.setTextFill(Color.RED);
 
         // leere das Info-Feld, damit alte Informationen nicht dauernd zu sehen sind
         info.setText("");
 
-        Digraph<Knoten, Kante> graph = new DigraphEdgeList<>();
+        graph = new DigraphEdgeList<>();
 
         // alle Knoten holen
         Knoten[][] knoten = model.getGraph().getKnoten();
 
         // alle Kanten holen
-        ArrayList<Kante> kanten = model.getGraph().getKanten();
+        kanten = model.getGraph().getKanten();
 
-        // erstelle eine ArrayList, um die Knoten, welche mit Hilfe von JavaFXSmartGraph ausgegeben werden, abzuspeichern.
-        ArrayList<Vertex<Knoten>> nodes = new ArrayList<Vertex<Knoten>>();
+        nodes = new ArrayList<Vertex<Knoten>>();
 
         // erstelle eine ArrayList, um die Kanten, welche mit Hilfe von JavaFXSmartGraph ausgegeben werden, abzuspeichern.
         ArrayList<Edge<Kante, Knoten>> edges = new ArrayList<Edge<Kante, Knoten>>();
 
         // erstelle Variablen, um die Knoten im Matrixform zu platzieren.
         // ArrayList fuer die Position der Knoten
-        ArrayList<Double> x_positionen = new ArrayList<Double>();
-        ArrayList<Double> y_positionen = new ArrayList<Double>();
+        x_positionen = new ArrayList<Double>();
+        y_positionen = new ArrayList<Double>();
         // Veraenderung von X und Y in Relation zur Anzahl der Knoten
-        double veraenderung_x = 400 / knoten[0].length;
-        double veraenderung_y = 400 / knoten[0].length;
-        // Position von einem Knoten
-        double x = 100;
-        double y = 100;
+        double veraenderung_x = stackpane.getWidth() / (knoten[0].length + 1);
+        double veraenderung_y = stackpane.getHeight() / (knoten.length + 1);
+        /*
+         * Position von einem Knoten
+         * 
+         * Die Koordinate von einem Knoten haengt von der Anzahl Zeilen und Spalten ab.
+         */
+        double x = veraenderung_x;
+        double y = veraenderung_y;
 
         // fuege jeden Knoten einzeln hinzu
         for (int i = 0; i < knoten.length; i++) {
@@ -495,8 +624,9 @@ public class Controller {
                 // passt die X-Koordinate dem naechsten Knoten an
                 x += veraenderung_x;
             }
-            // setze die X-Koordinate wieder auf 100 fuer den ersten Knoten einer Zeile
-            x = 100;
+            
+            // setze die X-Koordinate wieder auf X-Position fuer den ersten Knoten einer Zeile
+            x = veraenderung_x;
 
             // passt die X-Koordinate der naechsten Zeile an
             y += veraenderung_y;
@@ -513,9 +643,13 @@ public class Controller {
         // lade die Properties-Datei
         SmartGraphProperties properties = new SmartGraphProperties();
 
-        // erstelle die Darstellung aus dem Graphen und der Properties-Datei
-        SmartGraphPanel<Knoten, Kante> graphView = new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy());
+        // erstelle den SmartGraphPanel, auf welchem den Graphen angezeigt werden soll
+        graphView = new SmartGraphPanel<>(graph, properties, new SmartCircularSortedPlacementStrategy());
 
+        /*
+         * erstelle den SmartGraphDemoContainer, auf welchem den SmartGraphPanel angezeigt 
+         * werden soll
+         */
         SmartGraphDemoContainer graph_container = new SmartGraphDemoContainer(graphView);
 
         // gebe den Graphen auf einer SubScene aus
@@ -530,12 +664,12 @@ public class Controller {
         // gebe den neuerstellten Graphen auf dem GUI aus
         stackpane.getChildren().add(subscene);
 
+        /*
+         * binde die Groesse des Subscenes, damit dieser sich an die Bildschirmgroesse des 
+         * Nutzers anpasst
+         */
         subscene.heightProperty().bind(stackpane.heightProperty());
         subscene.widthProperty().bind(stackpane.widthProperty());
-
-        graph_container.setMinSize(stackpane.getMinHeight(), stackpane.getMinWidth());
-        graph_container.setPrefSize(stackpane.getPrefHeight(), stackpane.getPrefWidth());
-        graph_container.setMaxSize(stackpane.getMaxHeight(), stackpane.getMaxWidth());
 
         // platziere alle Knoten an die vorhin berechneten Koordinaten
         for (int i = 0; i < nodes.size(); i++) {
@@ -549,36 +683,7 @@ public class Controller {
 
             // platziere den aktuellen Knoten
             graphView.setVertexPosition(node, x_positionen.get(i), y_positionen.get(i));
-
-            /*
-             * ueberpruefe die Kategorie des aktuellen Knotens
-             *
-             * falls der aktueller Knoten die Kategorie Startknoten, also 0, besitzt, wird
-             * der aktueller Knoten gruen gefaerbt
-             *
-             * falls der aktueller Knoten die Kategorie Zielknoten, also 2, besitzt, wird
-             * der aktueller Knoten rot gefaerbt
-             */
-            if (node.element().getKategorie() == 0) {
-                // faerbe den Knoten Gruen
-                graphView.getStylableVertex(node).setStyle("-fx-fill: lightgreen; -fx-stroke: green;");
-            } else if (node.element().getKategorie() == 2) {
-                // faerbe den Knoten Rot
-                graphView.getStylableVertex(node).setStyle("-fx-fill: pink; -fx-stroke: red;");
-            }
-
-
         }
-
-        // setStyle für Kanten
-        for (int j = 0; j < kanten.size(); j++) {
-            if(0< kanten.get(j).getAuslastung()) {
-                graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
-                // graphView.getStylableLabel(edges.get(j)).setStyleClass("maxFluss-label");
-                // graphView.getStylableLabel((Edge<Kante, Knoten>)kanten.get(j)).setStyleClass("maxFluss-label");
-            }
-        }
-
     }
 
 //	/**
@@ -859,19 +964,83 @@ public class Controller {
 
 	@FXML
 	public void berechnen() {
-		algorithmus.resetFlow();
-		algorithmus.berechneMaxFlow();
+		if (id_startknoten != null && id_zielknoten != null) {
+			algorithmus.berechneMaxFlow();
 
-        graphZeichnen();
+            kantenFaerben();
+            // aktualisiere den Graphen, damit die Auslastungen der benutzten Kanten angezeigt werden
+            graphView.update();
+            
+            pfade.setText(algorithmus.getPfade());
+            
+			// ändern der Textfarbe des Labels info
+			info.setTextFill(Color.BLUE);
 
-        // ändern der Textfarbe des Labels info
-        info.setTextFill(Color.BLUE);
+			info.setText("Maximaler Fluss: "+algorithmus.getMaxFlow());
+		} else {
+			// teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
+			info.setText("Um den maximalen Fluss berechnen zu lassen, muss erst der Start- und Zielknoten gesetzt sein.");
+		}
+    }
 
-        info.setText("Maximaler Fluss: "+algorithmus.getMaxFlow());
+    @FXML
+    public void nextStep() {
+        if (id_startknoten != null && id_zielknoten != null) {
+            algorithmus.nextStep();
+
+            kantenFaerben();
+
+            pfade.setText(algorithmus.getPfade());
+
+            algorithmus.nextPfad();
+
+            // aktualisiere den Graphen, damit die Auslastungen der benutzten Kanten angezeigt werden
+            graphView.update();
+            
+            if (algorithmus.isFinished()) {
+                // ändern der Textfarbe des Labels info
+                info.setTextFill(Color.BLUE);
+
+                info.setText("Maximaler Fluss: " + algorithmus.getMaxFlow());
+            }
+        } else {
+            // teile den Nutzer mit, dass Start- und Zielknoten gesetzt sein muss
+            info.setText("Um den maximalen Fluss berechnen zu lassen, muss erst der Start- und Zielknoten gesetzt sein.");
+        }
+    }
+
+    @FXML
+    public void resetFlow() {
+        algorithmus.initialize();
+        algorithmus.resetFlow();
+
+        kantenFaerben();
+
+        pfade.setText("");
+
+        info.setText("");
+    }
+
+    private void kantenFaerben() {
+        for (int j = 0; j < kanten.size(); j++) {
+            if (0< kanten.get(j).getAuslastung()) {
+                // falls die Kante benutzt wurde, nutze die Klasse "maxFluss"
+                graphView.getStylableEdge(kanten.get(j)).setStyleClass("maxFluss");
+            } else {
+                // falls die Kante nicht benutzt wurde, nutze die Klasse "edge"
+                graphView.getStylableEdge(kanten.get(j)).setStyleClass("edge");
+            }
+        }
+        
+        // aktualisiere den Graphen, damit die Auslastungen der benutzten Kanten angezeigt werden
+        graphView.update();
+
+        pfade.setText("");
+
+        info.setText("");
     }
 
     public TextField getAnzahl_zeilen() {
-
         return anzahl_zeilen;
     }
 
@@ -898,5 +1067,4 @@ public class Controller {
     public TextField getAnzahl_kanten() {
         return anzahl_kanten;
     }
-
 }
