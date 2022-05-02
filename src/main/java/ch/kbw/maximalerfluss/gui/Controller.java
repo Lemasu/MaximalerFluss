@@ -1051,6 +1051,10 @@ public class Controller {
         info.setText("");
     }
 
+	/**
+	 * Teile dieses Codes wurden von <a href="https://github.com/brunomnsilva/JavaFXSmartGraph">GitHub</a> übernommen und angepasst. Abfragedatum 02.05.2022.
+	 * <a href="https://github.com/brunomnsilva">brunomsilva</a> Jahr 2021.
+	 */
     private void kantenFaerben() {
         for (int j = 0; j < kanten.size(); j++) {
             if (0< kanten.get(j).getAuslastung()) {
