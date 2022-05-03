@@ -5,9 +5,9 @@ import java.util.Random;
 
 /**
  * Diese Klasse kuemmert sich um den Graphen.
- * <p>
+ *
  * Es kann Graphen generieren, aber auch zeichnen.
- * <p>
+ *
  * Diese Klasse basiert auf das Projekt der Gruppe "Zyklensuche".
  *
  * @author Alex Schaub, Marc Schwendemann, Aron Gassner
@@ -15,8 +15,8 @@ import java.util.Random;
 public class Graph {
     /**
      * Das sind die Knoten im Graphen.
-     * <p>
-     * Die einzelnen ArrayLists in dieser ArrayList bilden den Graphen ab und wird
+     *
+     * Die einzelnen ArrayLists in dieser ArrayList bilden den Graphen ab und werden
      * von links nach rechts gelesen.
      */
     private Knoten[][] knoten;
@@ -33,14 +33,6 @@ public class Graph {
 	private ArrayList<Kante> rueckKanten;
 
     /**
-     * Das sind die Kanten, welche den maximalen Fluss ermoeglichen.
-     * <p>
-     * Aktuell ist noch nicht klar, ob diese ArrayList wirklich in die Klasse Graph
-     * gehoert.
-     */
-    private ArrayList<Kante> kanten_maximaler_fluss;
-
-    /**
      * Das ist der Standardkonstruktor.
      */
     public Graph() {
@@ -49,7 +41,7 @@ public class Graph {
 
     /**
      * Diese Funktion ist fuer die Generierung des Graphen gedacht.
-     * <p>
+     *
      * Die Knoten des Graphen werden im Form einer Matrix generiert.
      *
      * @param zeilen  Das ist die Anzahl der Zeilen des Graphen.
@@ -74,35 +66,6 @@ public class Graph {
 
 		// generiere die Adjazenzlisten der Knoten
 		adjazenzListenGenerieren();
-
-        // -----------------------------------------------------------------------------------------------------
-        // Dieser Abschnitt dient nur zum Testen.
-        // -----------------------------------------------------------------------------------------------------
-
-        /*
-         * Ich habe diesen Abschnitt nicht gross auf Bugs getestet. Es scheint zu
-         * funktionieren. Da dieser Abschnitt nur fuer Testzwecke erstellt wurde, habe
-         * ich auf weitere Tests verzichtet.
-         */
-
-        kanten_maximaler_fluss = new ArrayList<Kante>();
-
-        // Zufallszahl fuer die Generierung des "maximalen Flusses"
-        final Random rand = new Random();
-
-        ArrayList<Kante> nicht_benutzte_kanten = new ArrayList<Kante>();
-        nicht_benutzte_kanten = (ArrayList) kanten.clone();
-
-        int zahl = nicht_benutzte_kanten.size();
-
-        for (int i = 0; i < zahl; i++) {
-            int zufallszahl = rand.nextInt(nicht_benutzte_kanten.size());
-            kanten_maximaler_fluss.add(nicht_benutzte_kanten.get(zufallszahl));
-            nicht_benutzte_kanten.remove(zufallszahl);
-            i += rand.nextInt(5);
-        }
-
-        // -----------------------------------------------------------------------------------------------------
     }
 
     /**
@@ -128,31 +91,6 @@ public class Graph {
                 knoten[i][j] = new Knoten(zeile_fuer_id, spalte_fuer_id, 1);
             }
         }
-
-        // -----------------------------------------------------------------------------------------------------
-        // Dieser Abschnitt dient nur zum Testen.
-        // -----------------------------------------------------------------------------------------------------
-
-        System.out.println();
-        System.out.println("--------------------------------------------------------");
-        System.out.println("Knoten");
-        System.out.println("--------------------------------------------------------");
-        System.out.println();
-
-        for (int i = 0; i < knoten.length; i++) {
-            System.out.print((i + 1) + ". ArrayList: | ");
-            for (int j = 0; j < knoten[i].length; j++) {
-                System.out.print("[Knoten " + knoten[i][j].getId() + " gehoert zum Kategorie "
-                        + knoten[i][j].getKategorie() + "] | ");
-            }
-            System.out.println();
-        }
-
-        System.out.println();
-        System.out.println("--------------------------------------------------------");
-        System.out.println();
-
-        // -----------------------------------------------------------------------------------------------------
     }
 
     /**
@@ -241,29 +179,6 @@ public class Graph {
 			Kante neueKante = new Kante(kante.getKnoten_2(),kante.getKnoten_1(),0);
 			rueckKanten.add(neueKante);
 		}
-
-		// -----------------------------------------------------------------------------------------------------
-		// Dieser Abschnitt dient nur zum Testen.
-		// -----------------------------------------------------------------------------------------------------
-
-		System.out.println();
-		System.out.println("--------------------------------------------------------");
-		System.out.println("Rückkanten");
-		System.out.println("--------------------------------------------------------");
-		System.out.println();
-
-		for (Kante kante : rueckKanten) {
-			System.out.println("[Kante mit den 1. Knoten = " + kante.getKnoten_1().getId() + " und den 2. Knoten = "
-					+ kante.getKnoten_2().getId() + " | Auslastung: " + kante.getAuslastung() + " / restliche Kapazitaet: "
-					+ kante.getRestKapazitaet() + " / maximale Kapazitaet: " +
-					kante.getMaxKapazitaet() + "]");
-		}
-
-		System.out.println();
-		System.out.println("--------------------------------------------------------");
-		System.out.println();
-
-		// -----------------------------------------------------------------------------------------------------
 	}
 
 	private void adjazenzListenGenerieren() {
@@ -285,39 +200,15 @@ public class Graph {
 		}
 	}
 
-	/**
-	 * Das ist der Getter fuer die Knoten des Graphen.
-	 *
-	 * @return Das sind die Knoten des Graphen.
-	 */
 	public Knoten[][] getKnoten() {
 		return knoten;
 	}
 
-	/**
-	 * Das ist der Getter fuer die Kanten des Graphen.
-	 * 
-	 * @return Das sind die Kanten des Graphen.
-	 */
 	public ArrayList<Kante> getKanten() {
 		return kanten;
 	}
 
-	/**
-	 * Das ist der Getter fuer die Rueckkanten des Graphen.
-	 *
-	 * @return Das sind die Rueckkanten des Graphen.
-	 */
 	public ArrayList<Kante> getRueckKanten() {
 		return rueckKanten;
-	}
-
-	/**
-	 * Das ist der Getter fuer die Kanten des maximalen Flusses.
-	 * 
-	 * @return Das sind die Kanten des maximalen Flusses.
-	 */
-	public ArrayList<Kante> getKanten_maximaler_fluss() {
-		return kanten_maximaler_fluss;
 	}
 }
